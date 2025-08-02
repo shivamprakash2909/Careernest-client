@@ -184,8 +184,7 @@ export default function RecruiterAuth() {
       window.location.href = createPageUrl("home");
     } catch (error) {
       setError(
-        error.message ||
-          (loginMethod === "email" ? "Invalid email or password" : "Phone login failed. Please try again.")
+        error.message || loginMethod === "email" ? "Invalid email or password" : "Phone login failed. Please try again."
       );
       console.error("Login error:", error);
     } finally {
