@@ -40,7 +40,7 @@ const ApplicationApi = {
         throw new Error(`Failed to fetch applications: ${response.status} - ${errorText}`);
       }
 
-      const json = await response.json();
+      const json = response.data;
       console.log("API Response:", json);
       return json || [];
     } catch (error) {
@@ -76,7 +76,7 @@ const ApplicationApi = {
         throw new Error(`Failed to create application: ${response.status} - ${errorText}`);
       }
 
-      const json = await response.json();
+      const json = response.data;
       console.log("Create API Response:", json);
       return json;
     } catch (error) {
@@ -112,7 +112,7 @@ const ApplicationApi = {
         throw new Error(`Failed to update application: ${response.status} - ${errorText}`);
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error("ApplicationApi.update error:", error);
       throw error;

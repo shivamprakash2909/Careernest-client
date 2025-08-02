@@ -125,8 +125,8 @@ export default function StudentAuth() {
           headers: { "Content-Type": "application/json" },
         }
       );
-      if (!res.ok) throw new Error("Google login failed");
-      const data = await res.json();
+      if (!(res.status === 200 || res.status === 201)) throw new Error("Google login failed");
+      const data = res.data;
       localStorage.setItem("jwt", data.token);
 
       // Store user data in localStorage using actual data from backend
@@ -158,7 +158,7 @@ export default function StudentAuth() {
         headers: { "Content-Type": "application/json" },
       }
     );
-    const data = await res.json();
+    const data = res.data;
     if (data.success) {
       setOtpSent(true);
     } else {
@@ -178,7 +178,7 @@ export default function StudentAuth() {
         headers: { "Content-Type": "application/json" },
       }
     );
-    const data = await res.json();
+    const data = res.data;
     if (data.success) {
       localStorage.setItem("jwt", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
@@ -207,11 +207,11 @@ export default function StudentAuth() {
             headers: { "Content-Type": "application/json" },
           }
         );
-        if (!res.ok) {
-          const errorData = await res.json();
+        if (!(res.status === 200 || res.status === 201)) {
+          const errorData = res.data;
           throw new Error(errorData.error || "Login failed");
         }
-        const data = await res.json();
+        const data = res.data;
         localStorage.setItem("jwt", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         window.location.href = createPageUrl("Home");
@@ -282,12 +282,12 @@ export default function StudentAuth() {
         }
       );
 
-      if (!res.ok) {
-        const errorData = await res.json();
+      if (!(res.status === 200 || res.status === 201)) {
+        const errorData = res.data;
         throw new Error(errorData.error || "Registration failed");
       }
 
-      const data = await res.json();
+      const data = res.data;
       localStorage.setItem("jwt", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 

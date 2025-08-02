@@ -35,7 +35,7 @@ export default function ProfileView() {
       .get("/api/user/profile", {
         headers: { Authorization: `Bearer ${jwt}` },
       })
-      .then((res) => res.json())
+      .then((res) => res.data)
       .then((data) => {
         if (data.user) {
           setProfile(data.user);

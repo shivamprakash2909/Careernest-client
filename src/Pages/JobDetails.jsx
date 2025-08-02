@@ -42,7 +42,7 @@ export default function JobDetails() {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
+      const data = response.data;
       // Map company_name to company if needed
       if (data.company_name && !data.company) {
         data.company = data.company_name;

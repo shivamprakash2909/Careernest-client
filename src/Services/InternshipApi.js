@@ -21,7 +21,7 @@ export async function fetchInternshipsFromAPI() {
       throw new Error(`Failed to fetch internships: ${response.status} - ${errorText}`);
     }
 
-    const data = await response.json();
+    const data = response.data;
     console.log("Internship API response:", data);
     return data;
   } catch (error) {
@@ -58,7 +58,7 @@ export async function fetchInternships(filters = {}) {
       throw new Error("Failed to fetch internships");
     }
 
-    return await response.json();
+    return response.data;
   } catch (error) {
     console.error("Error fetching internships:", error);
     throw error;
@@ -80,7 +80,7 @@ export async function createInternship(internshipData) {
       throw new Error("Failed to create internship");
     }
 
-    return await response.json();
+    return response.data;
   } catch (error) {
     console.error("Error creating internship:", error);
     throw error;
@@ -102,7 +102,7 @@ export async function updateInternship(internshipId, updateData) {
       throw new Error("Failed to update internship");
     }
 
-    return await response.json();
+    return response.data;
   } catch (error) {
     console.error("Error updating internship:", error);
     throw error;
@@ -124,7 +124,7 @@ export async function deleteInternship(internshipId) {
       throw new Error("Failed to delete internship");
     }
 
-    return await response.json();
+    return response.data;
   } catch (error) {
     console.error("Error deleting internship:", error);
     throw error;
@@ -144,5 +144,5 @@ export async function updateInternshipStatus(entityId, status) {
       },
     }
   );
-  return response.json();
+  return response.data;
 }

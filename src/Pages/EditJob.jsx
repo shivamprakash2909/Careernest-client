@@ -34,7 +34,7 @@ export default function EditJob() {
       const response = await axiosInstance.get(`/api/jobs/${jobId}`, {
         headers: { "Content-Type": "application/json" },
       });
-      const data = await response.json();
+      const data = response.data;
       setForm(data);
     } catch (error) {
       console.error("Error loading job:", error);

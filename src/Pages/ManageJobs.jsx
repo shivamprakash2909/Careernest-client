@@ -41,7 +41,7 @@ export default function ManageJobs() {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      const data = await response.json();
+      const data = response.data;
       setJobs(data);
     } catch (error) {
       console.error("Error loading jobs:", error);
@@ -64,11 +64,11 @@ export default function ManageJobs() {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      if (res.ok) {
+      if (res.status === 200 || res.status === 201) {
         setJobs((prev) => prev.filter((job) => job._id !== jobId));
         showSuccess("Job deleted successfully");
       } else {
-        const err = await res.json();
+        const err = res.data;
         showError(err.error || "Failed to delete job.");
       }
     } catch (error) {

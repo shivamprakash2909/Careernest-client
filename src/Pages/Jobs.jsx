@@ -39,7 +39,7 @@ export default function Jobs() {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
+      const data = response.data;
 
       // Check if user is a recruiter
       const user = JSON.parse(localStorage.getItem("user") || "{}");

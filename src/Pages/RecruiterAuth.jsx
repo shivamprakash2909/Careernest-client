@@ -109,8 +109,8 @@ export default function RecruiterAuth() {
           headers: { "Content-Type": "application/json" },
         }
       );
-      const data = await res.json();
-      if (!res.ok) {
+      const data = res.data;
+      if (!(res.status === 200 || res.status === 201)) {
         setError(data.error || "Google login failed");
         return;
       }
@@ -154,12 +154,12 @@ export default function RecruiterAuth() {
           }
         );
 
-        if (!res.ok) {
-          const errorData = await res.json();
+        if (!(res.status === 200 || res.status === 201)) {
+          const errorData = res.data;
           throw new Error(errorData.error || "Login failed");
         }
 
-        const data = await res.json();
+        const data = res.data;
         localStorage.setItem("jwt", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
       } else {
@@ -249,12 +249,12 @@ export default function RecruiterAuth() {
         }
       );
 
-      if (!res.ok) {
-        const errorData = await res.json();
+      if (!(res.status === 200 || res.status === 201)) {
+        const errorData = res.data;
         throw new Error(errorData.error || "Registration failed");
       }
 
-      const data = await res.json();
+      const data = res.data;
 
       // On success, switch to sign-in mode and show a success message
       setIsLogin(true);

@@ -30,7 +30,7 @@ export default function StudentDashboard() {
       .get(`/api/user/profile`, {
         headers: { Authorization: `Bearer ${jwt}` },
       })
-      .then((res) => res.json())
+      .then((res) => res.data)
       .then((data) => {
         if (data.user) setProfile(data.user);
         else setError("Failed to load profile");
@@ -49,7 +49,7 @@ export default function StudentDashboard() {
           },
         }
       );
-      const data = await response.json();
+      const data = response.data;
       const internshipJobs = data.filter((job) => job.job_type === "Internship");
       setInternships(internshipJobs);
     } catch (error) {

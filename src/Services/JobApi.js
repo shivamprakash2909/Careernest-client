@@ -21,7 +21,7 @@ class JobApi {
         throw new Error("Failed to create job");
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error("Error creating job:", error);
       throw error;
@@ -55,7 +55,7 @@ class JobApi {
         throw new Error("Failed to fetch jobs");
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error("Error fetching jobs:", error);
       throw error;
@@ -82,7 +82,7 @@ class JobApi {
         throw new Error("Failed to fetch job");
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error("Error fetching job:", error);
       throw error;
@@ -107,7 +107,7 @@ class JobApi {
         throw new Error("Failed to update job");
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error("Error updating job:", error);
       throw error;
@@ -132,7 +132,7 @@ class JobApi {
         throw new Error("Failed to delete job");
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error("Error deleting job:", error);
       throw error;

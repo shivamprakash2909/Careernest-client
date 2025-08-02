@@ -36,7 +36,7 @@ export default function EditInternship() {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      const data = await response.json();
+      const data = response.data;
       setForm(data);
     } catch (error) {
       console.error("Error loading internship:", error);

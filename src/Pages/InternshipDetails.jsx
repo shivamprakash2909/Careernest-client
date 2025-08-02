@@ -53,7 +53,7 @@ export default function InternshipDetails() {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
+      const data = response.data;
       console.log("Loaded internship:", data);
       setInternship(data);
     } catch (error) {

@@ -35,10 +35,10 @@ export default function SettingsPage() {
       })
       .then((res) => {
         console.log("Password status response:", res.status);
-        if (!res.ok) {
+        if (!(res.status === 200 || res.status === 201)) {
           throw new Error(`HTTP ${res.status}: ${res.statusText}`);
         }
-        return res.json();
+        return res.data;
       })
       .then((data) => {
         console.log("Password status data:", data);
@@ -90,8 +90,8 @@ export default function SettingsPage() {
             },
           }
         );
-        if (!res.ok) {
-          const err = await res.json();
+        if (!(res.status === 200 || res.status === 201)) {
+          const err = res.data;
           setPasswordStatus(err.error || "Failed to set password.");
           return;
         }
@@ -131,8 +131,8 @@ export default function SettingsPage() {
             },
           }
         );
-        if (!res.ok) {
-          const err = await res.json();
+        if (!(res.status === 200 || res.status === 201)) {
+          const err = res.data;
           setPasswordStatus(err.error || "Failed to update password.");
           return;
         }
@@ -156,8 +156,8 @@ export default function SettingsPage() {
         },
       });
 
-      if (!res.ok) {
-        const err = await res.json();
+      if (!(res.status === 200 || res.status === 201)) {
+        const err = res.data;
         showError(err.error || "Failed to delete account. Please try again.");
         setShowDeleteConfirm(false);
         return;
@@ -195,12 +195,12 @@ export default function SettingsPage() {
           },
         }
       );
-      if (!res.ok) {
-        const err = await res.json();
+      if (!(res.status === 200 || res.status === 201)) {
+        const err = res.data;
         setNameStatus(err.error || "Failed to update name.");
         return;
       }
-      const data = await res.json();
+      const data = res.data;
       // Update localStorage user
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       user.name = data.user.name;

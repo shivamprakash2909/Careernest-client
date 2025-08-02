@@ -21,7 +21,7 @@ class UserApi {
         throw new Error("Failed to fetch user profile");
       }
 
-      const data = await response.json();
+      const data = response.data;
       return data.user; // Extract user from the response
     } catch (error) {
       console.error("Error fetching user profile:", error);
@@ -52,7 +52,7 @@ class UserApi {
         throw new Error("Failed to update user profile");
       }
 
-      return await response.json();
+      return response.data;
     } catch (error) {
       console.error("Error updating user profile:", error);
       throw error;

@@ -52,7 +52,7 @@ export default function UpdateProfile() {
       .get(`/api/user/profile`, {
         headers: { Authorization: `Bearer ${jwt}` },
       })
-      .then((res) => res.json())
+      .then((res) => res.data)
       .then((data) => {
         if (data.user) {
           setProfile({ ...profile, ...data.user });
@@ -150,8 +150,8 @@ export default function UpdateProfile() {
           Authorization: `Bearer ${jwt}`,
         },
       });
-      if (!res.ok) {
-        const err = await res.json();
+      if (!(res.status === 200 || res.status === 201)) {
+        const err = res.data;
         setError(err.error || "Profile update failed");
         return;
       }

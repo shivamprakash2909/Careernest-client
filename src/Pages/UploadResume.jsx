@@ -52,7 +52,7 @@ export default function UploadResume() {
     // try {
     //   const res = await axiosInstance.post("/api/upload-resume", formData,{
     //   });
-    //   const data = await res.json();
+    //   const data = res.data ;
     //   console.log("Server response:", data);
     //   setStatus("success");
     // } catch (err) {
