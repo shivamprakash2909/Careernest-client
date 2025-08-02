@@ -17,7 +17,7 @@ class UserApi {
         },
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         throw new Error("Failed to fetch user profile");
       }
 
@@ -48,7 +48,7 @@ class UserApi {
         },
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         throw new Error("Failed to update user profile");
       }
 

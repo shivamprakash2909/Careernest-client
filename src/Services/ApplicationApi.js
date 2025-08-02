@@ -34,7 +34,7 @@ const ApplicationApi = {
 
       console.log("Response status:", response.status);
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         const errorText = await response.text();
         console.error("API Error:", errorText);
         throw new Error(`Failed to fetch applications: ${response.status} - ${errorText}`);
@@ -70,7 +70,7 @@ const ApplicationApi = {
 
       console.log("Create response status:", response.status);
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         const errorText = await response.text();
         console.error("Create API Error:", errorText);
         throw new Error(`Failed to create application: ${response.status} - ${errorText}`);
@@ -107,7 +107,7 @@ const ApplicationApi = {
         headers: requestHeaders,
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         const errorText = await response.text();
         throw new Error(`Failed to update application: ${response.status} - ${errorText}`);
       }

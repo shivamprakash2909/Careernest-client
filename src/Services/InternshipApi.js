@@ -15,7 +15,7 @@ export async function fetchInternshipsFromAPI() {
 
     console.log("Internship API response status:", response.status);
 
-    if (!response.ok) {
+    if (!(response.status === 200 || response.status === 201)) {
       const errorText = await response.text();
       console.error("Internship API Error:", errorText);
       throw new Error(`Failed to fetch internships: ${response.status} - ${errorText}`);
@@ -54,7 +54,7 @@ export async function fetchInternships(filters = {}) {
       headers,
     });
 
-    if (!response.ok) {
+    if (!(response.status === 200 || response.status === 201)) {
       throw new Error("Failed to fetch internships");
     }
 
@@ -76,7 +76,7 @@ export async function createInternship(internshipData) {
       },
     });
 
-    if (!response.ok) {
+    if (!(response.status === 200 || response.status === 201)) {
       throw new Error("Failed to create internship");
     }
 
@@ -98,7 +98,7 @@ export async function updateInternship(internshipId, updateData) {
       },
     });
 
-    if (!response.ok) {
+    if (!(response.status === 200 || response.status === 201)) {
       throw new Error("Failed to update internship");
     }
 
@@ -120,7 +120,7 @@ export async function deleteInternship(internshipId) {
       },
     });
 
-    if (!response.ok) {
+    if (!(response.status === 200 || response.status === 201)) {
       throw new Error("Failed to delete internship");
     }
 

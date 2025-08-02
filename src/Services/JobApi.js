@@ -17,7 +17,7 @@ class JobApi {
         },
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         throw new Error("Failed to create job");
       }
 
@@ -51,7 +51,7 @@ class JobApi {
         headers,
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         throw new Error("Failed to fetch jobs");
       }
 
@@ -78,7 +78,7 @@ class JobApi {
         headers,
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         throw new Error("Failed to fetch job");
       }
 
@@ -103,7 +103,7 @@ class JobApi {
         },
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         throw new Error("Failed to update job");
       }
 
@@ -128,7 +128,7 @@ class JobApi {
         },
       });
 
-      if (!response.ok) {
+      if (!(response.status === 200 || response.status === 201)) {
         throw new Error("Failed to delete job");
       }
 
