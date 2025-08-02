@@ -3,6 +3,7 @@ import LoadingSpinner from "../components/common/LoadingSpinner";
 import JobCard from "../components/jobs/JobCard";
 import Chatbot from "../components/Chatbot";
 import { axiosInstance } from "@/lib/axios";
+import axios from "axios";
 
 export default function StudentDashboard() {
   const [internships, setInternships] = useState([]);
@@ -40,15 +41,12 @@ export default function StudentDashboard() {
 
   const loadInternships = async () => {
     try {
-      const response = await axiosInstance.get(
-        "https://app.base44.com/api/apps/687508e8c02e10285e949016/entities/Job",
-        {
-          headers: {
-            api_key: "fc6a61ef692346c9b3d1d0749378bd8e",
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.get("https://app.base44.com/api/apps/687508e8c02e10285e949016/entities/Job", {
+        headers: {
+          api_key: "fc6a61ef692346c9b3d1d0749378bd8e",
+          "Content-Type": "application/json",
+        },
+      });
       const data = response.data;
       const internshipJobs = data.filter((job) => job.job_type === "Internship");
       setInternships(internshipJobs);
