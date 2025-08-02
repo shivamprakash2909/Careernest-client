@@ -4,6 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/components/common/ToastContext";
+import { axiosInstance } from "@/lib/axios";
 
 const locations = ["Noida", "Delhi", "Pune", "Mumbai", "Bangalore", "Hyderabad"];
 const durations = ["1 month", "2 months", "3 months", "6 months", "1 year"];
@@ -29,7 +30,7 @@ export default function EditInternship() {
     setIsLoading(true);
     try {
       const jwt = localStorage.getItem("jwt");
-      const response = await fetch(`/api/jobs/internships/${internshipId}`, {
+      const response = await axiosInstance.get(`/api/jobs/internships/${internshipId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
@@ -58,13 +59,11 @@ export default function EditInternship() {
     e.preventDefault();
     try {
       const jwt = localStorage.getItem("jwt");
-      await fetch(`/api/jobs/internships/${internshipId}`, {
-        method: "PUT",
+      await axiosInstance.put(`/api/jobs/internships/${internshipId}`, form, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
         },
-        body: JSON.stringify(form),
       });
       setSuccess(true);
       setTimeout(() => navigate("/p/manage-internships"), 1200);

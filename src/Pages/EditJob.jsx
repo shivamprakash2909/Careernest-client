@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useNavigate, useParams } from "react-router-dom";
 import { useToast } from "@/components/common/ToastContext";
+import { axiosInstance } from "@/lib/axios";
 
 const locations = ["Noida", "Delhi", "Pune", "Mumbai", "Bangalore", "Hyderabad"];
 const jobTypes = ["Full-time", "Part-time", "Contract", "Internship"];
@@ -30,7 +31,7 @@ export default function EditJob() {
   const loadJob = async (jobId) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/jobs/${jobId}`, {
+      const response = await axiosInstance.get(`/api/jobs/${jobId}`, {
         headers: { "Content-Type": "application/json" },
       });
       const data = await response.json();
@@ -56,13 +57,11 @@ export default function EditJob() {
     e.preventDefault();
     try {
       const jwt = localStorage.getItem("jwt");
-      await fetch(`/api/jobs/${jobId}`, {
-        method: "PUT",
+      await axiosInstance.put(`/api/jobs/${jobId}`, form, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
         },
-        body: JSON.stringify(form),
       });
       setSuccess(true);
       setTimeout(() => navigate("/p/manage-jobs"), 1200);

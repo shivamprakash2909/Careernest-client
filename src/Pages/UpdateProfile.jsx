@@ -3,6 +3,7 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "../components/ui/select";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "@/lib/axios";
 
 export default function UpdateProfile() {
   const [profile, setProfile] = useState({
@@ -47,10 +48,10 @@ export default function UpdateProfile() {
     // Load user data from backend
     const jwt = localStorage.getItem("jwt");
     if (!jwt) return;
-    fetch(`${import.meta.env.VITE_BACKEND_URL || ""}/api/user/profile`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${jwt}` },
-    })
+    axiosInstance
+      .get(`/api/user/profile`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
       .then((res) => res.json())
       .then((data) => {
         if (data.user) {
@@ -143,13 +144,11 @@ export default function UpdateProfile() {
 
   async function sendUpdate(updateData, jwt) {
     try {
-      const res = await fetch(`${import.meta.env.VITE_BACKEND_URL || ""}/api/user/profile`, {
-        method: "PATCH",
+      const res = await axiosInstance.patch(`/api/user/profile`, updateData, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
         },
-        body: JSON.stringify(updateData),
       });
       if (!res.ok) {
         const err = await res.json();

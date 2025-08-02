@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import JobDetailsModal from "../components/jobs/JobDetailsModal";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/common/ToastContext";
+import { axiosInstance } from "@/lib/axios";
 
 export default function ManageJobs() {
   const [jobs, setJobs] = useState([]);
@@ -34,7 +35,7 @@ export default function ManageJobs() {
     setIsLoading(true);
     try {
       const jwt = localStorage.getItem("jwt");
-      const response = await fetch(`/api/jobs?posted_by=${encodeURIComponent(email)}`, {
+      const response = await axiosInstance.get(`/api/jobs?posted_by=${encodeURIComponent(email)}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
@@ -57,8 +58,7 @@ export default function ManageJobs() {
     }
     try {
       const jwt = localStorage.getItem("jwt");
-      const res = await fetch(`/api/jobs/${jobId}`, {
-        method: "DELETE",
+      const res = await axiosInstance.delete(`/api/jobs/${jobId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,

@@ -18,6 +18,7 @@ import {
 import { createPageUrl } from "../components/utils";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import InternshipApplicationForm from "../components/jobs/InternshipApplicationForm";
+import { axiosInstance } from "@/lib/axios";
 
 export default function InternshipDetails() {
   const { internshipId } = useParams();
@@ -47,7 +48,7 @@ export default function InternshipDetails() {
 
   const loadInternship = async (id) => {
     try {
-      const response = await fetch(`/api/jobs/internships/${id}`, {
+      const response = await axiosInstance.get(`/api/jobs/internships/${id}`, {
         headers: {
           "Content-Type": "application/json",
         },

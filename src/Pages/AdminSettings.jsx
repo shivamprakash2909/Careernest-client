@@ -4,21 +4,21 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertCircle, CheckCircle, ArrowLeft } from "lucide-react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { axiosInstance } from "@/lib/axios";
 
 export default function AdminSettings() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-  
+
   // Password change form
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
     newPassword: "",
-    confirmPassword: ""
+    confirmPassword: "",
   });
-  
+
   const navigate = useNavigate();
 
   const handlePasswordChange = async (e) => {
@@ -42,20 +42,24 @@ export default function AdminSettings() {
 
     try {
       const adminToken = localStorage.getItem("admin-token");
-      await axios.put("/api/admin/change-password", {
-        currentPassword: passwordForm.currentPassword,
-        newPassword: passwordForm.newPassword,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${adminToken}`
+      await axiosInstance.put(
+        "/api/admin/change-password",
+        {
+          currentPassword: passwordForm.currentPassword,
+          newPassword: passwordForm.newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
         }
-      });
+      );
 
       setSuccess("Password changed successfully!");
       setPasswordForm({
         currentPassword: "",
         newPassword: "",
-        confirmPassword: ""
+        confirmPassword: "",
       });
       setTimeout(() => setSuccess(""), 3000);
     } catch (error) {
@@ -175,4 +179,4 @@ export default function AdminSettings() {
       </main>
     </div>
   );
-} 
+}

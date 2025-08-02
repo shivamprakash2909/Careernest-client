@@ -7,6 +7,7 @@ import { MapPin, IndianRupee, Clock, Building, Users, CheckCircle, ArrowLeft } f
 import { createPageUrl } from "../components/utils";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import ApplicationForm from "../components/jobs/ApplicationForm";
+import { axiosInstance } from "@/lib/axios";
 
 export default function JobDetails() {
   const { jobId } = useParams();
@@ -36,7 +37,7 @@ export default function JobDetails() {
 
   const loadJob = async (id) => {
     try {
-      const response = await fetch(`/api/jobs/${id}`, {
+      const response = await axiosInstance.get(`/api/jobs/${id}`, {
         headers: {
           "Content-Type": "application/json",
         },

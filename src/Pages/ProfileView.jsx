@@ -17,6 +17,7 @@ import {
   Briefcase,
   Globe as GlobeIcon,
 } from "lucide-react";
+import { axiosInstance } from "@/lib/axios";
 
 export default function ProfileView() {
   const [profile, setProfile] = useState(null);
@@ -30,10 +31,10 @@ export default function ProfileView() {
       setError("Not authenticated");
       return;
     }
-    fetch(`${import.meta.env.VITE_BACKEND_URL || ""}/api/user/profile`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${jwt}` },
-    })
+    axiosInstance
+      .get("/api/user/profile", {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
       .then((res) => res.json())
       .then((data) => {
         if (data.user) {

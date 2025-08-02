@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowLeft, Eye, EyeOff, AlertCircle, Mail, Phone, CheckCircle } from "lucide-react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useToast } from "@/components/common/ToastContext";
+import { axiosInstance } from "@/lib/axios";
 
 export default function RecruiterAuth() {
   const navigate = useNavigate();
@@ -95,17 +96,19 @@ export default function RecruiterAuth() {
       [name]: value,
     });
   };
-  const backendURL = import.meta.env.VITE_BACKEND_URL || "";
+  const backendURL = import.meta.env.VITE_BASE_URL || "";
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     setIsLoading(true);
     setError("");
     try {
       // Send credential to backend and get JWT
-      const res = await fetch(`${backendURL}/api/auth/google`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ credential: credentialResponse.credential, user_type: "recruiter" }),
-      });
+      const res = await axiosInstance.post(
+        `${backendURL}/api/auth/google`,
+        { credential: credentialResponse.credential, user_type: "recruiter" },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       const data = await res.json();
       if (!res.ok) {
         setError(data.error || "Google login failed");
@@ -143,11 +146,13 @@ export default function RecruiterAuth() {
         }
 
         // Call backend API for email login
-        const res = await fetch(`${backendURL}/api/auth/recruiter/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: formData.email, password: formData.password }),
-        });
+        const res = await axiosInstance.post(
+          `/api/auth/recruiter/login`,
+          { email: formData.email, password: formData.password },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
 
         if (!res.ok) {
           const errorData = await res.json();
@@ -224,10 +229,9 @@ export default function RecruiterAuth() {
       }
 
       // Call backend API for recruiter registration
-      const res = await fetch(`${backendURL}/api/auth/recruiter/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const res = await axiosInstance.post(
+        `/api/auth/recruiter/register`,
+        {
           full_name: formData.full_name,
           email: formData.email,
           phone: formData.phone,
@@ -239,8 +243,11 @@ export default function RecruiterAuth() {
           job_title: formData.job_title,
           company_website: formData.company_website,
           company_description: formData.company_description,
-        }),
-      });
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();

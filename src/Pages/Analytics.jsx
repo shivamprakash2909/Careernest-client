@@ -8,7 +8,6 @@
 import React, { useEffect, useState } from "react";
 import { Card } from "../components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
-// import axios from "axios";
 import { ArrowLeft } from "lucide-react";
 
 const COLORS = ["#2563eb", "#22c55e", "#f59e42"];
@@ -58,7 +57,7 @@ export default function Analytics() {
   //     const jwt = localStorage.getItem("jwt");
   //     // Call the backend API to get analytics data for the recruiter
   //     // Endpoint: /api/recruiter/analytics (see top of file for expected response)
-  //     const res = await axios.get("/api/recruiter/analytics", {
+  //     const res = await axiosInstance.get("/api/recruiter/analytics", {
   //       headers: { Authorization: `Bearer ${jwt}` },
   //     });
   //     setStats(res.data.stats);

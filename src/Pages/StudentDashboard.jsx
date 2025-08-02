@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import JobCard from "../components/jobs/JobCard";
 import Chatbot from "../components/Chatbot";
+import { axiosInstance } from "@/lib/axios";
 
 export default function StudentDashboard() {
   const [internships, setInternships] = useState([]);
@@ -25,10 +26,10 @@ export default function StudentDashboard() {
     loadInternships();
     const jwt = localStorage.getItem("jwt");
     if (!jwt) return;
-    fetch(`${import.meta.env.VITE_BACKEND_URL || ""}/api/user/profile`, {
-      method: "GET",
-      headers: { Authorization: `Bearer ${jwt}` },
-    })
+    axiosInstance
+      .get(`/api/user/profile`, {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
       .then((res) => res.json())
       .then((data) => {
         if (data.user) setProfile(data.user);
@@ -39,12 +40,15 @@ export default function StudentDashboard() {
 
   const loadInternships = async () => {
     try {
-      const response = await fetch("https://app.base44.com/api/apps/687508e8c02e10285e949016/entities/Job", {
-        headers: {
-          api_key: "fc6a61ef692346c9b3d1d0749378bd8e",
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axiosInstance.get(
+        "https://app.base44.com/api/apps/687508e8c02e10285e949016/entities/Job",
+        {
+          headers: {
+            api_key: "fc6a61ef692346c9b3d1d0749378bd8e",
+            "Content-Type": "application/json",
+          },
+        }
+      );
       const data = await response.json();
       const internshipJobs = data.filter((job) => job.job_type === "Internship");
       setInternships(internshipJobs);

@@ -1,16 +1,10 @@
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AlertCircle, CheckCircle, Eye, EyeOff } from "lucide-react";
-import axios from "axios";
+import { axiosInstance } from "@/lib/axios";
 
 export default function ChangePasswordModal({ isOpen, onOpenChange, onSuccess }) {
   const [formData, setFormData] = useState({
@@ -27,9 +21,9 @@ export default function ChangePasswordModal({ isOpen, onOpenChange, onSuccess })
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
     setError("");
     setSuccess("");
@@ -56,14 +50,18 @@ export default function ChangePasswordModal({ isOpen, onOpenChange, onSuccess })
 
     try {
       const adminToken = localStorage.getItem("admin-token");
-      const response = await axios.put("/api/admin/change-password", {
-        currentPassword: formData.currentPassword,
-        newPassword: formData.newPassword,
-      }, {
-        headers: {
-          'Authorization': `Bearer ${adminToken}`
+      const response = await axiosInstance.put(
+        "/api/admin/change-password",
+        {
+          currentPassword: formData.currentPassword,
+          newPassword: formData.newPassword,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${adminToken}`,
+          },
         }
-      });
+      );
 
       setSuccess("Password changed successfully!");
       setFormData({
@@ -71,19 +69,15 @@ export default function ChangePasswordModal({ isOpen, onOpenChange, onSuccess })
         newPassword: "",
         confirmPassword: "",
       });
-      
+
       // Close modal after 2 seconds
       setTimeout(() => {
         onOpenChange(false);
         if (onSuccess) onSuccess();
       }, 2000);
-
     } catch (error) {
       console.error("Password change error:", error);
-      setError(
-        error.response?.data?.error || 
-        "Failed to change password. Please try again."
-      );
+      setError(error.response?.data?.error || "Failed to change password. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -105,9 +99,7 @@ export default function ChangePasswordModal({ isOpen, onOpenChange, onSuccess })
       <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle>Change Admin Password</DialogTitle>
-          <DialogDescription>
-            Enter your current password and choose a new password.
-          </DialogDescription>
+          <DialogDescription>Enter your current password and choose a new password.</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -198,20 +190,10 @@ export default function ChangePasswordModal({ isOpen, onOpenChange, onSuccess })
 
           {/* Action Buttons */}
           <div className="flex gap-3 pt-4">
-            <Button
-              type="button"
-              variant="outline"
-              onClick={handleClose}
-              disabled={isLoading}
-              className="flex-1"
-            >
+            <Button type="button" variant="outline" onClick={handleClose} disabled={isLoading} className="flex-1">
               Cancel
             </Button>
-            <Button
-              type="submit"
-              disabled={isLoading}
-              className="flex-1"
-            >
+            <Button type="submit" disabled={isLoading} className="flex-1">
               {isLoading ? "Changing..." : "Change Password"}
             </Button>
           </div>
@@ -219,4 +201,4 @@ export default function ChangePasswordModal({ isOpen, onOpenChange, onSuccess })
       </DialogContent>
     </Dialog>
   );
-} 
+}

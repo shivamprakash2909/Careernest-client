@@ -4,9 +4,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import { ArrowLeft } from "lucide-react";
 import { useToast } from "@/components/common/ToastContext";
+import { axiosInstance } from "@/lib/axios";
 
 const locations = ["Noida", "Delhi", "Pune", "Mumbai", "Bangalore", "Hyderabad"];
 
@@ -84,7 +84,7 @@ export default function PostInternship() {
     try {
       console.log("Payload being sent:", payload);
       const jwt = localStorage.getItem("jwt");
-      const response = await axios.post("/api/internships/create", payload, {
+      const response = await axiosInstance.post("/api/internships/create", payload, {
         headers: {
           Authorization: `Bearer ${jwt}`,
           "Content-Type": "application/json",

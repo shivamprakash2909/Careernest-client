@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Loader2, Briefcase, AlertCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { axiosInstance } from "@/lib/axios";
 
 export default function AdminAuth({ onLogin }) {
   const [email, setEmail] = useState("");
@@ -20,13 +20,13 @@ export default function AdminAuth({ onLogin }) {
     setError("");
 
     try {
-      const response = await axios.post("/api/admin/login", {
+      const response = await axiosInstance.post("/api/admin/login", {
         email,
         password,
       });
 
       const { token, admin } = response.data;
-      
+
       // Store admin token and data
       localStorage.setItem("admin-token", token);
       localStorage.setItem("admin-data", JSON.stringify(admin));
@@ -36,10 +36,7 @@ export default function AdminAuth({ onLogin }) {
       navigate("/p/adminpage");
     } catch (error) {
       console.error("Admin login error:", error);
-      setError(
-        error.response?.data?.error || 
-        "Login failed. Please check your credentials."
-      );
+      setError(error.response?.data?.error || "Login failed. Please check your credentials.");
     } finally {
       setIsLoading(false);
     }
@@ -49,7 +46,7 @@ export default function AdminAuth({ onLogin }) {
   useEffect(() => {
     const adminToken = localStorage.getItem("admin-token");
     const adminAuth = localStorage.getItem("admin-auth");
-    
+
     if (adminToken && adminAuth === "true") {
       if (onLogin) onLogin();
       navigate("/p/adminpage");
@@ -98,11 +95,7 @@ export default function AdminAuth({ onLogin }) {
                 {error}
               </div>
             )}
-            <Button 
-              type="submit" 
-              className="w-full bg-indigo-600 hover:bg-indigo-700" 
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               Login
             </Button>

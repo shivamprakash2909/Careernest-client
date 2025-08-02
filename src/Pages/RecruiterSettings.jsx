@@ -2,6 +2,7 @@ import { Input } from "../components/ui/input";
 import { Button } from "../components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { useToast } from "@/components/common/ToastContext";
+import { axiosInstance } from "@/lib/axios";
 
 export default function RecruiterSettings() {
   const { showError } = useToast();
@@ -20,9 +21,10 @@ export default function RecruiterSettings() {
     // Detect if recruiter is a Google user (no password set)
     const jwt = localStorage.getItem("jwt");
     if (!jwt) return;
-    fetch("/api/user/password-status", {
-      headers: { Authorization: `Bearer ${jwt}` },
-    })
+    axiosInstance
+      .get("/api/user/password-status", {
+        headers: { Authorization: `Bearer ${jwt}` },
+      })
       .then((res) => res.json())
       .then((data) => {
         if (data.hasPassword === false) {
@@ -60,14 +62,16 @@ export default function RecruiterSettings() {
       }
       try {
         const jwt = localStorage.getItem("jwt");
-        const res = await fetch("/api/user/password", {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
-          body: JSON.stringify({ newPassword }),
-        });
+        const res = await axiosInstance.patch(
+          "/api/user/password",
+          { newPassword },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
         if (!res.ok) {
           const err = await res.json();
           setPasswordStatus(err.error || "Failed to set password.");
@@ -98,14 +102,16 @@ export default function RecruiterSettings() {
       }
       try {
         const jwt = localStorage.getItem("jwt");
-        const res = await fetch("/api/user/password", {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${jwt}`,
-          },
-          body: JSON.stringify({ oldPassword, newPassword }),
-        });
+        const res = await axiosInstance.patch(
+          "/api/user/password",
+          { oldPassword, newPassword },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${jwt}`,
+            },
+          }
+        );
         if (!res.ok) {
           const err = await res.json();
           setPasswordStatus(err.error || "Failed to update password.");
@@ -124,8 +130,7 @@ export default function RecruiterSettings() {
   const handleDeleteAccount = async () => {
     try {
       const jwt = localStorage.getItem("jwt");
-      const res = await fetch("/api/user/account", {
-        method: "DELETE",
+      const res = await axiosInstance.delete("/api/user/account", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${jwt}`,
@@ -156,14 +161,16 @@ export default function RecruiterSettings() {
     }
     try {
       const jwt = localStorage.getItem("jwt");
-      const res = await fetch("/api/user/profile", {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${jwt}`,
-        },
-        body: JSON.stringify({ name }),
-      });
+      const res = await axiosInstance.patch(
+        "/api/user/profile",
+        { name },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwt}`,
+          },
+        }
+      );
       if (!res.ok) {
         const err = await res.json();
         setNameStatus(err.error || "Failed to update name.");

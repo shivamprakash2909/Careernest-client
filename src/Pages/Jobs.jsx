@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Search, MapPin, Briefcase, Clock, IndianRupee, Filter, Building, GraduationCap, Calendar } from "lucide-react";
 import JobCard from "../components/jobs/JobCard";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import { axiosInstance } from "@/lib/axios";
 
 export default function Jobs() {
   const [jobs, setJobs] = useState([]);
@@ -33,7 +34,7 @@ export default function Jobs() {
 
   const loadJobs = async () => {
     try {
-      const response = await fetch("/api/jobs", {
+      const response = await axiosInstance.get("/api/jobs", {
         headers: {
           "Content-Type": "application/json",
         },

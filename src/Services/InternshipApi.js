@@ -1,24 +1,26 @@
+import { axiosInstance } from "@/lib/axios";
+
 export async function fetchInternshipsFromAPI() {
   try {
     const adminToken = localStorage.getItem("admin-token");
     console.log("Fetching internships with admin token:", adminToken);
-    
-    const response = await fetch("/api/jobs/internships", {
+
+    const response = await axiosInstance.get("/api/jobs/internships", {
       headers: {
         "Content-Type": "application/json",
         "x-admin-auth": "true",
-        Authorization: `Bearer ${adminToken || 'dummy-token'}`,
+        Authorization: `Bearer ${adminToken || "dummy-token"}`,
       },
     });
-    
+
     console.log("Internship API response status:", response.status);
-    
+
     if (!response.ok) {
       const errorText = await response.text();
       console.error("Internship API Error:", errorText);
       throw new Error(`Failed to fetch internships: ${response.status} - ${errorText}`);
     }
-    
+
     const data = await response.json();
     console.log("Internship API response:", data);
     return data;
@@ -48,8 +50,7 @@ export async function fetchInternships(filters = {}) {
       headers["Authorization"] = `Bearer ${jwt}`;
     }
 
-    const response = await fetch(`/api/jobs/internships?${queryParams}`, {
-      method: "GET",
+    const response = await axiosInstance.get(`/api/jobs/internships?${queryParams}`, {
       headers,
     });
 
@@ -68,13 +69,11 @@ export async function fetchInternships(filters = {}) {
 export async function createInternship(internshipData) {
   try {
     const jwt = localStorage.getItem("jwt");
-    const response = await fetch("/api/jobs", {
-      method: "POST",
+    const response = await axiosInstance.post("/api/jobs", internshipData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
       },
-      body: JSON.stringify(internshipData),
     });
 
     if (!response.ok) {
@@ -92,13 +91,11 @@ export async function createInternship(internshipData) {
 export async function updateInternship(internshipId, updateData) {
   try {
     const jwt = localStorage.getItem("jwt");
-    const response = await fetch(`/api/jobs/internships/${internshipId}`, {
-      method: "PUT",
+    const response = await axiosInstance.put(`/api/jobs/internships/${internshipId}`, updateData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
       },
-      body: JSON.stringify(updateData),
     });
 
     if (!response.ok) {
@@ -116,8 +113,7 @@ export async function updateInternship(internshipId, updateData) {
 export async function deleteInternship(internshipId) {
   try {
     const jwt = localStorage.getItem("jwt");
-    const response = await fetch(`/api/jobs/internships/${internshipId}`, {
-      method: "DELETE",
+    const response = await axiosInstance.delete(`/api/jobs/internships/${internshipId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${jwt}`,
@@ -137,14 +133,16 @@ export async function deleteInternship(internshipId) {
 
 export async function updateInternshipStatus(entityId, status) {
   const adminToken = localStorage.getItem("admin-token");
-  const response = await fetch(`/api/jobs/internships/${entityId}`, {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      "x-admin-auth": "true",
-      Authorization: `Bearer ${adminToken}`,
-    },
-    body: JSON.stringify({ status }),
-  });
+  const response = await axiosInstance.put(
+    `/api/jobs/internships/${entityId}`,
+    { status },
+    {
+      headers: {
+        "Content-Type": "application/json",
+        "x-admin-auth": "true",
+        Authorization: `Bearer ${adminToken}`,
+      },
+    }
+  );
   return response.json();
 }

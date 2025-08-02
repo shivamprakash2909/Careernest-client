@@ -23,6 +23,7 @@ import {
 } from "lucide-react";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useToast } from "@/components/common/ToastContext";
+import { axiosInstance } from "@/lib/axios";
 
 export default function StudentAuth() {
   const { showSuccess } = useToast();
@@ -111,17 +112,19 @@ export default function StudentAuth() {
       [name]: value,
     });
   };
-  const backendURL = import.meta.env.VITE_BACKEND_URL || "";
+  const backendURL = import.meta.env.VITE_BASE_URL || "";
   const handleGoogleLoginSuccess = async (credentialResponse) => {
     setIsLoading(true);
     setError("");
     try {
       // Send credential to backend and get JWT
-      const res = await fetch(`${backendURL}/api/auth/google`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ credential: credentialResponse.credential, user_type: "student" }),
-      });
+      const res = await axiosInstance.post(
+        `${backendURL}/api/auth/google`,
+        { credential: credentialResponse.credential, user_type: "student" },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
       if (!res.ok) throw new Error("Google login failed");
       const data = await res.json();
       localStorage.setItem("jwt", data.token);
@@ -148,11 +151,13 @@ export default function StudentAuth() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    const res = await fetch("/api/auth/send-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: formData.phone }),
-    });
+    const res = await axiosInstance.post(
+      "/api/auth/send-otp",
+      { phone: formData.phone },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     const data = await res.json();
     if (data.success) {
       setOtpSent(true);
@@ -166,11 +171,13 @@ export default function StudentAuth() {
     e.preventDefault();
     setIsLoading(true);
     setError("");
-    const res = await fetch("/api/auth/verify-otp", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone: formData.phone, otp }),
-    });
+    const res = await axiosInstance.post(
+      "/api/auth/verify-otp",
+      { phone: formData.phone, otp },
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
     const data = await res.json();
     if (data.success) {
       localStorage.setItem("jwt", data.token);
@@ -193,11 +200,13 @@ export default function StudentAuth() {
           return;
         }
         // Call backend API for email login
-        const res = await fetch(`${backendURL}/api/auth/student/login`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: formData.email, password: formData.password }),
-        });
+        const res = await axiosInstance.post(
+          `/api/auth/student/login`,
+          { email: formData.email, password: formData.password },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
         if (!res.ok) {
           const errorData = await res.json();
           throw new Error(errorData.error || "Login failed");
@@ -253,10 +262,9 @@ export default function StudentAuth() {
       }
 
       // Call backend API for student registration
-      const res = await fetch(`${backendURL}/api/auth/student/register`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
+      const res = await axiosInstance.post(
+        `/api/auth/student/register`,
+        {
           full_name: formData.full_name,
           email: formData.email,
           phone: formData.phone,
@@ -268,8 +276,11 @@ export default function StudentAuth() {
           skills: formData.skills,
           experience: formData.experience,
           bio: formData.bio,
-        }),
-      });
+        },
+        {
+          headers: { "Content-Type": "application/json" },
+        }
+      );
 
       if (!res.ok) {
         const errorData = await res.json();

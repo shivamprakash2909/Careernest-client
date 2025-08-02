@@ -50,9 +50,7 @@ export default function UploadResume() {
     formData.append("resume", file);
 
     // try {
-    //   const res = await fetch("/api/upload-resume", {
-    //     method: "POST",
-    //     body: formData,
+    //   const res = await axiosInstance.post("/api/upload-resume", formData,{
     //   });
     //   const data = await res.json();
     //   console.log("Server response:", data);
