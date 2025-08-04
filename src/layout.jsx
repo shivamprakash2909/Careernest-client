@@ -160,7 +160,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="fixed inset-0" onClick={() => setMobileMenuOpen(false)} />
             {/* Mobile Menu */}
             <div
-              className="fixed top-0 left-0 h-full w-2/3 max-w-sm bg-white shadow-xl overflow-hidden"
+              className="fixed top-0 left-0 h-full w-3/4 max-w-sm bg-white shadow-xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               <div className="px-2 pt-2 pb-3 space-y-1">
@@ -212,7 +212,7 @@ export default function Layout({ children, currentPageName }) {
             <div className="fixed inset-0" onClick={() => setMobileMenuOpen(false)} />
             {/* Sidebar */}
             <div
-              className="fixed left-0 top-0 h-full w-2/3 max-w-sm bg-white shadow-xl overflow-hidden"
+              className="fixed left-0 top-0 h-full w-3/4 max-w-sm bg-white shadow-xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* User Profile Section */}

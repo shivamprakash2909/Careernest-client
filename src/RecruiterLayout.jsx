@@ -211,7 +211,7 @@ export default function RecruiterLayout({ children }) {
           <div className="fixed inset-0" onClick={() => setMobileMenuOpen(false)} />
           {/* Sidebar */}
           <div
-            className="fixed left-0 top-0 h-full w-3/4 max-w-sm bg-white shadow-xl overflow-hidden"
+            className="fixed left-0 top-0 h-full w-2/3 max-w-sm bg-white shadow-xl overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             {/* User Profile Section */}
