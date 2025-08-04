@@ -144,11 +144,14 @@ export default function App() {
           />
           {/* xww */}
           {/* Recruiterpage */}
-          <Route path="/p/recruiterhome"  element={
+          {/* <Route
+            path="/p/recruiterhome"
+            element={
               <Layout currentPageName="RecruiterHome">
                 <RecruiterHome />
               </Layout>
-            } />
+            }
+          /> */}
           <Route
             path="/p/studentauth"
             element={
