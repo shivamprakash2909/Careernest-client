@@ -63,7 +63,7 @@ export default function RecruiterAuth() {
     if (jwt && userData) {
       const user = JSON.parse(userData);
       if (user.role === "recruiter") {
-        navigate(createPageUrl("home"));
+        navigate(createPageUrl("/recruiterhome"));
       }
     }
   }, [navigate]);
@@ -125,7 +125,7 @@ export default function RecruiterAuth() {
       };
       localStorage.setItem("user", JSON.stringify(userData));
 
-      window.location.href = createPageUrl("home");
+      window.location.href = createPageUrl("/recruiterhome");
     } catch (error) {
       setError(error.message || "Google login failed. Please try again.");
       console.error("Google login error:", error);
@@ -182,7 +182,7 @@ export default function RecruiterAuth() {
         localStorage.setItem("jwt", "mock-jwt-token");
       }
 
-      window.location.href = createPageUrl("home");
+      window.location.href = createPageUrl("recruiterhome");
     } catch (error) {
       setError(
         error.message || loginMethod === "email" ? "Invalid email or password" : "Phone login failed. Please try again."
