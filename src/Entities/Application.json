@@ -1,0 +1,51 @@
+{
+  "name": "Application",
+  "type": "object",
+  "properties": {
+    "job_id": {
+      "type": "string",
+      "description": "ID of the job being applied to"
+    },
+    "applicant_email": {
+      "type": "string",
+      "description": "Email of the applicant"
+    },
+    "applicant_name": {
+      "type": "string",
+      "description": "Name of the applicant"
+    },
+    "resume_url": {
+      "type": "string",
+      "description": "URL to uploaded resume"
+    },
+    "cover_letter": {
+      "type": "string",
+      "description": "Cover letter text"
+    },
+    "phone": {
+      "type": "string",
+      "description": "Phone number"
+    },
+    "experience": {
+      "type": "string",
+      "description": "Years of experience"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "reviewed",
+        "shortlisted",
+        "rejected",
+        "hired"
+      ],
+      "default": "pending",
+      "description": "Application status"
+    }
+  },
+  "required": [
+    "job_id",
+    "applicant_email",
+    "applicant_name"
+  ]
+}

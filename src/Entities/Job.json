@@ -1,0 +1,108 @@
+{
+  "name": "Job",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string",
+      "description": "Job title"
+    },
+    "company": {
+      "type": "string",
+      "description": "Company name"
+    },
+    "location": {
+      "type": "string",
+      "enum": [
+        "Noida",
+        "Delhi",
+        "Pune",
+        "Mumbai",
+        "Bangalore",
+        "Hyderabad"
+      ],
+      "description": "Job location"
+    },
+    "salary_min": {
+      "type": "number",
+      "description": "Minimum salary in rupees"
+    },
+    "salary_max": {
+      "type": "number",
+      "description": "Maximum salary in rupees"
+    },
+    "job_type": {
+      "type": "string",
+      "enum": [
+        "Full-time",
+        "Part-time",
+        "Contract",
+        "Internship"
+      ],
+      "description": "Type of job"
+    },
+    "experience_level": {
+      "type": "string",
+      "enum": [
+        "Entry Level",
+        "Mid Level",
+        "Senior Level",
+        "Executive"
+      ],
+      "description": "Required experience level"
+    },
+    "description": {
+      "type": "string",
+      "description": "Job description"
+    },
+    "requirements": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Job requirements"
+    },
+    "benefits": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Job benefits"
+    },
+    "skills": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Required skills"
+    },
+    "remote_option": {
+      "type": "boolean",
+      "description": "Remote work option available"
+    },
+    "posted_by": {
+      "type": "string",
+      "description": "Email of recruiter who posted"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "active",
+        "closed",
+        "draft"
+      ],
+      "default": "active",
+      "description": "Job status"
+    },
+    "company_logo": {
+      "type": "string",
+      "description": "Company logo URL"
+    }
+  },
+  "required": [
+    "title",
+    "company",
+    "location",
+    "job_type",
+    "description"
+  ]
+}
