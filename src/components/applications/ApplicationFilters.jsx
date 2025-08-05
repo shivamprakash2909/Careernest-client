@@ -8,12 +8,12 @@ export default function ApplicationFilters({
   typeFilter,
   setTypeFilter,
   sortBy,
-  setSortBy
+  setSortBy,
 }) {
   return (
-    <div className="flex gap-3">
+    <div className="flex flex-col sm:flex-row gap-2 sm:gap-3 w-full sm:w-auto">
       <Select value={statusFilter} onValueChange={setStatusFilter}>
-        <SelectTrigger className="w-40">
+        <SelectTrigger className="w-full sm:w-32 md:w-40 text-xs sm:text-sm">
           <SelectValue placeholder="All Status" />
         </SelectTrigger>
         <SelectContent>
@@ -28,7 +28,7 @@ export default function ApplicationFilters({
       </Select>
 
       <Select value={typeFilter} onValueChange={setTypeFilter}>
-        <SelectTrigger className="w-36">
+        <SelectTrigger className="w-full sm:w-28 md:w-36 text-xs sm:text-sm">
           <SelectValue placeholder="All Types" />
         </SelectTrigger>
         <SelectContent>
@@ -39,7 +39,7 @@ export default function ApplicationFilters({
       </Select>
 
       <Select value={sortBy} onValueChange={setSortBy}>
-        <SelectTrigger className="w-36">
+        <SelectTrigger className="w-full sm:w-28 md:w-36 text-xs sm:text-sm">
           <SelectValue placeholder="Sort by" />
         </SelectTrigger>
         <SelectContent>

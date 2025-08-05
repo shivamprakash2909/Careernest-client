@@ -4,24 +4,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { MapPin, IndianRupee, Clock, Building, Users, X } from "lucide-react";
 
-export default function JobDetailsModal({ job, onClose }) {
-  if (!job) return null;
+export default function InternshipDetailsModal({ internship, onClose }) {
+  if (!internship) return null;
 
-  const formatSalary = (job) => {
-    // Check if stipend is provided (for internships or jobs with stipend)
-    if (job.stipend && job.stipend.trim() !== "") {
-      return job.stipend;
+  const formatStipend = (internship) => {
+    if (internship.stipend && internship.stipend.trim() !== "") {
+      return internship.stipend;
     }
-
-    // Check for salary range (for regular jobs)
-    const min = job.salary_min;
-    const max = job.salary_max;
-
-    if (!min && !max) return "Salary not disclosed";
-    if (min && max) {
-      return `₹${(min / 100000).toFixed(1)}L - ₹${(max / 100000).toFixed(1)}L per annum`;
-    }
-    return min ? `₹${(min / 100000).toFixed(1)}L+ per annum` : `Up to ₹${(max / 100000).toFixed(1)}L per annum`;
+    return "Stipend not disclosed";
   };
 
   return (
@@ -33,18 +23,18 @@ export default function JobDetailsModal({ job, onClose }) {
         <Card className="border-none shadow-none">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 text-center sm:text-left">
-              {job.title}
+              {internship.title}
             </CardTitle>
             <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-1 sm:space-y-0 sm:space-x-2 text-gray-600 mb-2">
               <Building className="w-4 h-4" />
-              <span className="font-medium">{job.company}</span>
+              <span className="font-medium">{internship.company_name || internship.companyName}</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-1 sm:space-y-0 sm:space-x-4 text-sm text-gray-500 mb-2">
               <span className="flex items-center">
                 <MapPin className="w-4 h-4 mr-1" />
-                {job.location}
+                {internship.location}
               </span>
-              {job.remote_option && (
+              {internship.remote_option && (
                 <Badge variant="outline" className="text-green-600 border-green-600">
                   Remote Available
                 </Badge>
@@ -52,19 +42,19 @@ export default function JobDetailsModal({ job, onClose }) {
             </div>
             <div className="flex items-center text-green-600 font-semibold mb-2 justify-center sm:justify-start">
               <IndianRupee className="w-4 h-4 mr-1" />
-              <span>{formatSalary(job)}</span>
+              <span>{formatStipend(internship)}</span>
             </div>
             <div className="flex items-center text-gray-500 text-sm mb-2 justify-center sm:justify-start">
               <Clock className="w-4 h-4 mr-1" />
-              <span>Posted recently</span>
+              <span>Duration: {internship.duration}</span>
             </div>
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2 mb-4 justify-center sm:justify-start">
-              <Badge variant="secondary">{job.job_type}</Badge>
-              {job.experience_level && <Badge variant="outline">{job.experience_level}</Badge>}
-              {job.skills &&
-                job.skills.map((skill, idx) => (
+              <Badge variant="secondary">{internship.internship_type || "Internship"}</Badge>
+              {internship.experience_level && <Badge variant="outline">{internship.experience_level}</Badge>}
+              {internship.skills &&
+                internship.skills.map((skill, idx) => (
                   <Badge key={idx} variant="outline" className="text-blue-600 border-blue-600">
                     {skill}
                   </Badge>
@@ -72,26 +62,44 @@ export default function JobDetailsModal({ job, onClose }) {
             </div>
             <div className="mb-4">
               <h4 className="font-semibold mb-1">Description</h4>
-              <p className="text-gray-700 text-sm">{job.description}</p>
+              <p className="text-gray-700 text-sm">{internship.description}</p>
             </div>
-            {job.requirements && job.requirements.length > 0 && (
+            {internship.requirements && internship.requirements.length > 0 && (
               <div className="mb-4">
                 <h4 className="font-semibold mb-1">Requirements</h4>
                 <ul className="list-disc list-inside text-gray-700 text-sm">
-                  {job.requirements.map((req, idx) => (
+                  {internship.requirements.map((req, idx) => (
                     <li key={idx}>{req}</li>
                   ))}
                 </ul>
               </div>
             )}
-            {job.benefits && job.benefits.length > 0 && (
+            {internship.benefits && internship.benefits.length > 0 && (
               <div className="mb-4">
                 <h4 className="font-semibold mb-1">Benefits</h4>
                 <ul className="list-disc list-inside text-gray-700 text-sm">
-                  {job.benefits.map((ben, idx) => (
+                  {internship.benefits.map((ben, idx) => (
                     <li key={idx}>{ben}</li>
                   ))}
                 </ul>
+              </div>
+            )}
+            {internship.status && (
+              <div className="mb-4">
+                <h4 className="font-semibold mb-1">Status</h4>
+                <Badge
+                  className={
+                    internship.status === "approved"
+                      ? "bg-green-100 text-green-800"
+                      : internship.status === "pending"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : internship.status === "rejected"
+                      ? "bg-red-100 text-red-800"
+                      : "bg-gray-100 text-gray-800"
+                  }
+                >
+                  {internship.status}
+                </Badge>
               </div>
             )}
           </CardContent>

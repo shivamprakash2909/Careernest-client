@@ -8,11 +8,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Plus, Briefcase, Users, Eye, Edit, Trash2, Building } from "lucide-react";
 import LoadingSpinner from "../components/common/LoadingSpinner";
+import JobDetailsModal from "../components/jobs/JobDetailsModal";
+import InternshipDetailsModal from "../components/jobs/InternshipDetailsModal";
 import { Link } from "react-router-dom";
 
 export default function RecruiterDashboard() {
   const [user, setUser] = useState(null);
   const [jobs, setJobs] = useState([]);
+  const [selectedJob, setSelectedJob] = useState(null);
+  const [showDetails, setShowDetails] = useState(false);
+  const [selectedInternship, setSelectedInternship] = useState(null);
+  const [showInternshipDetails, setShowInternshipDetails] = useState(false);
   const [internships, setInternships] = useState([]);
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,6 +57,25 @@ export default function RecruiterDashboard() {
   if (isLoading) {
     return <LoadingSpinner />;
   }
+  const handleView = (job) => {
+    setSelectedJob(job);
+    setShowDetails(true);
+  };
+
+  const handleCloseModal = () => {
+    setShowDetails(false);
+    setSelectedJob(null);
+  };
+
+  const handleViewInternship = (internship) => {
+    setSelectedInternship(internship);
+    setShowInternshipDetails(true);
+  };
+
+  const handleCloseInternshipModal = () => {
+    setShowInternshipDetails(false);
+    setSelectedInternship(null);
+  };
 
   const activeJobs = jobs.filter((job) => job.status === "active").length;
   const totalApplications = applications.filter((app) =>
@@ -151,18 +176,23 @@ export default function RecruiterDashboard() {
                       </Badge>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button variant="outline" size="sm">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => handleView(job)}
+                        className="flex-1 sm:flex-none"
+                      >
                         <Eye className="w-4 h-4 mr-1" />
                         View
                       </Button>
-                      <Button variant="outline" size="sm">
+                      {/* <Button variant="outline" size="sm">
                         <Edit className="w-4 h-4 mr-1" />
                         Edit
                       </Button>
                       <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                         <Trash2 className="w-4 h-4 mr-1" />
                         Delete
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 ))}
@@ -214,18 +244,18 @@ export default function RecruiterDashboard() {
                       </Badge>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Button variant="outline" size="sm">
+                      <Button variant="outline" size="sm" onClick={() => handleViewInternship(internship)}>
                         <Eye className="w-4 h-4 mr-1" />
                         View
                       </Button>
-                      <Button variant="outline" size="sm">
+                      {/* <Button variant="outline" size="sm">
                         <Edit className="w-4 h-4 mr-1" />
                         Edit
                       </Button>
                       <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
                         <Trash2 className="w-4 h-4 mr-1" />
                         Delete
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 ))}
@@ -246,6 +276,14 @@ export default function RecruiterDashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Job Details Modal */}
+      {showDetails && selectedJob && <JobDetailsModal job={selectedJob} onClose={handleCloseModal} />}
+
+      {/* Internship Details Modal */}
+      {showInternshipDetails && selectedInternship && (
+        <InternshipDetailsModal internship={selectedInternship} onClose={handleCloseInternshipModal} />
+      )}
     </div>
   );
 }

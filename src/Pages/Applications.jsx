@@ -48,7 +48,7 @@ export default function ApplicationsPage() {
       const user = JSON.parse(localStorage.getItem("user"));
       const isUserRecruiter = user?.role === "recruiter";
       setIsRecruiter(isUserRecruiter);
-      
+
       console.log("isRecruiter:", isUserRecruiter);
       console.log("User role:", user?.role);
       console.log("Fetching applications...");
@@ -247,22 +247,24 @@ export default function ApplicationsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">
+      <div className="max-w-4xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+        {/* Header Section */}
+        <div className="mb-6 sm:mb-8">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900">
             {isRecruiter ? "Applications for Your Postings" : "Applications"}
           </h1>
-          <p className="text-gray-600 mt-1">
-            {isRecruiter 
-              ? "Review and manage applications for your posted jobs and internships" 
-              : "Manage and review student applications"
-            }
+          <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-2">
+            {isRecruiter
+              ? "Review and manage applications for your posted jobs and internships"
+              : "Manage and review student applications"}
           </p>
         </div>
 
-        <Card className="mb-6">
-          <CardContent className="p-6">
+        {/* Search and Filters Card */}
+        <Card className="mb-4 sm:mb-6">
+          <CardContent className="p-4 sm:p-6">
             <div className="flex flex-col lg:flex-row gap-4">
+              {/* Search Input */}
               <div className="flex-1">
                 <div className="relative">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -270,42 +272,63 @@ export default function ApplicationsPage() {
                     placeholder="Search by name or position..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="pl-10"
+                    className="pl-10 text-sm sm:text-base"
                   />
                 </div>
               </div>
-              <ApplicationFilters
-                statusFilter={statusFilter}
-                setStatusFilter={setStatusFilter}
-                typeFilter={typeFilter}
-                setTypeFilter={setTypeFilter}
-                sortBy={sortBy}
-                setSortBy={setSortBy}
-              />
+              {/* Filters */}
+              <div className="w-full lg:w-auto">
+                <ApplicationFilters
+                  statusFilter={statusFilter}
+                  setStatusFilter={setStatusFilter}
+                  typeFilter={typeFilter}
+                  setTypeFilter={setTypeFilter}
+                  sortBy={sortBy}
+                  setSortBy={setSortBy}
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
 
+        {/* Bulk Actions Card */}
         {selectedIds.length > 0 && (
           <Card className="mb-4 bg-indigo-50 border-indigo-200 shadow-md">
-            <CardContent className="p-4 flex items-center justify-between">
-              <p className="font-medium text-indigo-800">{selectedIds.length} application(s) selected.</p>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-medium mr-2">Bulk Actions:</span>
-                <Button size="sm" variant="outline" onClick={() => handleBulkStatusUpdate("shortlisted")}>
-                  Shortlist
-                </Button>
-                <Button size="sm" variant="destructive" onClick={() => handleBulkStatusUpdate("rejected")}>
-                  Reject
-                </Button>
-                <Button size="icon" variant="ghost" onClick={() => setSelectedIds([])}>
-                  <X className="w-4 h-4" />
-                </Button>
+            <CardContent className="p-3 sm:p-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+                <p className="font-medium text-indigo-800 text-sm sm:text-base">
+                  {selectedIds.length} application(s) selected.
+                </p>
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 w-full sm:w-auto">
+                  <span className="text-xs sm:text-sm font-medium mr-2">Bulk Actions:</span>
+                  <div className="flex flex-col sm:flex-row gap-2">
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleBulkStatusUpdate("shortlisted")}
+                      className="text-xs sm:text-sm"
+                    >
+                      Shortlist
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      onClick={() => handleBulkStatusUpdate("rejected")}
+                      className="text-xs sm:text-sm"
+                    >
+                      Reject
+                    </Button>
+                    <Button size="icon" variant="ghost" onClick={() => setSelectedIds([])} className="h-8 w-8">
+                      <X className="w-4 h-4" />
+                    </Button>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>
         )}
 
+        {/* Applications List */}
         <div className="w-full">
           <ApplicationList
             applications={filteredApplications}
@@ -320,14 +343,15 @@ export default function ApplicationsPage() {
         </div>
       </div>
 
+      {/* Application Details Dialog */}
       <Dialog open={!!selectedApplication} onOpenChange={(isOpen) => !isOpen && setSelectedApplication(null)}>
-        <DialogContent className="max-w-2xl p-0">
+        <DialogContent className="max-w-2xl p-0 mx-4 sm:mx-0">
           {selectedApplication && (
             <div className="max-h-[90vh] overflow-y-auto">
-              <DialogHeader className="p-6 pb-4">
-                <DialogTitle>Application Details</DialogTitle>
+              <DialogHeader className="p-4 sm:p-6 pb-4">
+                <DialogTitle className="text-lg sm:text-xl">Application Details</DialogTitle>
               </DialogHeader>
-              <div className="px-6 pb-6">
+              <div className="px-4 sm:px-6 pb-4 sm:pb-6">
                 <ApplicationDetails application={selectedApplication} onStatusUpdate={handleStatusUpdate} />
               </div>
             </div>

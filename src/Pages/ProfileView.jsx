@@ -111,7 +111,7 @@ export default function ProfileView() {
             </div>
 
             {/* Education Section */}
-            <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
+            {/* <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
               <h2 className="text-xl font-bold text-gray-900 mb-4">Education</h2>
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
@@ -127,7 +127,7 @@ export default function ProfileView() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Experience Section */}
             <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
@@ -343,7 +343,7 @@ export default function ProfileView() {
         {/* Edit Profile Button */}
         <div className="flex justify-center mt-8">
           <Button
-            onClick={() => navigate("/p/editprofile")}
+            onClick={() => navigate("/p/updateprofile")}
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
             Edit Profile

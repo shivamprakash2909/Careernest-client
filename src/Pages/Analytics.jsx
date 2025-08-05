@@ -1,71 +1,51 @@
-// BACKEND INTEGRATION NOTE:
-// Expected endpoint: GET /api/recruiter/analytics
-// Response: {
-//   stats: { totalPostings: number, totalActive: number, totalHired: number, totalInactive: number },
-//   monthlyHiring: Array<{ month: string, hired: number }>,
-//   monthlyJobs: Array<{ month: string, jobs: number }>
-// }
 import React, { useEffect, useState } from "react";
 import { Card } from "../components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { ArrowLeft } from "lucide-react";
+import AnalyticsApi from "../Services/AnalyticsApi";
+import { useNavigate } from "react-router-dom";
 
 const COLORS = ["#2563eb", "#22c55e", "#f59e42"];
 
 const statBoxStyle = "flex-1 bg-white rounded-xl shadow p-2 flex flex-col items-center justify-center min-w-[180px]";
 
 export default function Analytics() {
-  // Placeholder state for stats and chart data
-  const [stats, setStats] = useState({
-    totalPostings: 31,
-    totalActive: 15,
-    totalHired: 31,
-    totalInactive: 16,
-  });
-  const [monthlyHiring, setMonthlyHiring] = useState([
-    { month: "Jan", hired: 2 },
-    { month: "Feb", hired: 1 },
-    { month: "Mar", hired: 2 },
-    { month: "Apr", hired: 1 },
-    { month: "May", hired: 2 },
-    { month: "Jun", hired: 2 },
-    { month: "Jul", hired: 3 },
-    { month: "Aug", hired: 5 },
-    { month: "Sep", hired: 4 },
-    { month: "Oct", hired: 6 },
-    { month: "Nov", hired: 2 },
-    { month: "Dec", hired: 1 },
-  ]);
-  const [monthlyJobs, setMonthlyJobs] = useState([
-    { month: "Jan", jobs: 4 },
-    { month: "Feb", jobs: 2 },
-    { month: "Mar", jobs: 1 },
-    { month: "Apr", jobs: 3 },
-    { month: "May", jobs: 2 },
-    { month: "Jun", jobs: 1 },
-    { month: "Jul", jobs: 2 },
-    { month: "Aug", jobs: 3 },
-    { month: "Sep", jobs: 1 },
-    { month: "Oct", jobs: 1 },
-    { month: "Nov", jobs: 3 },
-    { month: "Dec", jobs: 8 },
-  ]);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Example backend integration (uncomment and update endpoint when backend is ready)
-  // useEffect(() => {
-  //   async function fetchAnalytics() {
-  //     const jwt = localStorage.getItem("jwt");
-  //     // Call the backend API to get analytics data for the recruiter
-  //     // Endpoint: /api/recruiter/analytics (see top of file for expected response)
-  //     const res = await axiosInstance.get("/api/recruiter/analytics", {
-  //       headers: { Authorization: `Bearer ${jwt}` },
-  //     });
-  //     setStats(res.data.stats);
-  //     setMonthlyHiring(res.data.monthlyHiring);
-  //     setMonthlyJobs(res.data.monthlyJobs);
-  //   }
-  //   fetchAnalytics();
-  // }, []);
+  // State for stats and chart data
+  const [stats, setStats] = useState({
+    totalPostings: 0,
+    totalActive: 0,
+    totalHired: 0,
+    totalInactive: 0,
+  });
+  const [monthlyHiring, setMonthlyHiring] = useState([]);
+  const [monthlyJobs, setMonthlyJobs] = useState([]);
+
+  // Fetch analytics data from backend
+  useEffect(() => {
+    async function fetchAnalytics() {
+      try {
+        setIsLoading(true);
+        setError(null);
+
+        const analyticsData = await AnalyticsApi.getRecruiterAnalytics();
+
+        setStats(analyticsData.stats);
+        setMonthlyHiring(analyticsData.monthlyHiring);
+        setMonthlyJobs(analyticsData.monthlyJobs);
+      } catch (error) {
+        console.error("Error fetching analytics:", error);
+        setError("Failed to load analytics data. Please try again later.");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    fetchAnalytics();
+  }, []);
 
   const pieData = [
     { name: "Active", value: stats.totalActive },
@@ -76,6 +56,47 @@ export default function Analytics() {
   const handleGoBack = () => {
     navigate(-1); // 👈 go to previous page
   };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4 md:px-6 lg:px-8 w-full">
+        <button onClick={handleGoBack} className="flex items-center text-sm text-blue-600 hover:underline mb-4">
+          <ArrowLeft className="w-4 h-4 mr-1" />
+          Go Back
+        </button>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading analytics data...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Show error state
+  if (error) {
+    return (
+      <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4 md:px-6 lg:px-8 w-full">
+        <button onClick={handleGoBack} className="flex items-center text-sm text-blue-600 hover:underline mb-4">
+          <ArrowLeft className="w-4 h-4 mr-1" />
+          Go Back
+        </button>
+        <div className="flex items-center justify-center h-64">
+          <div className="text-center">
+            <p className="text-red-600 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto py-6 px-2 sm:px-4 md:px-6 lg:px-8 w-full">
