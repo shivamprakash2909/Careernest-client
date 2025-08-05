@@ -305,8 +305,7 @@ export default function StudentAuth() {
   };
 
   const handleForgotPassword = () => {
-    setError("");
-    showSuccess("Password reset instructions would be sent to your email");
+    navigate('/p/forgot-password');
   };
 
   if (!isLogin) {

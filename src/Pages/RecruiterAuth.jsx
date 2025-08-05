@@ -286,8 +286,7 @@ export default function RecruiterAuth() {
   };
 
   const handleForgotPassword = () => {
-    setError("");
-    showSuccess("Password reset instructions would be sent to your email");
+    navigate('/p/forgot-password');
   };
 
   if (!isLogin) {

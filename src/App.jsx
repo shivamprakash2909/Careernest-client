@@ -36,6 +36,8 @@ import Hackathons from "./Pages/Hackathons";
 import ManageInternships from "./Pages/ManageInternships";
 import EditInternship from "./Pages/EditInternship";
 import InternshipDetails from "./Pages/InternshipDetails";
+import ForgotPassword from "./Pages/ForgotPassword";
+import ResetPassword from "./Pages/ResetPassword";
 
 import RecruiterHome from "./Pages/RecruiterHome";
 
@@ -157,6 +159,22 @@ export default function App() {
             element={
               <Layout currentPageName="StudentAuth">
                 <StudentAuth />
+              </Layout>
+            }
+          />
+          <Route
+            path="/p/forgot-password"
+            element={
+              <Layout currentPageName="ForgotPassword">
+                <ForgotPassword />
+              </Layout>
+            }
+          />
+          <Route
+            path="/p/reset-password/:token"
+            element={
+              <Layout currentPageName="ResetPassword">
+                <ResetPassword />
               </Layout>
             }
           />
