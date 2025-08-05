@@ -259,7 +259,7 @@ export default function SettingsPage() {
       <p className="text-sm text-gray-600 mb-6">Manage your credentials and account preferences.</p>
 
       {/* Debug Information (remove in production) */}
-      {process.env.NODE_ENV === "development" && (
+      {/* {process.env.NODE_ENV === "development" && (
         <div className="mb-6 p-4 bg-gray-100 rounded-lg">
           <h3 className="text-sm font-semibold mb-2">Debug Info:</h3>
           <p className="text-xs text-gray-600">
@@ -268,7 +268,7 @@ export default function SettingsPage() {
           <p className="text-xs text-gray-600">Token Valid: {userInfo.tokenValid ? "Yes" : "No"}</p>
           {!userInfo.tokenValid && <p className="text-xs text-red-600">Reason: {userInfo.tokenReason}</p>}
         </div>
-      )}
+      )} */}
 
       {/* Name Update */}
       <div className="space-y-2 mb-6">

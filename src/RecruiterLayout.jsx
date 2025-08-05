@@ -247,7 +247,7 @@ export default function RecruiterLayout({ children }) {
                 <div className="mt-3 space-y-1">
                   {/* Your Profile Section */}
                   <button
-                    onClick={() => handleNavigationClick(createPageUrl("profile"))}
+                    onClick={() => handleNavigationClick(createPageUrl("recruiterprofileview"))}
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
                   >
                     <User className="w-4 h-4 mr-3" />
@@ -261,7 +261,7 @@ export default function RecruiterLayout({ children }) {
                     <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Support</p>
                   </div>
                   <button
-                    onClick={() => handleNavigationClick(createPageUrl("help"))}
+                    onClick={() => handleNavigationClick(createPageUrl("faq"))}
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
                   >
                     <HelpCircle className="w-4 h-4 mr-3" />
@@ -289,7 +289,7 @@ export default function RecruiterLayout({ children }) {
                     Update Profile
                   </button>
                   <button
-                    onClick={() => handleNavigationClick(createPageUrl("settings"))}
+                    onClick={() => handleNavigationClick(createPageUrl("recruitersettings"))}
                     className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
                   >
                     <Settings className="w-4 h-4 mr-3" />

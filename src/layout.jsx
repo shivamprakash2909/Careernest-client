@@ -124,7 +124,7 @@ export default function Layout({ children, currentPageName }) {
             </nav>
 
             {/* Auth Buttons and Profile */}
-            <div className="hidden lg:flex items-center space-x-3">
+            <div className="hidden lg:flex items-center space-x-1">
               {isLoading ? (
                 <div className="w-48 h-8 bg-gray-200 rounded animate-pulse"></div>
               ) : user ? (
@@ -163,44 +163,170 @@ export default function Layout({ children, currentPageName }) {
               className="fixed top-0 left-0 h-full w-3/4 max-w-sm bg-white shadow-xl overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="px-2 pt-2 pb-3 space-y-1">
-                {navItems.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`block px-3 py-2 text-base rounded-lg font-medium transition-colors duration-200 ${
-                      isActive(item.href)
-                        ? "text-blue-600 bg-blue-50"
-                        : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
-                    }`}
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {item.name}
-                  </Link>
-                ))}
-                <div className="pt-4 pb-3 border-t border-gray-200">
-                  <div className="flex flex-col space-y-2 px-3">
-                    {isLoading ? (
-                      <div className="w-full h-10 bg-gray-200 rounded animate-pulse my-2"></div>
-                    ) : user ? (
-                      <div className="px-1 py-2">
-                        <UserProfileDropdown user={user} onLogout={handleLogout} />
+              {/* User Profile Section */}
+              {user && (
+                <div className="p-6 border-b border-gray-200">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
+                        {user.full_name
+                          ? user.full_name
+                              .split(" ")
+                              .map((n) => n[0])
+                              .join("")
+                              .toUpperCase()
+                          : "U"}
                       </div>
-                    ) : (
-                      <>
-                        <Link to={createPageUrl("StudentAuth")} onClick={() => setMobileMenuOpen(false)}>
-                          <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50">
-                            Student
-                          </Button>
-                        </Link>
-                        <Link to={createPageUrl("RecruiterAuth")} onClick={() => setMobileMenuOpen(false)}>
-                          <Button className="w-full bg-blue-600 hover:bg-blue-700">Recruiter</Button>
-                        </Link>
-                      </>
-                    )}
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{user.full_name || user.name || "User"}</p>
+                        <p className="text-xs text-gray-500">{user.email}</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                      className="p-1 hover:bg-gray-100 rounded"
+                    >
+                      <ChevronDown
+                        className={`w-4 h-4 text-gray-500 transition-transform ${moreDropdownOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                  </div>
+
+                  {/* More Dropdown */}
+                  {moreDropdownOpen && (
+                    <div className="mt-3 space-y-1">
+                      {/* Your Profile Section */}
+                      <button
+                        onClick={() => handleNavigationClick(createPageUrl("recruiterprofileview"))}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
+                      >
+                        <User className="w-4 h-4 mr-3" />
+                        Your Profile
+                      </button>
+
+                      <div className="border-t border-gray-200 my-2"></div>
+
+                      {/* SUPPORT Section */}
+                      <div className="px-4 py-1">
+                        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Support</p>
+                      </div>
+                      <button
+                        onClick={() => handleNavigationClick(createPageUrl("faq"))}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
+                      >
+                        <HelpCircle className="w-4 h-4 mr-3" />
+                        Help Center
+                      </button>
+                      <a
+                        href="mailto:support@careernest.in"
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
+                      >
+                        <MessageCircle className="w-4 h-4 mr-3" />
+                        Contact Us
+                      </a>
+
+                      <div className="border-t border-gray-200 my-2"></div>
+
+                      {/* SETTINGS Section */}
+
+                      <div className="px-4 py-1">
+                        <p className="text-xs font-medium text-gray-500 uppercase tracking-wide">Settings</p>
+                      </div>
+                      <button
+                        onClick={() => handleNavigationClick(createPageUrl("updateProfile"))}
+                        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
+                      >
+                        <User className="w-4 h-4 mr-3" />
+                        Update Profile
+                      </button>
+                      {user.role === "student" ? (
+                        <button
+                          onClick={() => handleNavigationClick(createPageUrl("settings"))}
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
+                        >
+                          <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                          Settings
+                        </button>
+                      ) : (
+                        <button
+                          onClick={() => handleNavigationClick(createPageUrl("recruitersettings"))}
+                          className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-lg transition-colors flex items-center"
+                        >
+                          <svg className="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                            />
+                          </svg>
+                          Settings
+                        </button>
+                      )}
+                      <button
+                        onClick={handleLogout}
+                        className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition-colors flex items-center"
+                      >
+                        <LogOut className="w-4 h-4 mr-3" />
+                        Logout
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Navigation Menu */}
+              <div className="flex-1 overflow-y-auto">
+                <nav className="p-4 space-y-1">
+                  {/* Main Navigation */}
+                  {navItems.map((item) => (
+                    <button
+                      key={item.name}
+                      onClick={() => handleNavigationClick(item.href)}
+                      className={`w-full text-left px-4 py-3 rounded-lg transition-colors ${
+                        isActive(item.href) ? "text-blue-600 bg-blue-50" : "text-gray-900 hover:bg-gray-100"
+                      }`}
+                    >
+                      {item.name}
+                    </button>
+                  ))}
+                </nav>
+              </div>
+
+              {/* Auth Buttons for Non-Logged In Users */}
+              {!user && (
+                <div className="p-4 border-t border-gray-200">
+                  <div className="flex flex-col space-y-2">
+                    <Link to={createPageUrl("StudentAuth")} onClick={() => setMobileMenuOpen(false)}>
+                      <Button variant="outline" className="w-full text-blue-600 border-blue-600 hover:bg-blue-50">
+                        Student
+                      </Button>
+                    </Link>
+                    <Link to={createPageUrl("RecruiterAuth")} onClick={() => setMobileMenuOpen(false)}>
+                      <Button className="w-full bg-blue-600 hover:bg-blue-700">Recruiter</Button>
+                    </Link>
                   </div>
                 </div>
-              </div>
+              )}
             </div>
           </div>
         )}
@@ -218,7 +344,7 @@ export default function Layout({ children, currentPageName }) {
               {/* User Profile Section */}
               <div className="p-6 border-b border-gray-200">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-3">
+                  <div className="flex items-center space-x-1">
                     <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold">
                       {user.full_name
                         ? user.full_name
