@@ -343,7 +343,7 @@ export default function ProfileView() {
         {/* Edit Profile Button */}
         <div className="flex justify-center mt-8">
           <Button
-            onClick={() => navigate("/p/updateprofile")}
+            onClick={() => navigate(userRole === "student" ? "/p/editprofile" : "/p/updateprofile")}
             className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
           >
             Edit Profile
