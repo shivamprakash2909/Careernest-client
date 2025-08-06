@@ -19,9 +19,9 @@ export default function JobDetailsModal({ job, onClose }) {
 
     if (!min && !max) return "Salary not disclosed";
     if (min && max) {
-      return `₹${(min / 100000).toFixed(1)}L - ₹${(max / 100000).toFixed(1)}L per annum`;
+      return `₹${min.toLocaleString()} - ₹${max.toLocaleString()} per annum`;
     }
-    return min ? `₹${(min / 100000).toFixed(1)}L+ per annum` : `Up to ₹${(max / 100000).toFixed(1)}L per annum`;
+    return min ? `₹${min.toLocaleString()}+ per annum` : `Up to ₹${max.toLocaleString()} per annum`;
   };
 
   return (

@@ -86,18 +86,18 @@ export default function JobDetails() {
 
   const formatSalary = (min, max) => {
     if (min && max) {
-      return `₹${(min / 100000).toFixed(1)}L - ₹${(max / 100000).toFixed(1)}L per annum`;
+      return `₹${min.toLocaleString()} - ₹${max.toLocaleString()} per annum`;
     }
     if (min) {
-      return `₹${(min / 100000).toFixed(1)}L+ per annum`;
+      return `₹${min.toLocaleString()}+ per annum`;
     }
     if (max) {
-      return `Up to ₹${(max / 100000).toFixed(1)}L per annum`;
+      return `Up to ₹${max.toLocaleString()} per annum`;
     }
     return "Not specified";
   };
 
-  // Helper to format stipend in thousands (K)
+  // Helper to format stipend - show original value
   const formatStipend = (stipend) => {
     if (!stipend) return "Not specified";
 
@@ -116,16 +116,16 @@ export default function JobDetails() {
       if (!isNaN(value)) {
         // Check if the original string has "/month" or similar
         if (stipendStr.includes("/month") || stipendStr.includes("/mo")) {
-          return `₹${(value / 1000).toFixed(1)}K/month`;
+          return `₹${value.toLocaleString()}/month`;
         }
-        return `₹${(value / 1000).toFixed(1)}K`;
+        return `₹${value.toLocaleString()}`;
       }
     }
 
     // If it's a simple number, format it
     const numValue = parseFloat(stipendStr);
     if (!isNaN(numValue)) {
-      return `₹${(numValue / 1000).toFixed(1)}K`;
+      return `₹${numValue.toLocaleString()}`;
     }
 
     return stipendStr; // fallback to original if not a number
