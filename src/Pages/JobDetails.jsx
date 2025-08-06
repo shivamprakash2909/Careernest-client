@@ -242,7 +242,10 @@ export default function JobDetails() {
                       <Clock className="w-4 h-4 mr-1" />
                       {job.job_type}
                     </span>
-                    <span className="flex items-center text-green-600 font-semibold">{displayCompensation()}</span>
+                    <span className="flex items-center text-green-600 font-semibold">
+                      <></>
+                      {displayCompensation()}
+                    </span>
                   </div>
                 </div>
               </div>
