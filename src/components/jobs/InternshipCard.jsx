@@ -21,20 +21,21 @@ export default function JobCard({ job, isInternship = false }) {
     return <Badge className={variants[status]}>{status}</Badge>;
   };
 
-  const formatSalary = (min, max) => {
-    if (min && max) {
-      return isInternship
-        ? `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`
-        : `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
-    }
-    if (min) {
-      return isInternship ? `₹${min.toLocaleString()}+` : `₹${min.toLocaleString()}+`;
-    }
-    if (max) {
-      return isInternship ? `Up to ₹${max.toLocaleString()}` : `Up to ₹${max.toLocaleString()}`;
-    }
-    return "Not specified";
-  };
+  // const formatStipend = (min, max, type = "Fixed") => {
+  //   if (min && max) {
+  //     const range = `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
+  //     return type === "Fixed" ? range : `${range} (${type})`;
+  //   }
+  //   if (min) {
+  //     const minStipend = `₹${min.toLocaleString()}+`;
+  //     return type === "Fixed" ? minStipend : `${minStipend} (${type})`;
+  //   }
+  //   if (max) {
+  //     const maxStipend = `Up to ₹${max.toLocaleString()}`;
+  //     return type === "Fixed" ? maxStipend : `${maxStipend} (${type})`;
+  //   }
+  //   return "Not specified";
+  // };
 
   // Helper to format stipend - show original value
   const formatStipend = (stipend) => {
@@ -85,14 +86,11 @@ export default function JobCard({ job, isInternship = false }) {
     }
   };
 
-  // Display stipend if present, otherwise salary
+  // Display stipend for internships
   const displayCompensation = () => {
-    if (isInternship && job.stipend) {
-      return <span className="flex items-center text-green-600 font-semibold">{formatStipend(job.stipend)}</span>;
-    }
     return (
       <span className="flex items-center text-green-600 font-semibold">
-        {formatSalary(job.salary_min, job.salary_max)}
+        {formatStipend(job.stipend_amount_min, job.stipend_amount_max, job.stipend_type)}
       </span>
     );
   };
@@ -129,7 +127,7 @@ export default function JobCard({ job, isInternship = false }) {
               {isInternship && job.stipend ? (
                 <span>{formatStipend(job.stipend)}</span>
               ) : (
-                <span>{formatSalary(job.salary_min, job.salary_max)}</span>
+                <span>{formatStipend(job.salary_min, job.salary_max)}</span>
               )}
             </div>
             <div className="flex items-center text-gray-500 text-sm">

@@ -84,15 +84,18 @@ export default function JobDetails() {
     }
   };
 
-  const formatSalary = (min, max) => {
+  const formatSalary = (min, max, type = "Per Annum") => {
     if (min && max) {
-      return `₹${min.toLocaleString()} - ₹${max.toLocaleString()} per annum`;
+      const range = `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
+      return type === "Per Annum" ? `${range} per annum` : `${range} ${type}`;
     }
     if (min) {
-      return `₹${min.toLocaleString()}+ per annum`;
+      const minSalary = `₹${min.toLocaleString()}+`;
+      return type === "Per Annum" ? `${minSalary} per annum` : `${minSalary} ${type}`;
     }
     if (max) {
-      return `Up to ₹${max.toLocaleString()} per annum`;
+      const maxSalary = `Up to ₹${max.toLocaleString()}`;
+      return type === "Per Annum" ? `${maxSalary} per annum` : `${maxSalary} ${type}`;
     }
     return "Not specified";
   };
@@ -136,7 +139,7 @@ export default function JobDetails() {
     if (job.stipend) {
       return formatStipend(job.stipend);
     }
-    return formatSalary(job.salary_min, job.salary_max);
+    return formatSalary(job.salary_min, job.salary_max, job.salary_type);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -282,6 +285,25 @@ export default function JobDetails() {
             </CardContent>
           </Card>
 
+          {/* Responsibilities */}
+          {job.responsibilities?.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Key Responsibilities</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {job.responsibilities.map((resp, i) => (
+                    <li key={i} className="flex items-start space-x-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                      <span className="text-gray-700">{resp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
+
           {/* Requirements */}
           {job.requirements?.length > 0 && (
             <Card>
@@ -294,6 +316,25 @@ export default function JobDetails() {
                     <li key={i} className="flex items-start space-x-2">
                       <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
                       <span className="text-gray-700">{req}</span>
+                    </li>
+                  ))}
+                </ul>
+              </CardContent>
+            </Card>
+          )}
+
+          {/* Benefits */}
+          {job.benefits?.length > 0 && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Benefits & Perks</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  {job.benefits.map((benefit, i) => (
+                    <li key={i} className="flex items-start space-x-2">
+                      <CheckCircle className="w-5 h-5 text-green-600 mt-0.5" />
+                      <span className="text-gray-700">{benefit}</span>
                     </li>
                   ))}
                 </ul>
@@ -352,6 +393,14 @@ export default function JobDetails() {
                 <h4 className="font-medium text-gray-900 mb-1">Experience Level</h4>
                 <p className="text-gray-600">{job.experience_level}</p>
               </div>
+              {job.experience_years_min && job.experience_years_max && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-1">Experience Range</h4>
+                  <p className="text-gray-600">
+                    {job.experience_years_min} - {job.experience_years_max} years
+                  </p>
+                </div>
+              )}
               <div>
                 <h4 className="font-medium text-gray-900 mb-1">Job Type</h4>
                 <p className="text-gray-600">{job.job_type}</p>
@@ -364,6 +413,24 @@ export default function JobDetails() {
                 <h4 className="font-medium text-gray-900 mb-1">Salary / Stipend</h4>
                 <p className="text-gray-600">{displayCompensation()}</p>
               </div>
+              {job.education_level && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-1">Education Level</h4>
+                  <p className="text-gray-600">{job.education_level}</p>
+                </div>
+              )}
+              {job.number_of_openings && job.number_of_openings > 1 && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-1">Openings</h4>
+                  <p className="text-gray-600">{job.number_of_openings} positions</p>
+                </div>
+              )}
+              {job.application_deadline && (
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-1">Application Deadline</h4>
+                  <p className="text-gray-600">{new Date(job.application_deadline).toLocaleDateString()}</p>
+                </div>
+              )}
               {job.remote_option && (
                 <div>
                   <h4 className="font-medium text-gray-900 mb-1">Remote Work</h4>

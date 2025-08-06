@@ -85,38 +85,26 @@ export default function InternshipDetails() {
     }
   };
 
-  // Helper to format stipend - show original value
-  const formatStipend = (stipend) => {
-    if (!stipend) return "Not specified";
-
-    // Handle different stipend formats
-    const stipendStr = stipend.toString().trim();
-
-    // If it's already in a readable format with ₹ symbol, return as is
-    if (stipendStr.includes("₹")) {
-      return stipendStr;
+  // Helper to format stipend with new structure
+  const formatStipend = (min, max, type = "Fixed") => {
+    if (min && max) {
+      const range = `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
+      return type === "Fixed" ? range : `${range} (${type})`;
     }
-
-    // Extract numeric part from stipend string (handle formats like "10,000/month")
-    const match = stipendStr.replace(/,/g, "").match(/(\d+)/);
-    if (match) {
-      const value = parseInt(match[1], 10);
-      if (!isNaN(value)) {
-        // Check if the original string has "/month" or similar
-        if (stipendStr.includes("/month") || stipendStr.includes("/mo")) {
-          return `₹${value.toLocaleString()}/month`;
-        }
-        return `₹${value.toLocaleString()}`;
-      }
+    if (min) {
+      const minStipend = `₹${min.toLocaleString()}+`;
+      return type === "Fixed" ? minStipend : `${minStipend} (${type})`;
     }
-
-    // If it's a simple number, format it
-    const numValue = parseFloat(stipendStr);
-    if (!isNaN(numValue)) {
-      return `₹${numValue.toLocaleString()}`;
+    if (max) {
+      const maxStipend = `Up to ₹${max.toLocaleString()}`;
+      return type === "Fixed" ? maxStipend : `${maxStipend} (${type})`;
     }
+    return "Not specified";
+  };
 
-    return stipendStr; // fallback to original if not a number
+  // Display stipend for internships
+  const displayCompensation = () => {
+    return formatStipend(internship.stipend_amount_min, internship.stipend_amount_max, internship.stipend_type);
   };
 
   if (isLoading) return <LoadingSpinner />;
@@ -231,11 +219,11 @@ export default function InternshipDetails() {
                     <span className="text-gray-700">{internship.duration}</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <span className="text-green-600 font-semibold">{formatStipend(internship.stipend)}</span>
+                    <span className="text-green-600 font-semibold">{displayCompensation()}</span>
                   </div>
                   <div className="flex items-center space-x-2">
                     <Clock className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-700">Posted recently</span>
+                    <span className="text-gray-700">{internship.internship_type}</span>
                   </div>
                 </div>
 
@@ -260,6 +248,21 @@ export default function InternshipDetails() {
                   </div>
                 )}
 
+                {/* Responsibilities */}
+                {internship.responsibilities && internship.responsibilities.length > 0 && (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <CheckCircle className="w-5 h-5" />
+                      Key Responsibilities
+                    </h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-700">
+                      {internship.responsibilities.map((responsibility, index) => (
+                        <li key={index}>{responsibility}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
                 {/* Skills */}
                 {internship.skills && internship.skills.length > 0 && (
                   <div>
@@ -274,6 +277,21 @@ export default function InternshipDetails() {
                         </Badge>
                       ))}
                     </div>
+                  </div>
+                )}
+
+                {/* Perks */}
+                {internship.perks && internship.perks.length > 0 && (
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <Users className="w-5 h-5" />
+                      Perks & Benefits
+                    </h3>
+                    <ul className="list-disc list-inside space-y-2 text-gray-700">
+                      {internship.perks.map((perk, index) => (
+                        <li key={index}>{perk}</li>
+                      ))}
+                    </ul>
                   </div>
                 )}
               </CardContent>
@@ -326,21 +344,53 @@ export default function InternshipDetails() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex justify-between">
+                    <span className="text-gray-600">Type:</span>
+                    <span className="font-medium">{internship.internship_type}</span>
+                  </div>
+                  <div className="flex justify-between">
                     <span className="text-gray-600">Duration:</span>
                     <span className="font-medium">{internship.duration}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Stipend:</span>
-                    <span className="font-medium text-green-600">{formatStipend(internship.stipend)}</span>
+                    <span className="font-medium text-green-600">{displayCompensation()}</span>
                   </div>
                   <div className="flex justify-between">
                     <span className="text-gray-600">Location:</span>
                     <span className="font-medium">{internship.location}</span>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Posted:</span>
-                    <span className="font-medium">Recently</span>
-                  </div>
+                  {internship.education_level && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Education:</span>
+                      <span className="font-medium">{internship.education_level}</span>
+                    </div>
+                  )}
+                  {internship.academic_year && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Academic Year:</span>
+                      <span className="font-medium">{internship.academic_year}</span>
+                    </div>
+                  )}
+                  {internship.number_of_openings && internship.number_of_openings > 1 && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Openings:</span>
+                      <span className="font-medium">{internship.number_of_openings} positions</span>
+                    </div>
+                  )}
+                  {internship.application_deadline && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Deadline:</span>
+                      <span className="font-medium">
+                        {new Date(internship.application_deadline).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )}
+                  {internship.remote_option && (
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Remote Work:</span>
+                      <span className="font-medium text-green-600">Available</span>
+                    </div>
+                  )}
                 </div>
               </CardContent>
             </Card>

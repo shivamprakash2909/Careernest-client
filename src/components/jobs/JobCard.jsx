@@ -21,17 +21,18 @@ export default function JobCard({ job, isInternship = false }) {
     return <Badge className={variants[status]}>{status}</Badge>;
   };
 
-  const formatSalary = (min, max) => {
+  const formatSalary = (min, max, type = "Per Annum") => {
     if (min && max) {
-      return isInternship
-        ? `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`
-        : `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
+      const range = `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
+      return type === "Per Annum" ? range : `${range} ${type}`;
     }
     if (min) {
-      return isInternship ? `₹${min.toLocaleString()}+` : `₹${min.toLocaleString()}+`;
+      const minSalary = `₹${min.toLocaleString()}+`;
+      return type === "Per Annum" ? minSalary : `${minSalary} ${type}`;
     }
     if (max) {
-      return isInternship ? `Up to ₹${max.toLocaleString()}` : `Up to ₹${max.toLocaleString()}`;
+      const maxSalary = `Up to ₹${max.toLocaleString()}`;
+      return type === "Per Annum" ? maxSalary : `${maxSalary} ${type}`;
     }
     return "Not specified";
   };
@@ -92,7 +93,7 @@ export default function JobCard({ job, isInternship = false }) {
     }
     return (
       <span className="flex items-center text-green-600 font-semibold">
-        {formatSalary(job.salary_min, job.salary_max)}
+        {formatSalary(job.salary_min, job.salary_max, job.salary_type)}
       </span>
     );
   };
@@ -129,7 +130,7 @@ export default function JobCard({ job, isInternship = false }) {
               {isInternship && job.stipend ? (
                 <span>{formatStipend(job.stipend)}</span>
               ) : (
-                <span>{formatSalary(job.salary_min, job.salary_max)}</span>
+                <span>{formatSalary(job.salary_min, job.salary_max, job.salary_type)}</span>
               )}
             </div>
             <div className="flex items-center text-gray-500 text-sm">
