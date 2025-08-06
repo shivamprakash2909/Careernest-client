@@ -189,7 +189,7 @@ export default function About() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Get in Touch</h2>
-            <p className="text-xl text-blue-100">Have questions? We'd love to hear from you</p>
+            <p className="text-xl text-blue-100">Reach out to us - we're here to help!</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
@@ -198,8 +198,8 @@ export default function About() {
                 <Mail className="text-blue-600 w-8 h-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Email Us</h3>
-              <p className="text-blue-100">support@careernest.in</p>
-              <p className="text-blue-100">careers@careernest.in</p>
+              <p className="text-blue-100">info@careernest.org</p>
+              <p className="text-blue-100">careernest.org</p>
             </div>
 
             <div>
@@ -207,7 +207,7 @@ export default function About() {
                 <Phone className="text-blue-600 w-8 h-8" />
               </div>
               <h3 className="text-xl font-semibold mb-2">Call Us</h3>
-              <p className="text-blue-100">+91 9876543210</p>
+              <p className="text-blue-100">+91 XXXXXXXXXX</p>
               <p className="text-blue-100 text-sm">Mon-Fri, 9AM-6PM IST</p>
             </div>
 

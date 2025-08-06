@@ -415,7 +415,7 @@ export default function StudentAuth() {
 
                 {/* Password Fields */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Security</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Create Your Password</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Password *</label>
@@ -514,6 +514,9 @@ export default function StudentAuth() {
                           <SelectValue placeholder="Select year" />
                         </SelectTrigger>
                         <SelectContent>
+                          <SelectItem value="2023">2021</SelectItem>
+                          <SelectItem value="2024">2022</SelectItem>
+                          <SelectItem value="2024">2023</SelectItem>
                           <SelectItem value="2024">2024</SelectItem>
                           <SelectItem value="2025">2025</SelectItem>
                           <SelectItem value="2026">2026</SelectItem>
@@ -543,10 +546,10 @@ export default function StudentAuth() {
 
                 {/* Skills and Bio */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Skills & Profile</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Technical Skills & Summary</h3>
                   <div className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Skills (comma-separated)</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Skills</label>
                       <Input
                         name="skills"
                         value={formData.skills}
@@ -555,7 +558,7 @@ export default function StudentAuth() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Bio / Summary</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Summary</label>
                       <Textarea
                         name="bio"
                         value={formData.bio}

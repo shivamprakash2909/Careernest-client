@@ -349,7 +349,7 @@ export default function RecruiterAuth() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Work Email *</label>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Email *</label>
                       <Input
                         name="email"
                         type="email"
@@ -365,7 +365,7 @@ export default function RecruiterAuth() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        placeholder="+91 9876543210"
+                        placeholder="Enter your phone number"
                         required
                       />
                     </div>
@@ -383,7 +383,7 @@ export default function RecruiterAuth() {
 
                 {/* Password Fields */}
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Security</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Create your Password</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">Password *</label>
@@ -472,44 +472,29 @@ export default function RecruiterAuth() {
                       </Select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Industry</label>
-                      <Select
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Company Domain
+                      </label>
+                      <input
+                        type="text"
+                        placeholder="Enter company domain"
                         value={formData.industry}
-                        onValueChange={(value) => handleSelectChange("industry", value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select industry" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Technology">Technology</SelectItem>
-                          <SelectItem value="Finance">Finance</SelectItem>
-                          <SelectItem value="Healthcare">Healthcare</SelectItem>
-                          <SelectItem value="Education">Education</SelectItem>
-                          <SelectItem value="Manufacturing">Manufacturing</SelectItem>
-                          <SelectItem value="Retail">Retail</SelectItem>
-                          <SelectItem value="Consulting">Consulting</SelectItem>
-                          <SelectItem value="Other">Other</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        onChange={(e) => handleSelectChange("industry", e.target.value)}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+                      />
                     </div>
+                    {/* --------Company Address ---------*/}
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Company Location</label>
-                      <Select
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                       Company Address
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Enter company address"
                         value={formData.location}
-                        onValueChange={(value) => handleSelectChange("location", value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select location" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="Mumbai">Mumbai</SelectItem>
-                          <SelectItem value="Delhi">Delhi</SelectItem>
-                          <SelectItem value="Bangalore">Bangalore</SelectItem>
-                          <SelectItem value="Pune">Pune</SelectItem>
-                          <SelectItem value="Hyderabad">Hyderabad</SelectItem>
-                          <SelectItem value="Noida">Noida</SelectItem>
-                        </SelectContent>
-                      </Select>
+                        onChange={(e) => handleSelectChange("location", e.target.value)}
+                        className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2"
+                     />
                     </div>
                   </div>
 
@@ -519,7 +504,7 @@ export default function RecruiterAuth() {
                       name="company_website"
                       value={formData.company_website}
                       onChange={handleInputChange}
-                      placeholder="https://www.company.com"
+                      placeholder="Enter your company's website,LinkedIn or any other social media link"
                     />
                   </div>
 
@@ -530,7 +515,7 @@ export default function RecruiterAuth() {
                       value={formData.company_description}
                       onChange={handleInputChange}
                       placeholder="Brief description of your company and what you do..."
-                      rows={3}
+                      rows={5}
                     />
                   </div>
                 </div>

@@ -177,7 +177,7 @@ export default function EditInternship() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="requirements" className="block mb-1 font-medium">
-              Requirements (comma separated)
+              Requirements
             </label>
             <Input
               id="requirements"
@@ -189,7 +189,7 @@ export default function EditInternship() {
           </div>
           <div>
             <label htmlFor="skills" className="block mb-1 font-medium">
-              Skills (comma separated)
+              Skills 
             </label>
             <Input
               id="skills"
@@ -202,7 +202,7 @@ export default function EditInternship() {
         </div>
         <div>
           <label htmlFor="benefits" className="block mb-1 font-medium">
-            Benefits (comma separated)
+            Benefits
           </label>
           <Input
             id="benefits"

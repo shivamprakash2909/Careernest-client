@@ -183,7 +183,7 @@ export default function EditJob() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label htmlFor="requirements" className="block mb-1 font-medium">
-              Requirements (comma separated)
+              Requirements 
             </label>
             <Input
               id="requirements"

@@ -131,12 +131,7 @@ export default function PostInternship() {
             Location
           </label>
           <select
-            id="location"
-            name="location"
-            value={form.location}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-            required
+            id="location" name="location" value={form.location} onChange={handleChange} className="w-full border rounded px-3 py-2" required
           >
             <option value="">Select location</option>
             {locations.map((loc) => (
@@ -170,7 +165,7 @@ export default function PostInternship() {
 
         <div>
           <label htmlFor="requirements" className="block mb-1 font-medium">
-            Requirements (comma separated)
+            Requirements 
           </label>
           <Input
             id="requirements"
@@ -182,7 +177,7 @@ export default function PostInternship() {
 
         <div>
           <label htmlFor="skills" className="block mb-1 font-medium">
-            Skills (comma separated)
+            Skills 
           </label>
           <Input
             id="skills"
