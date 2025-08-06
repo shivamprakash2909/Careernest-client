@@ -3,7 +3,7 @@ import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { MapPin, Clock, Building, Users, CheckCircle, ArrowLeft } from "lucide-react";
+import { MapPin, Clock, Building, Users, CheckCircle, ArrowLeft, IndianRupee } from "lucide-react";
 import { createPageUrl } from "../components/utils";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import ApplicationForm from "../components/jobs/ApplicationForm";
@@ -242,7 +242,10 @@ export default function JobDetails() {
                       <Clock className="w-4 h-4 mr-1" />
                       {job.job_type}
                     </span>
-                    <span className="flex items-center text-green-600 font-semibold">{displayCompensation()}</span>
+                    <span className="flex items-center text-green-600 font-semibold">
+                      <IndianRupee className="w-4 h-4 mr-1" />
+                      {displayCompensation()}
+                    </span>
                   </div>
                 </div>
               </div>
