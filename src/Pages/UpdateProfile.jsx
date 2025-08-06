@@ -236,10 +236,10 @@ export default function UpdateProfile() {
                 placeholder="State"
               />
               <Input
-                name="zip"
+                name="PIN"
                 value={profile.address?.zip || ""}
                 onChange={handleAddressChange}
-                placeholder="ZIP Code"
+                placeholder="PIN Code"
               />
             </div>
           </div>
