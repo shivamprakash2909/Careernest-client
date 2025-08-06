@@ -32,12 +32,12 @@ export default function ApplicationDetails({ application, onStatusUpdate }) {
       <div className="flex items-center gap-3 sm:gap-4">
         <Avatar className="w-12 h-12 sm:w-16 sm:h-16">
           <AvatarFallback className="bg-indigo-100 text-indigo-600 font-semibold text-sm sm:text-lg">
-            {getInitials(application.student_name)}
+            {getInitials(application.applicant_name)}
           </AvatarFallback>
         </Avatar>
         <div className="flex-1 min-w-0">
-          <h3 className="text-lg sm:text-xl font-bold truncate">{application.student_name}</h3>
-          <p className="text-sm sm:text-base text-gray-600 truncate">{application.position_title}</p>
+          <h3 className="text-lg sm:text-xl font-bold truncate">{application.applicant_name}</h3>
+          <p className="text-sm sm:text-base text-gray-600 truncate">{application.title || application.position}</p>
           <Badge className={`mt-1 sm:mt-2 text-xs sm:text-sm ${statusColors[application.status]} border`}>
             {application.status}
           </Badge>
@@ -68,12 +68,12 @@ export default function ApplicationDetails({ application, onStatusUpdate }) {
         <div className="space-y-2 text-xs sm:text-sm">
           <div className="flex items-center gap-2">
             <Mail className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />
-            <span className="truncate">{application.student_email}</span>
+            <span className="truncate">{application.applicant_email}</span>
           </div>
-          {application.student_phone && (
+          {application.phone && (
             <div className="flex items-center gap-2">
               <Phone className="w-3 h-3 sm:w-4 sm:h-4 text-gray-400 flex-shrink-0" />
-              <span>{application.student_phone}</span>
+              <span>{application.phone}</span>
             </div>
           )}
           {application.location && (
@@ -91,7 +91,7 @@ export default function ApplicationDetails({ application, onStatusUpdate }) {
         <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
           <div>
             <span className="text-gray-600">Position:</span>
-            <p className="font-medium truncate">{application.position_title}</p>
+            <p className="font-medium truncate">{application.title || application.position}</p>
           </div>
           <div>
             <span className="text-gray-600">Company:</span>
@@ -100,14 +100,12 @@ export default function ApplicationDetails({ application, onStatusUpdate }) {
           <div>
             <span className="text-gray-600">Type:</span>
             <Badge variant="outline" className="ml-2 text-xs">
-              {application.position_type}
+              {application.application_type}
             </Badge>
           </div>
           <div>
             <span className="text-gray-600">Applied Date:</span>
-            <p className="font-medium">
-              {format(new Date(application.applied_date || application.created_date), "MMM d, yyyy")}
-            </p>
+            <p className="font-medium">{format(new Date(application.created_date), "MMM d, yyyy")}</p>
           </div>
         </div>
       </div>
@@ -116,14 +114,18 @@ export default function ApplicationDetails({ application, onStatusUpdate }) {
       <div>
         <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Education & Experience</h4>
         <div className="space-y-2 sm:space-y-3 text-xs sm:text-sm">
-          <div>
-            <span className="text-gray-600">Experience:</span>
-            <p className="font-medium">{application.experience_years} years</p>
-          </div>
-          <div>
-            <span className="text-gray-600">Education:</span>
-            <p className="font-medium truncate">{application.education}</p>
-          </div>
+          {application.experience && (
+            <div>
+              <span className="text-gray-600">Experience:</span>
+              <p className="font-medium">{application.experience}</p>
+            </div>
+          )}
+          {application.course && (
+            <div>
+              <span className="text-gray-600">Course:</span>
+              <p className="font-medium truncate">{application.course}</p>
+            </div>
+          )}
           {application.university && (
             <div>
               <span className="text-gray-600">University:</span>
@@ -136,25 +138,21 @@ export default function ApplicationDetails({ application, onStatusUpdate }) {
               <p className="font-medium">{application.graduation_year}</p>
             </div>
           )}
-          {application.cgpa && (
+          {application.current_semester && (
             <div>
-              <span className="text-gray-600">CGPA:</span>
-              <p className="font-medium">{application.cgpa}/10</p>
+              <span className="text-gray-600">Current Semester:</span>
+              <p className="font-medium">{application.current_semester}</p>
             </div>
           )}
         </div>
       </div>
 
       {/* Skills */}
-      {application.skills && application.skills.length > 0 && (
+      {application.technical_skills && (
         <div>
-          <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Skills</h4>
-          <div className="flex flex-wrap gap-1 sm:gap-2">
-            {application.skills.map((skill, index) => (
-              <Badge key={index} variant="secondary" className="text-xs">
-                {skill}
-              </Badge>
-            ))}
+          <h4 className="font-semibold text-gray-900 mb-2 sm:mb-3 text-sm sm:text-base">Technical Skills</h4>
+          <div className="bg-gray-50 rounded-lg p-3 sm:p-4 text-xs sm:text-sm text-gray-700 border">
+            {application.technical_skills}
           </div>
         </div>
       )}
@@ -193,6 +191,32 @@ export default function ApplicationDetails({ application, onStatusUpdate }) {
             <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
             <span className="hidden sm:inline">View Portfolio</span>
             <span className="sm:hidden">Portfolio</span>
+            <ExternalLink className="w-2 h-2 sm:w-3 sm:h-3 ml-auto" />
+          </Button>
+        )}
+
+        {application.github_profile && (
+          <Button
+            variant="outline"
+            className="w-full justify-start text-xs sm:text-sm h-8 sm:h-10"
+            onClick={() => window.open(application.github_profile, "_blank")}
+          >
+            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+            <span className="hidden sm:inline">GitHub Profile</span>
+            <span className="sm:hidden">GitHub</span>
+            <ExternalLink className="w-2 h-2 sm:w-3 sm:h-3 ml-auto" />
+          </Button>
+        )}
+
+        {application.linkedin_profile && (
+          <Button
+            variant="outline"
+            className="w-full justify-start text-xs sm:text-sm h-8 sm:h-10"
+            onClick={() => window.open(application.linkedin_profile, "_blank")}
+          >
+            <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 mr-2" />
+            <span className="hidden sm:inline">LinkedIn Profile</span>
+            <span className="sm:hidden">LinkedIn</span>
             <ExternalLink className="w-2 h-2 sm:w-3 sm:h-3 ml-auto" />
           </Button>
         )}

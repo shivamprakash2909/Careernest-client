@@ -52,14 +52,14 @@ const ApplicationCard = ({ application, isSelected, onSelect, onStatusUpdate, is
               <div className="flex items-start gap-3 sm:gap-4 flex-1">
                 <Avatar className="w-10 h-10 sm:w-12 sm:h-12">
                   <AvatarFallback className="bg-indigo-100 text-indigo-600 font-semibold text-xs sm:text-sm">
-                    {getInitials(application.student_name)}
+                    {getInitials(application.applicant_name)}
                   </AvatarFallback>
                 </Avatar>
 
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2 mb-1">
                     <h3 className="font-semibold text-gray-900 truncate text-sm sm:text-base">
-                      {application.student_name}
+                      {application.applicant_name}
                     </h3>
                     <Badge className={`text-xs ${statusColors[application.status]} border`}>{application.status}</Badge>
                   </div>
@@ -67,12 +67,12 @@ const ApplicationCard = ({ application, isSelected, onSelect, onStatusUpdate, is
                   <div className="space-y-1 text-xs sm:text-sm text-gray-600">
                     <div className="flex items-center gap-2">
                       <Briefcase className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                      <span className="font-medium truncate">{application.position_title}</span>
+                      <span className="font-medium truncate">{application.title || application.position}</span>
                     </div>
 
                     <div className="flex items-center gap-2">
                       <Mail className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                      <span className="truncate">{application.student_email}</span>
+                      <span className="truncate">{application.applicant_email}</span>
                     </div>
                   </div>
                 </div>

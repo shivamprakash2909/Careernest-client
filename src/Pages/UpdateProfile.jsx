@@ -201,21 +201,11 @@ export default function UpdateProfile() {
               <Input name="name" value={profile.name} onChange={handleChange} placeholder="Full Name" />
               <Input name="email" value={profile.email} onChange={handleChange} placeholder="Email" disabled />
               <Input name="phone" value={profile.phone} onChange={handleChange} placeholder="Phone Number" />
-              <Select value={profile.gender} onValueChange={(val) => handleSelectChange("gender", val)}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Male">Male</SelectItem>
-                  <SelectItem value="Female">Female</SelectItem>
-                  <SelectItem value="Other">Other</SelectItem>
-                </SelectContent>
-              </Select>
             </div>
           </div>
           {/* Address Info */}
           <div>
-            <h2 className="text-xl font-semibold text-blue-600 mb-2">Address</h2>
+            <h2 className="text-xl font-semibold text-blue-600 mb-2">Full Address</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 name="street"
@@ -239,7 +229,7 @@ export default function UpdateProfile() {
                 name="zip"
                 value={profile.address?.zip || ""}
                 onChange={handleAddressChange}
-                placeholder="ZIP Code"
+                placeholder="PIN/ZIP Code"
               />
             </div>
           </div>
@@ -252,37 +242,70 @@ export default function UpdateProfile() {
                   name="company_name"
                   value={profile.company_name}
                   onChange={handleChange}
+                  required
                   placeholder="Company Name"
                 />
                 <Input
                   name="company_size"
                   value={profile.company_size}
                   onChange={handleChange}
+                  required
                   placeholder="Company Size"
                 />
-                <Input name="industry" value={profile.industry} onChange={handleChange} placeholder="Industry" />
-                <Input name="job_title" value={profile.job_title} onChange={handleChange} placeholder="Job Title" />
+                <Input
+                  name="industry"
+                  value={profile.industry}
+                  onChange={handleChange}
+                  placeholder="Industry"
+                  required
+                />
+                <Input
+                  name="job_title"
+                  value={profile.job_title}
+                  onChange={handleChange}
+                  placeholder="Job Title"
+                  required
+                />
                 <Input
                   name="company_website"
                   value={profile.company_website}
                   onChange={handleChange}
+                  required
                   placeholder="Company Website"
                 />
                 <Input
                   name="company_description"
                   value={profile.company_description}
                   onChange={handleChange}
+                  required
                   placeholder="Company Description"
                 />
-                <Input name="location" value={profile.location} onChange={handleChange} placeholder="Location" />
+                <Input
+                  name="location"
+                  value={profile.location}
+                  onChange={handleChange}
+                  required
+                  placeholder="Location"
+                />
               </div>
             </>
           ) : (
             <>
               <div>
+                <Select value={profile.gender} onValueChange={(val) => handleSelectChange("gender", val)}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Gender" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="Male">Male</SelectItem>
+                    <SelectItem value="Female">Female</SelectItem>
+                    <SelectItem value="Other">Other</SelectItem>
+                  </SelectContent>
+                </Select>
                 <h2 className="text-xl font-semibold text-blue-600 mb-2">College Details</h2>
                 <Input
                   name="collegeName"
+                  required
                   value={profile.collegeName}
                   onChange={handleChange}
                   placeholder="College Name"
@@ -342,14 +365,9 @@ export default function UpdateProfile() {
                   <Input
                     name="linkedin"
                     value={profile.linkedin}
+                    required
                     onChange={handleChange}
                     placeholder="LinkedIn Profile"
-                  />
-                  <Input
-                    name="facebook"
-                    value={profile.facebook}
-                    onChange={handleChange}
-                    placeholder="Facebook Profile"
                   />
                   <Input
                     name="instagram"
@@ -357,7 +375,6 @@ export default function UpdateProfile() {
                     onChange={handleChange}
                     placeholder="Instagram Profile"
                   />
-                  <Input name="twitter" value={profile.twitter} onChange={handleChange} placeholder="Twitter Profile" />
                   <Input
                     name="portfolio"
                     value={profile.portfolio}
@@ -376,13 +393,8 @@ export default function UpdateProfile() {
                     name="linkedin"
                     value={profile.linkedin}
                     onChange={handleChange}
+                    required
                     placeholder="LinkedIn Profile"
-                  />
-                  <Input
-                    name="facebook"
-                    value={profile.facebook}
-                    onChange={handleChange}
-                    placeholder="Facebook Profile"
                   />
                   <Input
                     name="instagram"
@@ -390,24 +402,46 @@ export default function UpdateProfile() {
                     onChange={handleChange}
                     placeholder="Instagram Profile"
                   />
-                  <Input name="twitter" value={profile.twitter} onChange={handleChange} placeholder="Twitter Profile" />
                 </div>
               </div>
             </>
           )}
           {/* About Me */}
-          <div>
-            <h2 className="text-xl font-semibold text-blue-600 mb-2">About Me</h2>
-            <textarea
-              name="about"
-              value={profile.about}
-              onChange={handleChange}
-              rows={5}
-              className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Write about yourself (max 200 characters)"
-              maxLength={200}
-            />
-          </div>
+          {userRole === "student" ? (
+            <>
+              <div>
+                <h2 className="text-xl font-semibold text-blue-600 mb-2">About Me</h2>
+                <textarea
+                  name="about"
+                  required
+                  value={profile.about}
+                  onChange={handleChange}
+                  rows={5}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Write about yourself (max 200 characters)"
+                  maxLength={200}
+                />
+              </div>
+            </>
+          ) : (
+            <>
+              <div>
+                <h2 className="text-xl font-semibold text-blue-600 mb-2">About Company</h2>
+                <textarea
+                  name="about"
+                  required
+                  value={profile.about}
+                  onChange={handleChange}
+                  rows={5}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Write about yourself (max 500 characters)"
+                  minLength={50}
+                  maxLength={500}
+                />
+              </div>
+            </>
+          )}
+
           <Button
             type="submit"
             className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700"

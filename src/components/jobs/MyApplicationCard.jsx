@@ -32,24 +32,23 @@ export default function MyApplicationCard({ app }) {
   if (!app) return null;
 
   const getTitle = () => {
-    return app.title || 'Position Title Not Available';
+    return app.title || "Position Title Not Available";
   };
 
   const getPosition = () => {
-    return app.position || (app.application_type === 'job' ? 'Job Position' : 'Internship Position');
+    return app.position || (app.application_type === "job" ? "Job Position" : "Internship Position");
   };
 
   const getDetails = () => {
-    if (app.application_type === 'job' && app.salary) {
+    if (app.application_type === "job" && app.salary) {
       return `Salary: ${app.salary}`;
     }
-    if (app.application_type === 'internship') {
-      return [
-        app.stipend && `Stipend: ${app.stipend}`,
-        app.duration && `Duration: ${app.duration}`
-      ].filter(Boolean).join(' • ');
+    if (app.application_type === "internship") {
+      return [app.stipend && `Stipend: ${app.stipend}`, app.duration && `Duration: ${app.duration}`]
+        .filter(Boolean)
+        .join(" • ");
     }
-    return '';
+    return "";
   };
 
   return (
@@ -60,21 +59,17 @@ export default function MyApplicationCard({ app }) {
             src={app.company_logo || "/vite.svg"}
             alt="Company Logo"
             className="w-14 h-14 object-cover rounded-md border"
-            onError={(e) => e.target.src = "/vite.svg"}
+            onError={(e) => (e.target.src = "/vite.svg")}
           />
           <div>
-            <CardTitle className="text-lg font-semibold text-blue-900">
-              {getTitle()}
-            </CardTitle>
+            <CardTitle className="text-lg font-semibold text-blue-900">{getTitle()}</CardTitle>
             <p className="text-sm text-gray-600">{getPosition()}</p>
-            <p className="text-sm text-muted-foreground">{app.company_name || 'Company Name Not Available'}</p>
+            <p className="text-sm text-muted-foreground">{app.company_name || "Company Name Not Available"}</p>
             <p className="text-sm text-gray-500 mt-1">{app.location}</p>
-            {getDetails() && (
-              <p className="text-sm text-gray-500">{getDetails()}</p>
-            )}
+            {getDetails() && <p className="text-sm text-gray-500">{getDetails()}</p>}
             <div className="flex items-center gap-2 mt-2">
-              <Badge variant="outline">{app.application_type === 'job' ? 'Job' : 'Internship'}</Badge>
-              <Badge className={getStatusColor(app.status || 'pending')}>{app.status || 'Pending'}</Badge>
+              <Badge variant="outline">{app.application_type === "job" ? "Job" : "Internship"}</Badge>
+              <Badge className={getStatusColor(app.status || "pending")}>{app.status || "Pending"}</Badge>
             </div>
             {app.created_date && (
               <p className="text-xs text-gray-500 flex items-center gap-1 mt-1">
@@ -111,14 +106,14 @@ export default function MyApplicationCard({ app }) {
           )}
         </div>
 
-        {app.cover_letter && (
+        {/* {app.cover_letter && (
           <div>
             <p className="text-sm font-medium text-gray-800 mt-2 mb-1">Cover Letter:</p>
             <p className="whitespace-pre-line border-l-4 pl-3 border-blue-200 italic text-gray-600 bg-blue-50 rounded-md py-2">
               {app.cover_letter}
             </p>
           </div>
-        )}
+        )} */}
 
         {app.resume_url ? (
           <a
