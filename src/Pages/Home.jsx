@@ -4,7 +4,7 @@ import { createPageUrl } from "../components/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Briefcase, Users, TrendingUp, Building, ArrowRight, IndianRupee } from "lucide-react";
+import { Search, MapPin, Briefcase, Users, TrendingUp, Building, ArrowRight } from "lucide-react";
 import { axiosInstance } from "@/lib/axios";
 
 export default function Home() {
@@ -244,7 +244,6 @@ export default function Home() {
                         </div>
                         <div className="flex items-center justify-between">
                           <span className="text-green-600 font-semibold flex items-center">
-                            <IndianRupee className="w-4 h-4 mr-1" />
                             {job.salary_range || job.salary || "Not specified"}
                           </span>
                           <Link to={`/job-details/${job._id}`}>

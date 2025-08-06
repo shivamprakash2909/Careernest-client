@@ -4,7 +4,7 @@ import { createPageUrl } from "../components/utils";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Search, MapPin, Briefcase, Users, TrendingUp, Building, ArrowRight, IndianRupee } from "lucide-react";
+import { Search, MapPin, Briefcase, Users, TrendingUp, Building, ArrowRight } from "lucide-react";
 
 export default function Home() {
   const featuredJobs = [
@@ -195,10 +195,7 @@ export default function Home() {
                         <Badge variant="secondary">{job.type}</Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="text-green-600 font-semibold flex items-center">
-                          <IndianRupee className="w-4 h-4 mr-1" />
-                          {job.salary}
-                        </span>
+                        <span className="text-green-600 font-semibold flex items-center">{job.salary}</span>
                         <Link to={createPageUrl("Internships")}>
                           <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                             Apply Now
@@ -259,8 +256,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      
     </div>
   );
 }

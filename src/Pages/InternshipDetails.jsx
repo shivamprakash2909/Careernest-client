@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   MapPin,
-  IndianRupee,
   Clock,
   Building,
   Users,
@@ -232,7 +231,6 @@ export default function InternshipDetails() {
                     <span className="text-gray-700">{internship.duration}</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <IndianRupee className="w-5 h-5 text-green-500" />
                     <span className="text-green-600 font-semibold">{formatStipend(internship.stipend)}</span>
                   </div>
                   <div className="flex items-center space-x-2">

@@ -4,7 +4,7 @@ import { createPageUrl } from "../utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, IndianRupee, Building, Users, AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { MapPin, Clock, Building, Users, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 
 export default function JobCard({ job, isInternship = false }) {
   // Check if user is a recruiter
@@ -88,16 +88,10 @@ export default function JobCard({ job, isInternship = false }) {
   // Display stipend if present, otherwise salary
   const displayCompensation = () => {
     if (isInternship && job.stipend) {
-      return (
-        <span className="flex items-center text-green-600 font-semibold">
-          <IndianRupee className="w-4 h-4 mr-1" />
-          {formatStipend(job.stipend)}
-        </span>
-      );
+      return <span className="flex items-center text-green-600 font-semibold">{formatStipend(job.stipend)}</span>;
     }
     return (
       <span className="flex items-center text-green-600 font-semibold">
-        <IndianRupee className="w-4 h-4 mr-1" />
         {formatSalary(job.salary_min, job.salary_max)}
       </span>
     );
@@ -132,7 +126,6 @@ export default function JobCard({ job, isInternship = false }) {
           </div>
           <div className="text-right">
             <div className="flex items-center text-green-600 font-semibold mb-2">
-              <IndianRupee className="w-4 h-4 mr-1" />
               {isInternship && job.stipend ? (
                 <span>{formatStipend(job.stipend)}</span>
               ) : (

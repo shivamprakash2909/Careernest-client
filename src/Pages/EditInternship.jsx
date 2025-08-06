@@ -115,13 +115,16 @@ export default function EditInternship() {
             <label htmlFor="stipend" className="block mb-1 font-medium">
               Stipend
             </label>
-            <Input
+            <input
               id="stipend"
               name="stipend"
+              type="number"
+              min="0"
               value={form.stipend}
               onChange={handleChange}
-              className="w-full"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="e.g., ₹10,000/month"
+              required
             />
           </div>
         </div>
@@ -130,21 +133,15 @@ export default function EditInternship() {
             <label htmlFor="duration" className="block mb-1 font-medium">
               Duration
             </label>
-            <select
+            <Input
+              type="text"
               id="duration"
               name="duration"
+              className="w-full border rounded px-3 py-2"
               value={form.duration}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
               required
-            >
-              <option value="">Select duration</option>
-              {durations.map((duration) => (
-                <option key={duration} value={duration}>
-                  {duration}
-                </option>
-              ))}
-            </select>
+            />
           </div>
           <div>
             <label htmlFor="company" className="block mb-1 font-medium">
@@ -189,7 +186,7 @@ export default function EditInternship() {
           </div>
           <div>
             <label htmlFor="skills" className="block mb-1 font-medium">
-              Skills 
+              Skills
             </label>
             <Input
               id="skills"

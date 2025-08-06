@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Search, MapPin, Briefcase, Clock, IndianRupee, Filter, Building, GraduationCap, Calendar } from "lucide-react";
+import { Search, Briefcase, Filter, GraduationCap, Calendar } from "lucide-react";
 import JobCard from "../components/jobs/JobCard";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import { axiosInstance } from "@/lib/axios";
@@ -108,7 +108,6 @@ export default function Jobs() {
                 <span>Flexible Duration</span>
               </div>
               <div className="flex items-center space-x-2">
-                <IndianRupee className="w-5 h-5" />
                 <span>Paid Opportunities</span>
               </div>
             </div>
