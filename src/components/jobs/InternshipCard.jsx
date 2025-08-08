@@ -114,7 +114,7 @@ export default function JobCard({ job, isInternship = false }) {
     };
 
     return (
-      <span className="flex items-center text-green-600 font-semibold">
+      <span className="flex items-center text-green-600 font-semibold text-sm sm:text-base">
         {formatStipendRange(job.stipend_amount_min, job.stipend_amount_max, job.stipend_type)}
       </span>
     );
@@ -130,45 +130,46 @@ export default function JobCard({ job, isInternship = false }) {
   return (
     <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500">
       <CardHeader className="pb-3">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
-          <div className="flex items-start space-x-4 flex-1">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 sm:gap-4">
+          <div className="flex items-start space-x-3 sm:space-x-4 flex-1">
             {job.company_logo && (
               <img
                 src={job.company_logo}
                 alt={job.company}
-                className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover flex-shrink-0"
               />
             )}
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-lg sm:text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+              <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-2 line-clamp-2">
                 {job.title}
               </CardTitle>
               <div className="flex items-center space-x-2 text-gray-600 mb-2">
-                <Building className="w-4 h-4 flex-shrink-0" />
-                <span className="font-medium truncate">{job.company}</span>
+                <Building className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="font-medium text-sm sm:text-base truncate">{job.company}</span>
               </div>
 
               {/* Location and Duration */}
-              <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-3">
+              <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600 mb-3">
                 <span className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                   <span className="truncate">{job.location}</span>
                 </span>
                 <span className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1 flex-shrink-0" />
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                   <span>{job.duration || job.job_type}</span>
                 </span>
                 {job.start_date && (
                   <span className="flex items-center">
-                    <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
-                    <span>Starts: {new Date(job.start_date).toLocaleDateString()}</span>
+                    <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
+                    <span className="hidden sm:inline">Starts: {new Date(job.start_date).toLocaleDateString()}</span>
+                    <span className="sm:hidden">Starts: {new Date(job.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                   </span>
                 )}
               </div>
 
               {/* Stipend Display */}
-              <div className="flex items-center text-green-600 font-semibold mb-2">
-                <IndianRupee className="w-4 h-4 mr-1 flex-shrink-0" />
+              <div className="flex items-center text-green-600 font-semibold mb-2 text-sm sm:text-base">
+                <IndianRupee className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                 {displayCompensation()}
               </div>
             </div>
@@ -199,66 +200,66 @@ export default function JobCard({ job, isInternship = false }) {
 
       <CardContent className="pt-0">
         {/* Badges Section */}
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
           {job.experience_level && (
             <Badge className={`text-xs ${getExperienceBadgeColor(job.experience_level)}`}>{job.experience_level}</Badge>
           )}
           {job.education_level && job.education_level !== "Any" && (
             <Badge variant="outline" className="text-xs text-purple-600 border-purple-600">
               <GraduationCap className="w-3 h-3 mr-1" />
-              {job.education_level}
+              <span className="hidden sm:inline">{job.education_level}</span>
+              <span className="sm:hidden">Edu</span>
             </Badge>
           )}
           {job.remote_option && (
             <Badge variant="outline" className="text-xs text-green-600 border-green-600">
-              Remote Available
+              <span className="hidden sm:inline">Remote Available</span>
+              <span className="sm:hidden">Remote</span>
             </Badge>
           )}
           {job.work_from_home && (
             <Badge variant="outline" className="text-xs text-blue-600 border-blue-600">
-              Work from Office
+              <span className="hidden sm:inline">Work from Office</span>
+              <span className="sm:hidden">Office</span>
             </Badge>
           )}
-          {/* {getSkillsText().trim() !== "" && (
-            <Badge variant="outline" className="text-xs text-blue-600 border-blue-600">
-              <BookOpen className="w-3 h-3 mr-1" />
-              Skills Required
-            </Badge>
-          )} */}
         </div>
 
         {/* Description */}
         {job.description && (
-          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{truncateText(job.description, 150)}</p>
+          <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{truncateText(job.description, 150)}</p>
         )}
 
         {/* Key Information Preview */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4 text-xs sm:text-sm">
           {job.responsibilities && (
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className="bg-gray-50 p-2 sm:p-3 rounded-lg">
               <h4 className="font-semibold text-gray-700 mb-1 flex items-center">
-                <CheckCircle className="w-4 h-4 mr-1" />
-                Key Responsibilities
+                <CheckCircle className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Key Responsibilities</span>
+                <span className="sm:hidden">Responsibilities</span>
               </h4>
               <p className="text-gray-600 line-clamp-2">{truncateText(job.responsibilities, 80)}</p>
             </div>
           )}
 
           {job.requirements && (
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className="bg-gray-50 p-2 sm:p-3 rounded-lg">
               <h4 className="font-semibold text-gray-700 mb-1 flex items-center">
-                <GraduationCap className="w-4 h-4 mr-1" />
-                Requirements
+                <GraduationCap className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Requirements</span>
+                <span className="sm:hidden">Reqs</span>
               </h4>
               <p className="text-gray-600 line-clamp-2">{truncateText(job.requirements, 80)}</p>
             </div>
           )}
 
           {getSkillsText().trim() !== "" && (
-            <div className="bg-gray-50 p-3 rounded-lg">
+            <div className="bg-gray-50 p-2 sm:p-3 rounded-lg">
               <h4 className="font-semibold text-gray-700 mb-1 flex items-center">
-                <BookOpen className="w-4 h-4 mr-1" />
-                Skills Required
+                <BookOpen className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Skills Required</span>
+                <span className="sm:hidden">Skills</span>
               </h4>
               <p className="text-gray-600 line-clamp-2">{truncateText(getSkillsText(), 80)}</p>
             </div>
@@ -267,41 +268,43 @@ export default function JobCard({ job, isInternship = false }) {
 
         {/* Bottom Section */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-          <div className="flex items-center space-x-4 text-sm text-gray-500">
+          <div className="flex items-center space-x-3 sm:space-x-4 text-xs sm:text-sm text-gray-500">
             {job.perks && (
               <span className="flex items-center">
-                <Users className="w-4 h-4 mr-1" />
-                Perks Available
+                <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">Perks Available</span>
+                <span className="sm:hidden">Perks</span>
               </span>
             )}
             {job.number_of_openings && job.number_of_openings > 1 && (
               <span className="flex items-center">
-                <User className="w-4 h-4 mr-1" />
-                {job.number_of_openings} openings
+                <User className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">{job.number_of_openings} openings</span>
+                <span className="sm:hidden">{job.number_of_openings} open</span>
               </span>
             )}
           </div>
 
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Link to={`/p/internship-details/${job._id}`} className="w-full sm:w-auto">
-              <Button variant="outline" size="sm" className="w-full sm:w-auto">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
                 View Details
               </Button>
             </Link>
             {(job.approval_status === "approved" || job.status === "approved") && (
               <Link to={`/p/internship-details/${job._id}?apply=true`} className="w-full sm:w-auto">
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm">
                   {isInternship ? "Apply for Internship" : "Apply Now"}
                 </Button>
               </Link>
             )}
             {(job.approval_status === "pending" || job.status === "pending") && (
-              <Button size="sm" variant="outline" disabled className="text-yellow-600 w-full sm:w-auto">
+              <Button size="sm" variant="outline" disabled className="text-yellow-600 w-full sm:w-auto text-xs sm:text-sm">
                 Pending Approval
               </Button>
             )}
             {(job.approval_status === "rejected" || job.status === "rejected") && (
-              <Button size="sm" variant="outline" disabled className="text-red-600 w-full sm:w-auto">
+              <Button size="sm" variant="outline" disabled className="text-red-600 w-full sm:w-auto text-xs sm:text-sm">
                 Rejected
               </Button>
             )}

@@ -93,35 +93,39 @@ export default function Jobs() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-16">
+      <section className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-8 sm:py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-3xl md:text-5xl font-bold mb-4">Find Your Perfect Volunteer Jobs</h1>
-            <p className="text-xl text-blue-100 mb-8">Currently {jobs.length}+ opportunities available</p>
-            <div className="flex items-center justify-center space-x-6 text-green-100">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2">
+              Find Your Perfect Volunteer Jobs
+            </h1>
+            <p className="text-lg sm:text-xl text-blue-100 mb-6 sm:mb-8 px-2">
+              Currently {jobs.length}+ opportunities available
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 lg:space-x-6 text-green-100 px-4">
               <div className="flex items-center space-x-2">
-                <GraduationCap className="w-5 h-5" />
-                <span>Student Friendly</span>
+                <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-sm sm:text-base">Student Friendly</span>
               </div>
               <div className="flex items-center space-x-2">
-                <Calendar className="w-5 h-5" />
-                <span>Flexible Duration</span>
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="text-sm sm:text-base">Flexible Duration</span>
               </div>
               <div className="flex items-center space-x-2">
-                <span>Paid Opportunities</span>
+                <span className="text-sm sm:text-base">Paid Opportunities</span>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Recruiter Notice */}
         {user && user.role === "recruiter" && (
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 sm:p-4 mb-4 sm:mb-6">
+            <div className="flex items-start sm:items-center">
+              <div className="flex-shrink-0 mt-0.5 sm:mt-0">
+                <svg className="h-4 w-4 sm:h-5 sm:w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
                   <path
                     fillRule="evenodd"
                     d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
@@ -129,9 +133,9 @@ export default function Jobs() {
                   />
                 </svg>
               </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-blue-800">Recruiter Dashboard</h3>
-                <div className="mt-2 text-sm text-blue-700">
+              <div className="ml-2 sm:ml-3">
+                <h3 className="text-xs sm:text-sm font-medium text-blue-800">Recruiter Dashboard</h3>
+                <div className="mt-1 sm:mt-2 text-xs sm:text-sm text-blue-700">
                   <p>You can see all your posted jobs here, including pending, approved, and rejected ones.</p>
                   <p className="mt-1">Only approved jobs are visible to students.</p>
                 </div>
@@ -141,20 +145,20 @@ export default function Jobs() {
         )}
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div className="lg:col-span-2 relative">
-              <Search className="absolute left-3 top-3 w-5 h-5 text-gray-400" />
+        <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
+            <div className="sm:col-span-2 lg:col-span-2 relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 sm:w-5 sm:h-5 text-gray-400" />
               <Input
                 placeholder="Search jobs or companies..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-10"
+                className="pl-10 text-sm sm:text-base"
               />
             </div>
 
             <Select value={locationFilter} onValueChange={setLocationFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="text-sm sm:text-base">
                 <SelectValue placeholder="Location" />
               </SelectTrigger>
               <SelectContent>
@@ -169,7 +173,7 @@ export default function Jobs() {
             </Select>
 
             <Select value={jobTypeFilter} onValueChange={setJobTypeFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="text-sm sm:text-base">
                 <SelectValue placeholder="Job Type" />
               </SelectTrigger>
               <SelectContent>
@@ -181,7 +185,7 @@ export default function Jobs() {
             </Select>
 
             <Select value={experienceFilter} onValueChange={setExperienceFilter}>
-              <SelectTrigger>
+              <SelectTrigger className="text-sm sm:text-base">
                 <SelectValue placeholder="Experience" />
               </SelectTrigger>
               <SelectContent>
@@ -196,17 +200,17 @@ export default function Jobs() {
         </div>
 
         {/* Results Summary */}
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 sm:mb-6 space-y-2 sm:space-y-0">
           <div className="flex items-center space-x-2">
-            <Filter className="w-5 h-5 text-gray-500" />
-            <span className="text-gray-700">
+            <Filter className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
+            <span className="text-sm sm:text-base text-gray-700">
               Showing {filteredJobs.length} of {jobs.length} jobs
             </span>
           </div>
-          <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-500">Sort by:</span>
-            <Select defaultValue="newest">
-              <SelectTrigger className="w-32">
+          <div className="flex items-center space-x-2 w-full sm:w-auto">
+            <span className="text-xs sm:text-sm text-gray-500">Sort by:</span>
+            <Select defaultValue="newest" className="flex-1 sm:flex-none">
+              <SelectTrigger className="w-full sm:w-32 text-sm sm:text-base">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -219,16 +223,16 @@ export default function Jobs() {
         </div>
 
         {/* Job Listings */}
-        <div className="grid gap-6">
+        <div className="grid gap-4 sm:gap-6">
           {filteredJobs.length > 0 ? (
             filteredJobs.map((job) => (
               <JobCard key={job._id} job={job} isInternship={job.job_type === "Internship" || !!job.stipend} />
             ))
           ) : (
-            <div className="text-center py-12">
-              <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-600 mb-2">No jobs found</h3>
-              <p className="text-gray-500">Try adjusting your filters or search terms</p>
+            <div className="text-center py-8 sm:py-12 px-4">
+              <Briefcase className="w-12 h-12 sm:w-16 sm:h-16 text-gray-300 mx-auto mb-3 sm:mb-4" />
+              <h3 className="text-lg sm:text-xl font-semibold text-gray-600 mb-2">No jobs found</h3>
+              <p className="text-sm sm:text-base text-gray-500 mb-4">Try adjusting your filters or search terms</p>
               <Button
                 onClick={() => {
                   setSearchTerm("");
@@ -236,7 +240,7 @@ export default function Jobs() {
                   setJobTypeFilter("all");
                   setExperienceFilter("all");
                 }}
-                className="mt-4"
+                className="mt-2 sm:mt-4 text-sm sm:text-base"
               >
                 Clear Filters
               </Button>

@@ -18,7 +18,7 @@ export default function JobCard({ job, isInternship = false }) {
       approved: "bg-green-100 text-green-800",
       rejected: "bg-red-100 text-red-800",
     };
-    return <Badge className={variants[status]}>{status}</Badge>;
+    return <Badge className={`text-xs ${variants[status]}`}>{status}</Badge>;
   };
 
   const formatSalary = (min, max, type = "Per Annum") => {
@@ -89,10 +89,10 @@ export default function JobCard({ job, isInternship = false }) {
   // Display stipend if present, otherwise salary
   const displayCompensation = () => {
     if (isInternship && job.stipend) {
-      return <span className="flex items-center text-green-600 font-semibold">{formatStipend(job.stipend)}</span>;
+      return <span className="flex items-center text-green-600 font-semibold text-xs sm:text-sm">{formatStipend(job.stipend)}</span>;
     }
     return (
-      <span className="flex items-center text-green-600 font-semibold">
+      <span className="flex items-center text-green-600 font-semibold text-xs sm:text-sm">
         {formatSalary(job.salary_min, job.salary_max, job.salary_type)}
       </span>
     );
@@ -100,51 +100,64 @@ export default function JobCard({ job, isInternship = false }) {
 
   return (
     <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500">
-      <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start space-x-4">
+      <CardHeader className="pb-2 sm:pb-3">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-2 sm:gap-3 lg:gap-4">
+          <div className="flex items-start space-x-2 sm:space-x-3 lg:space-x-4 flex-1">
             {job.company_logo && (
-              <img src={job.company_logo} alt={job.company} className="w-12 h-12 rounded-lg object-cover" />
+              <img src={job.company_logo} alt={job.company} className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg object-cover flex-shrink-0" />
             )}
-            <div>
-              <CardTitle className="text-xl font-bold text-gray-900 mb-1">{job.title}</CardTitle>
-              <div className="flex items-center space-x-2 text-gray-600 mb-2">
-                <Building className="w-4 h-4" />
-                <span className="font-medium">{job.company}</span>
+            <div className="flex-1 min-w-0">
+              <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2 leading-tight">{job.title}</CardTitle>
+              <div className="flex items-center space-x-2 text-gray-600 mb-1 sm:mb-2">
+                <Building className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
+                <span className="font-medium text-xs sm:text-sm lg:text-base truncate">{job.company}</span>
               </div>
-              <div className="flex flex-wrap gap-4 text-gray-600">
-                <span className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  {job.location}
+              <div className="flex flex-wrap gap-1 sm:gap-2 lg:gap-4 text-gray-600 text-xs sm:text-sm">
+                <span className="flex items-center min-w-0">
+                  <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
+                  <span className="truncate">{job.location}</span>
                 </span>
                 <span className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
-                  {job.job_type}
+                  <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
+                  <span className="hidden sm:inline">{job.job_type}</span>
+                  <span className="sm:hidden">{job.job_type === "Full-time" ? "FT" : job.job_type === "Part-time" ? "PT" : job.job_type}</span>
                 </span>
                 {displayCompensation()}
               </div>
             </div>
           </div>
-          <div className="text-right">
-            <div className="flex items-center text-green-600 font-semibold mb-2">
+          <div className="text-right flex flex-col items-end gap-1 sm:gap-2">
+            <div className="flex items-center text-green-600 font-semibold mb-1 sm:mb-2 text-xs sm:text-sm lg:text-base">
               {isInternship && job.stipend ? (
-                <span>{formatStipend(job.stipend)}</span>
+                <span className="text-right">{formatStipend(job.stipend)}</span>
               ) : (
-                <span>{formatSalary(job.salary_min, job.salary_max, job.salary_type)}</span>
+                <span className="text-right">{formatSalary(job.salary_min, job.salary_max, job.salary_type)}</span>
               )}
             </div>
-            <div className="flex items-center text-gray-500 text-sm">
-              <Clock className="w-4 h-4 mr-1" />
-              <span>Posted recently</span>
+            <div className="flex items-center text-gray-500 text-xs">
+              <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Posted recently</span>
+              <span className="sm:hidden">Recent</span>
             </div>
           </div>
         </div>
       </CardHeader>
 
       <CardContent className="pt-0">
-        <div className="flex flex-wrap gap-2 mb-4">
-          <Badge className={getExperienceBadgeColor(job.experience_level)}>{job.experience_level}</Badge>
-          <Badge variant="secondary">{job.job_type}</Badge>
+        <div className="flex flex-wrap gap-1 sm:gap-2 mb-2 sm:mb-3 lg:mb-4">
+          <Badge className={`text-xs ${getExperienceBadgeColor(job.experience_level)}`}>
+            <span className="hidden sm:inline">{job.experience_level}</span>
+            <span className="sm:hidden">
+              {job.experience_level === "Entry Level" ? "Entry" : 
+               job.experience_level === "Mid Level" ? "Mid" : 
+               job.experience_level === "Senior Level" ? "Senior" : 
+               job.experience_level === "Executive" ? "Exec" : job.experience_level}
+            </span>
+          </Badge>
+          <Badge variant="secondary" className="text-xs">
+            <span className="hidden sm:inline">{job.job_type}</span>
+            <span className="sm:hidden">{job.job_type === "Full-time" ? "FT" : job.job_type === "Part-time" ? "PT" : job.job_type}</span>
+          </Badge>
           {isMyJob && (
             <div className="flex items-center gap-1">
               {(job.approval_status === "pending" || job.status === "pending") && <AlertCircle className="w-3 h-3" />}
@@ -154,52 +167,65 @@ export default function JobCard({ job, isInternship = false }) {
             </div>
           )}
           {job.skills &&
-            job.skills.slice(0, 3).map((skill, index) => (
-              <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">
-                {skill}
+            job.skills.slice(0, 2).map((skill, index) => (
+              <Badge key={index} variant="outline" className="text-xs text-blue-600 border-blue-600">
+                <span className="hidden sm:inline">{skill}</span>
+                <span className="sm:hidden">{skill.length > 8 ? skill.substring(0, 8) + "..." : skill}</span>
               </Badge>
             ))}
-          {job.skills && job.skills.length > 3 && (
-            <Badge variant="outline" className="text-gray-500">
-              +{job.skills.length - 3} more
+          {job.skills && job.skills.length > 2 && (
+            <Badge variant="outline" className="text-xs text-gray-500">
+              <span className="hidden sm:inline">+{job.skills.length - 2} more</span>
+              <span className="sm:hidden">+{job.skills.length - 2}</span>
             </Badge>
           )}
         </div>
 
         {job.description && (
-          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{job.description.substring(0, 150)}...</p>
+          <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3 lg:mb-4 line-clamp-2 leading-relaxed">
+            {job.description.length > 120 ? job.description.substring(0, 120) + "..." : job.description}
+          </p>
         )}
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4 text-sm text-gray-500">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3">
+          <div className="flex items-center space-x-2 sm:space-x-3 lg:space-x-4 text-xs sm:text-sm text-gray-500">
             {job.benefits && job.benefits.length > 0 && (
               <span className="flex items-center">
-                <Users className="w-4 h-4 mr-1" />
-                {job.benefits.length} benefits
+                <Users className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+                <span className="hidden sm:inline">{job.benefits.length} benefits</span>
+                <span className="sm:hidden">{job.benefits.length} perks</span>
               </span>
             )}
           </div>
-          <div className="flex space-x-2">
-            <Link to={`/p/job-details/${job._id}`}>
-              <Button variant="outline" size="sm">
-                View Details
+          <div className="flex flex-col sm:flex-row gap-1 sm:gap-2 w-full sm:w-auto">
+            <Link to={`/p/job-details/${job._id}`} className="w-full sm:w-auto">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                <span className="hidden sm:inline">View Details</span>
+                <span className="sm:hidden">Details</span>
               </Button>
             </Link>
             {(job.approval_status === "approved" || job.status === "approved") && (
-              <Link to={`/p/job-details/${job._id}?apply=true`}>
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                  {isInternship ? "Apply for Job" : "Apply Now"}
+              <Link to={`/p/job-details/${job._id}?apply=true`} className="w-full sm:w-auto">
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                  {isInternship ? (
+                    <span className="hidden sm:inline">Apply for Job</span>
+                  ) : (
+                    <span className="hidden sm:inline">Apply Now</span>
+                  )}
+                  <span className="sm:hidden">Apply</span>
                 </Button>
               </Link>
             )}
             {(job.approval_status === "pending" || job.status === "pending") && (
-              <Button size="sm" variant="outline" disabled className="text-yellow-600">
-                Pending Approval
+              <Button size="sm" variant="outline" disabled className="text-yellow-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                <span className="hidden sm:inline">Pending Approval</span>
+                <span className="sm:hidden">Pending</span>
               </Button>
             )}
             {(job.approval_status === "rejected" || job.status === "rejected") && (
-              <Button size="sm" variant="outline" disabled className="text-red-600">
-                Rejected
+              <Button size="sm" variant="outline" disabled className="text-red-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                <span className="hidden sm:inline">Rejected</span>
+                <span className="sm:hidden">Rejected</span>
               </Button>
             )}
           </div>
