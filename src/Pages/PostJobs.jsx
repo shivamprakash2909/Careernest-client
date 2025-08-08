@@ -28,13 +28,13 @@ export default function PostJob() {
     experience_years_min: "",
     experience_years_max: "",
     // Education Requirements
-    education_level: "Any",
+    education_level: "",
     // Job Description
     description: "",
-    responsibilities: [],
-    requirements: [],
-    benefits: [],
-    skills: [],
+    responsibilities: "",
+    requirements: "",
+    benefits: "",
+    skills: "",
     // Work Arrangement
     remote_option: false,
     work_from_home: false,
@@ -47,6 +47,22 @@ export default function PostJob() {
   });
 
   const [recruiter, setRecruiter] = useState(null);
+
+  // Character count functions
+  const getCharacterCount = (text) => {
+    if (!text || typeof text !== "string") return 0;
+    return text.trim().length;
+  };
+
+  const getCharacterCountMessage = (text, minChars, maxChars) => {
+    const count = getCharacterCount(text);
+    if (count < minChars) {
+      return `Minimum ${minChars} characters required.`;
+    } else if (count > maxChars) {
+      return `Maximum ${maxChars} characters allowed.`;
+    }
+    return `Minimum ${minChars} characters and maximum ${maxChars} characters required`;
+  };
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
@@ -76,9 +92,96 @@ export default function PostJob() {
     }));
   };
 
-  const handleArrayChange = (e, key) => {
-    const items = e.target.value.split(",").map((item) => item.trim());
-    setForm((prev) => ({ ...prev, [key]: items }));
+  const validateSalary = (min, max) => {
+    if (min && max && Number(min) > Number(max)) {
+      return false;
+    }
+    if (min && Number(min) < 0) {
+      return false;
+    }
+    if (max && Number(max) < 0) {
+      return false;
+    }
+    return true;
+  };
+
+  const validateForm = () => {
+    // Validate salary values
+    if (!validateSalary(form.salary_min, form.salary_max)) {
+      showError("Invalid salary values. Min salary cannot be greater than max salary, and values cannot be negative.");
+      return false;
+    }
+
+    // Validate character counts
+    const descriptionChars = getCharacterCount(form.description);
+    const responsibilitiesChars = getCharacterCount(form.responsibilities);
+    const requirementsChars = getCharacterCount(form.requirements);
+    const skillsChars = getCharacterCount(form.skills);
+    const benefitsChars = getCharacterCount(form.benefits);
+    const companyDescChars = getCharacterCount(form.company_description);
+
+    // Debug logging
+    console.log("Description character count:", descriptionChars);
+    console.log("Description text:", form.description);
+
+    if (descriptionChars < 50) {
+      showError(`Job Description must have at least 50 characters. Current: ${descriptionChars} characters.`);
+      return false;
+    }
+    if (descriptionChars > 500) {
+      showError(`Job Description must have no more than 500 characters. Current: ${descriptionChars} characters.`);
+      return false;
+    }
+
+    if (responsibilitiesChars < 50) {
+      showError(`Key Responsibilities must have at least 50 characters. Current: ${responsibilitiesChars} characters.`);
+      return false;
+    }
+    if (responsibilitiesChars > 500) {
+      showError(
+        `Key Responsibilities must have no more than 500 characters. Current: ${responsibilitiesChars} characters.`
+      );
+      return false;
+    }
+
+    if (requirementsChars < 50) {
+      showError(`Requirements must have at least 50 characters. Current: ${requirementsChars} characters.`);
+      return false;
+    }
+    if (requirementsChars > 500) {
+      showError(`Requirements must have no more than 500 characters. Current: ${requirementsChars} characters.`);
+      return false;
+    }
+
+    // Validate skills as comma-separated values
+    const skills = form.skills
+      .split(",")
+      .map((item) => item.trim())
+      .filter((item) => item.length > 0);
+    if (skills.length < 2) {
+      showError("Please add at least 2 skills separated by commas.");
+      return false;
+    }
+
+    if (benefitsChars < 50) {
+      showError(`Benefits & Perks must have at least 50 characters. Current: ${benefitsChars} characters.`);
+      return false;
+    }
+    if (benefitsChars > 500) {
+      showError(`Benefits & Perks must have no more than 500 characters. Current: ${benefitsChars} characters.`);
+      return false;
+    }
+
+    if (companyDescChars < 50) {
+      showError(`Company Description must have at least 50 characters. Current: ${companyDescChars} characters.`);
+      return false;
+    }
+    if (companyDescChars > 500) {
+      showError(`Company Description must have no more than 500 characters. Current: ${companyDescChars} characters.`);
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e) => {
@@ -95,8 +198,17 @@ export default function PostJob() {
       return;
     }
 
+    if (!validateForm()) {
+      return;
+    }
+
     const payload = {
       ...form,
+      // Convert skills string to array
+      skills: form.skills
+        .split(",")
+        .map((item) => item.trim())
+        .filter((item) => item.length > 0),
       // Convert number fields to numbers
       salary_min: form.salary_min ? Number(form.salary_min) : undefined,
       salary_max: form.salary_max ? Number(form.salary_max) : undefined,
@@ -130,26 +242,26 @@ export default function PostJob() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
       {/* ⬅️ Back Button */}
-      <button onClick={handleGoBack} className="flex items-center text-sm text-blue-600 hover:underline mb-4">
+      <button onClick={handleGoBack} className="flex items-center text-sm text-blue-600 hover:underline mb-4 sm:mb-6">
         <ArrowLeft className="w-4 h-4 mr-1" />
         Go Back
       </button>
 
-      <h2 className="text-2xl font-bold mb-6">Post a New Job</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold mb-6 sm:mb-8">Post a New Job</h2>
+      <form onSubmit={handleSubmit} className="space-y-6 sm:space-y-8">
         {/* Basic Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <label htmlFor="title" className="block mb-1 font-medium">
+            <label htmlFor="title" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Job Title *
             </label>
             <Input id="title" name="title" value={form.title} onChange={handleChange} required />
           </div>
 
           <div>
-            <label htmlFor="company" className="block mb-1 font-medium">
+            <label htmlFor="company" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Company Name *
             </label>
             <Input id="company" name="company" value={form.company} onChange={handleChange} required />
@@ -157,30 +269,23 @@ export default function PostJob() {
         </div>
 
         {/* Location and Work Arrangement */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <label htmlFor="location" className="block mb-1 font-medium">
+            <label htmlFor="location" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Location *
             </label>
-            <select
+            <Input
               id="location"
               name="location"
               value={form.location}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              placeholder="city, state"
               required
-            >
-              <option value="">Select location</option>
-              {locations.map((loc) => (
-                <option key={loc} value={loc}>
-                  {loc}
-                </option>
-              ))}
-            </select>
+            />
           </div>
 
           <div>
-            <label htmlFor="job_type" className="block mb-1 font-medium">
+            <label htmlFor="job_type" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Job Type *
             </label>
             <select
@@ -188,21 +293,19 @@ export default function PostJob() {
               name="job_type"
               value={form.job_type}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 text-sm sm:text-base"
               required
             >
               <option value="Full-time">Full-time</option>
               <option value="Part-time">Part-time</option>
-              <option value="Contract">Contract</option>
-              <option value="Freelance">Freelance</option>
             </select>
           </div>
         </div>
 
         {/* Salary Information */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <div>
-            <label htmlFor="salary_min" className="block mb-1 font-medium">
+            <label htmlFor="salary_min" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Minimum Salary (₹)
             </label>
             <Input
@@ -212,11 +315,12 @@ export default function PostJob() {
               value={form.salary_min}
               onChange={handleChange}
               placeholder="e.g., 300000"
+              min="0"
             />
           </div>
 
           <div>
-            <label htmlFor="salary_max" className="block mb-1 font-medium">
+            <label htmlFor="salary_max" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Maximum Salary (₹)
             </label>
             <Input
@@ -226,11 +330,12 @@ export default function PostJob() {
               value={form.salary_max}
               onChange={handleChange}
               placeholder="e.g., 600000"
+              min="0"
             />
           </div>
 
           <div>
-            <label htmlFor="salary_type" className="block mb-1 font-medium">
+            <label htmlFor="salary_type" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Salary Type
             </label>
             <select
@@ -238,17 +343,15 @@ export default function PostJob() {
               name="salary_type"
               value={form.salary_type}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 text-sm sm:text-base"
             >
               <option value="Per Annum">Per Annum</option>
               <option value="Per Month">Per Month</option>
-              <option value="Per Hour">Per Hour</option>
-              <option value="Per Project">Per Project</option>
             </select>
           </div>
 
           <div>
-            <label htmlFor="number_of_openings" className="block mb-1 font-medium">
+            <label htmlFor="number_of_openings" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Number of Openings
             </label>
             <Input
@@ -263,9 +366,9 @@ export default function PostJob() {
         </div>
 
         {/* Experience Requirements */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <div>
-            <label htmlFor="experience_level" className="block mb-1 font-medium">
+            <label htmlFor="experience_level" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Experience Level
             </label>
             <select
@@ -273,7 +376,7 @@ export default function PostJob() {
               name="experience_level"
               value={form.experience_level}
               onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
+              className="w-full border rounded px-3 py-2 text-sm sm:text-base"
             >
               <option value="Fresher">Fresher</option>
               <option value="Entry Level">Entry Level</option>
@@ -284,7 +387,7 @@ export default function PostJob() {
           </div>
 
           <div>
-            <label htmlFor="experience_years_min" className="block mb-1 font-medium">
+            <label htmlFor="experience_years_min" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Min Experience (Years)
             </label>
             <Input
@@ -294,11 +397,12 @@ export default function PostJob() {
               value={form.experience_years_min}
               onChange={handleChange}
               placeholder="0"
+              min="0"
             />
           </div>
 
           <div>
-            <label htmlFor="experience_years_max" className="block mb-1 font-medium">
+            <label htmlFor="experience_years_max" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Max Experience (Years)
             </label>
             <Input
@@ -308,34 +412,30 @@ export default function PostJob() {
               value={form.experience_years_max}
               onChange={handleChange}
               placeholder="5"
+              min="0"
             />
           </div>
         </div>
 
         {/* Education Requirements */}
-        <div>
-          <label htmlFor="education_level" className="block mb-1 font-medium">
-            Education Level
-          </label>
-          <select
-            id="education_level"
-            name="education_level"
-            value={form.education_level}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          >
-            <option value="Any">Any</option>
-            <option value="High School">High School</option>
-            <option value="Diploma">Diploma</option>
-            <option value="Bachelor's Degree">Bachelor's Degree</option>
-            <option value="Master's Degree">Master's Degree</option>
-            <option value="PhD">PhD</option>
-          </select>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <div>
+            <label htmlFor="education_level" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
+              Education Level
+            </label>
+            <Input
+              id="education_level"
+              name="education_level"
+              value={form.education_level}
+              onChange={handleChange}
+              placeholder="e.g., Bachelor's Degree, Master's Degree, Any..."
+            />
+          </div>
         </div>
 
         {/* Job Description */}
         <div>
-          <label htmlFor="description" className="block mb-1 font-medium">
+          <label htmlFor="description" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
             Job Description *
           </label>
           <Textarea
@@ -346,127 +446,133 @@ export default function PostJob() {
             placeholder="Describe the role, responsibilities, and what you're looking for in a candidate..."
             rows={6}
             required
+            className="text-sm sm:text-base"
           />
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">{getCharacterCountMessage(form.description, 50, 500)}</p>
         </div>
 
         {/* Responsibilities */}
         <div>
-          <label htmlFor="responsibilities" className="block mb-1 font-medium">
-            Key Responsibilities
+          <label htmlFor="responsibilities" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
+            Key Responsibilities *
           </label>
           <Textarea
             id="responsibilities"
             name="responsibilities"
-            value={form.responsibilities.join(", ")}
-            onChange={(e) => handleArrayChange(e, "responsibilities")}
-            placeholder="Enter key responsibilities separated by commas..."
-            rows={3}
+            value={form.responsibilities}
+            onChange={handleChange}
+            placeholder="Describe the key responsibilities and tasks the employee will be expected to perform..."
+            rows={6}
+            required
+            className="text-sm sm:text-base"
           />
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            {getCharacterCountMessage(form.responsibilities, 50, 500)}
+          </p>
         </div>
 
         {/* Requirements */}
         <div>
-          <label htmlFor="requirements" className="block mb-1 font-medium">
-            Requirements
+          <label htmlFor="requirements" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
+            Requirements *
           </label>
           <Textarea
             id="requirements"
             name="requirements"
-            value={form.requirements.join(", ")}
-            onChange={(e) => handleArrayChange(e, "requirements")}
-            placeholder="Enter requirements separated by commas..."
-            rows={3}
+            value={form.requirements}
+            onChange={handleChange}
+            placeholder="Describe the requirements and qualifications needed for this job..."
+            rows={6}
+            required
+            className="text-sm sm:text-base"
           />
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            {getCharacterCountMessage(form.requirements, 50, 500)}
+          </p>
         </div>
 
         {/* Skills */}
         <div>
-          <label htmlFor="skills" className="block mb-1 font-medium">
-            Required Skills
+          <label htmlFor="skills" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
+            Required Skills * (Add skills separated by commas)
           </label>
           <Textarea
             id="skills"
             name="skills"
-            value={form.skills.join(", ")}
-            onChange={(e) => handleArrayChange(e, "skills")}
-            placeholder="Enter required skills separated by commas..."
-            rows={3}
+            value={form.skills}
+            onChange={handleChange}
+            placeholder="e.g., JavaScript, React, Node.js, MongoDB, Git, AWS, Docker..."
+            rows={4}
+            required
+            className="text-sm sm:text-base"
           />
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            Add multiple skills separated by commas (e.g., JavaScript, React, Node.js)
+          </p>
         </div>
 
         {/* Benefits */}
         <div>
-          <label htmlFor="benefits" className="block mb-1 font-medium">
-            Benefits & Perks
+          <label htmlFor="benefits" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
+            Benefits & Perks *
           </label>
           <Textarea
             id="benefits"
             name="benefits"
-            value={form.benefits.join(", ")}
-            onChange={(e) => handleArrayChange(e, "benefits")}
-            placeholder="Enter benefits and perks separated by commas..."
-            rows={3}
+            value={form.benefits}
+            onChange={handleChange}
+            placeholder="Describe the benefits, perks, and additional advantages of this job..."
+            rows={6}
+            required
+            className="text-sm sm:text-base"
           />
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">{getCharacterCountMessage(form.benefits, 50, 500)}</p>
         </div>
 
         {/* Work Arrangement */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex items-center gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+          <div className="flex items-center gap-2 p-3 sm:p-4 bg-gray-50 rounded-lg">
             <Checkbox
               id="remote_option"
               checked={form.remote_option}
               onCheckedChange={(checked) => setForm((prev) => ({ ...prev, remote_option: checked }))}
             />
-            <label htmlFor="remote_option" className="font-medium">
+            <label htmlFor="remote_option" className="font-medium text-sm sm:text-base">
               Remote Work Option
             </label>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 p-3 sm:p-4 bg-gray-50 rounded-lg">
             <Checkbox
               id="work_from_home"
               checked={form.work_from_home}
               onCheckedChange={(checked) => setForm((prev) => ({ ...prev, work_from_home: checked }))}
             />
-            <label htmlFor="work_from_home" className="font-medium">
-              Work from Home
+            <label htmlFor="work_from_home" className="font-medium text-sm sm:text-base">
+              Work from Office
             </label>
           </div>
         </div>
 
-        {/* Application Deadline */}
-        <div>
-          <label htmlFor="application_deadline" className="block mb-1 font-medium">
-            Application Deadline
-          </label>
-          <Input
-            type="date"
-            id="application_deadline"
-            name="application_deadline"
-            value={form.application_deadline}
-            onChange={handleChange}
-          />
-        </div>
-
         {/* Company Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           <div>
-            <label htmlFor="company_website" className="block mb-1 font-medium">
+            <label htmlFor="company_website" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
               Company Website
             </label>
             <Input
-              type="url"
+              type="text"
               id="company_website"
               name="company_website"
               value={form.company_website}
               onChange={handleChange}
-              placeholder="https://company.com"
+              placeholder="https://www.company.com or http://company.com"
             />
           </div>
 
           <div>
-            <label htmlFor="company_description" className="block mb-1 font-medium">
-              Company Description
+            <label htmlFor="company_description" className="block mb-1 sm:mb-2 font-medium text-sm sm:text-base">
+              Company Description *
             </label>
             <Textarea
               id="company_description"
@@ -475,11 +581,20 @@ export default function PostJob() {
               onChange={handleChange}
               placeholder="Brief description about your company..."
               rows={3}
+              required
+              className="text-sm sm:text-base"
             />
+            <p className="text-xs sm:text-sm text-gray-600 mt-1">
+              {getCharacterCountMessage(form.company_description, 50, 500)}
+            </p>
           </div>
         </div>
 
-        <Button type="submit" variant="default" className="bg-blue-500 hover:bg-blue-600 w-full">
+        <Button
+          type="submit"
+          variant="default"
+          className="bg-blue-500 hover:bg-blue-600 w-full text-sm sm:text-base py-2 sm:py-3"
+        >
           Post Job
         </Button>
       </form>
