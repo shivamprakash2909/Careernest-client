@@ -2,6 +2,7 @@ import React from "react";
 import Layout, { AdminLayout } from "./layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastProvider } from "./components/common/ToastContext";
+import ScrollToTop from "./components/common/ScrollToTop";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
 import FAQ from "./Pages/FAQ";
@@ -45,6 +46,7 @@ export default function App() {
   return (
     <ToastProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           <Route
             path="/"
