@@ -23,6 +23,7 @@ export default function ApplicationFilters({
           <SelectItem value="shortlisted">Shortlisted</SelectItem>
           <SelectItem value="interviewed">Interviewed</SelectItem>
           <SelectItem value="accepted">Accepted</SelectItem>
+          <SelectItem value="hired">Hired</SelectItem>
           <SelectItem value="rejected">Rejected</SelectItem>
         </SelectContent>
       </Select>

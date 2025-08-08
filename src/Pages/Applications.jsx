@@ -14,7 +14,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 const reverseStatusMapping = {
   reviewed: "reviewing",
   shortlisted: "interviewed",
-  hired: "accepted",
+  hired: "hired",
+  accepted: "accepted",
 };
 
 export default function ApplicationsPage() {
@@ -309,6 +310,14 @@ export default function ApplicationsPage() {
                       className="text-xs sm:text-sm"
                     >
                       Shortlist
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => handleBulkStatusUpdate("hired")}
+                      className="text-xs sm:text-sm bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
+                    >
+                      Hire
                     </Button>
                     <Button
                       size="sm"
