@@ -123,7 +123,28 @@ export default function ManageInternships() {
                         <p className="text-sm sm:text-base text-gray-600">
                           {internship.company} • {internship.location} • {internship.duration}
                         </p>
-                        <p className="text-xs sm:text-sm text-gray-500">Stipend: {internship.stipend}</p>
+                        <p className="text-xs sm:text-sm text-gray-500">
+                          Stipend:{" "}
+                          {(() => {
+                            const formatStipendRange = (min, max, type = "Fixed") => {
+                              if (min && max) {
+                                return `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
+                              }
+                              if (min) {
+                                return `₹${min.toLocaleString()}+`;
+                              }
+                              if (max) {
+                                return `Up to ₹${max.toLocaleString()}`;
+                              }
+                              return "Not specified";
+                            };
+                            return formatStipendRange(
+                              internship.stipend_amount_min,
+                              internship.stipend_amount_max,
+                              internship.stipend_type
+                            );
+                          })()}
+                        </p>
                       </div>
                     </div>
 

@@ -51,37 +51,27 @@ export default function InternshipDetailsModal({ internship, onClose }) {
           </CardHeader>
           <CardContent>
             <div className="flex flex-wrap gap-2 mb-4 justify-center sm:justify-start">
-              <Badge variant="secondary">{internship.internship_type || "Internship"}</Badge>
               {internship.experience_level && <Badge variant="outline">{internship.experience_level}</Badge>}
-              {internship.skills &&
-                internship.skills.map((skill, idx) => (
-                  <Badge key={idx} variant="outline" className="text-blue-600 border-blue-600">
-                    {skill}
-                  </Badge>
-                ))}
+              {internship.skills && (
+                <Badge variant="outline" className="text-blue-600 border-blue-600">
+                  Skills Required
+                </Badge>
+              )}
             </div>
             <div className="mb-4">
               <h4 className="font-semibold mb-1">Description</h4>
               <p className="text-gray-700 text-sm">{internship.description}</p>
             </div>
-            {internship.requirements && internship.requirements.length > 0 && (
+            {internship.requirements && (
               <div className="mb-4">
                 <h4 className="font-semibold mb-1">Requirements</h4>
-                <ul className="list-disc list-inside text-gray-700 text-sm">
-                  {internship.requirements.map((req, idx) => (
-                    <li key={idx}>{req}</li>
-                  ))}
-                </ul>
+                <div className="text-gray-700 text-sm whitespace-pre-wrap">{internship.requirements}</div>
               </div>
             )}
-            {internship.benefits && internship.benefits.length > 0 && (
+            {internship.perks && (
               <div className="mb-4">
-                <h4 className="font-semibold mb-1">Benefits</h4>
-                <ul className="list-disc list-inside text-gray-700 text-sm">
-                  {internship.benefits.map((ben, idx) => (
-                    <li key={idx}>{ben}</li>
-                  ))}
-                </ul>
+                <h4 className="font-semibold mb-1">Perks & Benefits</h4>
+                <div className="text-gray-700 text-sm whitespace-pre-wrap">{internship.perks}</div>
               </div>
             )}
             {internship.status && (

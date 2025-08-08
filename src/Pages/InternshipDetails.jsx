@@ -221,10 +221,6 @@ export default function InternshipDetails() {
                   <div className="flex items-center space-x-2">
                     <span className="text-green-600 font-semibold">{displayCompensation()}</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <Clock className="w-5 h-5 text-gray-400" />
-                    <span className="text-gray-700">{internship.internship_type}</span>
-                  </div>
                 </div>
 
                 {/* Description */}
@@ -234,64 +230,46 @@ export default function InternshipDetails() {
                 </div>
 
                 {/* Requirements */}
-                {internship.requirements && internship.requirements.length > 0 && (
+                {internship.requirements && (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <GraduationCap className="w-5 h-5" />
                       Requirements
                     </h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-700">
-                      {internship.requirements.map((requirement, index) => (
-                        <li key={index}>{requirement}</li>
-                      ))}
-                    </ul>
+                    <div className="text-gray-700 whitespace-pre-wrap">{internship.requirements}</div>
                   </div>
                 )}
 
                 {/* Responsibilities */}
-                {internship.responsibilities && internship.responsibilities.length > 0 && (
+                {internship.responsibilities && (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <CheckCircle className="w-5 h-5" />
                       Key Responsibilities
                     </h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-700">
-                      {internship.responsibilities.map((responsibility, index) => (
-                        <li key={index}>{responsibility}</li>
-                      ))}
-                    </ul>
+                    <div className="text-gray-700 whitespace-pre-wrap">{internship.responsibilities}</div>
                   </div>
                 )}
 
                 {/* Skills */}
-                {internship.skills && internship.skills.length > 0 && (
+                {internship.skills && (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <BookOpen className="w-5 h-5" />
                       Skills Required
                     </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {internship.skills.map((skill, index) => (
-                        <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">
-                          {skill}
-                        </Badge>
-                      ))}
-                    </div>
+                    <div className="text-gray-700 whitespace-pre-wrap">{internship.skills}</div>
                   </div>
                 )}
 
                 {/* Perks */}
-                {internship.perks && internship.perks.length > 0 && (
+                {internship.perks && (
                   <div>
                     <h3 className="text-xl font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <Users className="w-5 h-5" />
                       Perks & Benefits
                     </h3>
-                    <ul className="list-disc list-inside space-y-2 text-gray-700">
-                      {internship.perks.map((perk, index) => (
-                        <li key={index}>{perk}</li>
-                      ))}
-                    </ul>
+                    <div className="text-gray-700 whitespace-pre-wrap">{internship.perks}</div>
                   </div>
                 )}
               </CardContent>
@@ -344,10 +322,6 @@ export default function InternshipDetails() {
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex justify-between">
-                    <span className="text-gray-600">Type:</span>
-                    <span className="font-medium">{internship.internship_type}</span>
-                  </div>
-                  <div className="flex justify-between">
                     <span className="text-gray-600">Duration:</span>
                     <span className="font-medium">{internship.duration}</span>
                   </div>
@@ -365,12 +339,7 @@ export default function InternshipDetails() {
                       <span className="font-medium">{internship.education_level}</span>
                     </div>
                   )}
-                  {internship.academic_year && (
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Academic Year:</span>
-                      <span className="font-medium">{internship.academic_year}</span>
-                    </div>
-                  )}
+
                   {internship.number_of_openings && internship.number_of_openings > 1 && (
                     <div className="flex justify-between">
                       <span className="text-gray-600">Openings:</span>

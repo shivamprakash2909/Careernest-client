@@ -4,13 +4,38 @@ import { createPageUrl } from "../utils";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Building, Users, AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import {
+  MapPin,
+  Clock,
+  Building,
+  Users,
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  GraduationCap,
+  BookOpen,
+  IndianRupee,
+  Calendar,
+  User,
+} from "lucide-react";
 
 export default function JobCard({ job, isInternship = false }) {
   // Check if user is a recruiter
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const isRecruiter = user.role === "recruiter";
   const isMyJob = isRecruiter && job.posted_by === user.email;
+
+  // Debug logging
+  console.log("InternshipCard received job data:", job);
+  console.log("Skills data:", job.skills);
+
+  // Helper to get skills text (handle both string and array formats)
+  const getSkillsText = () => {
+    if (!job.skills) return "";
+    if (typeof job.skills === "string") return job.skills;
+    if (Array.isArray(job.skills)) return job.skills.join(", ");
+    return "";
+  };
 
   const getApprovalStatusBadge = (status) => {
     const variants = {
@@ -21,23 +46,7 @@ export default function JobCard({ job, isInternship = false }) {
     return <Badge className={variants[status]}>{status}</Badge>;
   };
 
-  // const formatStipend = (min, max, type = "Fixed") => {
-  //   if (min && max) {
-  //     const range = `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
-  //     return type === "Fixed" ? range : `${range} (${type})`;
-  //   }
-  //   if (min) {
-  //     const minStipend = `₹${min.toLocaleString()}+`;
-  //     return type === "Fixed" ? minStipend : `${minStipend} (${type})`;
-  //   }
-  //   if (max) {
-  //     const maxStipend = `Up to ₹${max.toLocaleString()}`;
-  //     return type === "Fixed" ? maxStipend : `${maxStipend} (${type})`;
-  //   }
-  //   return "Not specified";
-  // };
-
-  // Helper to format stipend - show original value
+  // Helper to format stipend with new structure
   const formatStipend = (stipend) => {
     if (!stipend) return "Not specified";
 
@@ -88,50 +97,100 @@ export default function JobCard({ job, isInternship = false }) {
 
   // Display stipend for internships
   const displayCompensation = () => {
+    const formatStipendRange = (min, max, type = "Fixed") => {
+      if (min && max) {
+        const range = `₹${min.toLocaleString()} - ₹${max.toLocaleString()}`;
+        return type === "Fixed" ? range : `${range} (${type})`;
+      }
+      if (min) {
+        const minStipend = `₹${min.toLocaleString()}+`;
+        return type === "Fixed" ? minStipend : `${minStipend} (${type})`;
+      }
+      if (max) {
+        const maxStipend = `Up to ₹${max.toLocaleString()}`;
+        return type === "Fixed" ? maxStipend : `${maxStipend} (${type})`;
+      }
+      return "Not specified";
+    };
+
     return (
       <span className="flex items-center text-green-600 font-semibold">
-        {formatStipend(job.stipend_amount_min, job.stipend_amount_max, job.stipend_type)}
+        {formatStipendRange(job.stipend_amount_min, job.stipend_amount_max, job.stipend_type)}
       </span>
     );
+  };
+
+  // Helper to truncate text for display
+  const truncateText = (text, maxLength = 100) => {
+    if (!text) return "";
+    if (text.length <= maxLength) return text;
+    return text.substring(0, maxLength) + "...";
   };
 
   return (
     <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500">
       <CardHeader className="pb-3">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start space-x-4">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+          <div className="flex items-start space-x-4 flex-1">
             {job.company_logo && (
-              <img src={job.company_logo} alt={job.company} className="w-12 h-12 rounded-lg object-cover" />
+              <img
+                src={job.company_logo}
+                alt={job.company}
+                className="w-12 h-12 rounded-lg object-cover flex-shrink-0"
+              />
             )}
-            <div>
-              <CardTitle className="text-xl font-bold text-gray-900 mb-1">{job.title}</CardTitle>
+            <div className="flex-1 min-w-0">
+              <CardTitle className="text-lg sm:text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                {job.title}
+              </CardTitle>
               <div className="flex items-center space-x-2 text-gray-600 mb-2">
-                <Building className="w-4 h-4" />
-                <span className="font-medium">{job.company}</span>
+                <Building className="w-4 h-4 flex-shrink-0" />
+                <span className="font-medium truncate">{job.company}</span>
               </div>
-              <div className="flex flex-wrap gap-4 text-gray-600">
+
+              {/* Location and Duration */}
+              <div className="flex flex-wrap gap-3 text-sm text-gray-600 mb-3">
                 <span className="flex items-center">
-                  <MapPin className="w-4 h-4 mr-1" />
-                  {job.location}
+                  <MapPin className="w-4 h-4 mr-1 flex-shrink-0" />
+                  <span className="truncate">{job.location}</span>
                 </span>
                 <span className="flex items-center">
-                  <Clock className="w-4 h-4 mr-1" />
-                  {job.job_type}
+                  <Clock className="w-4 h-4 mr-1 flex-shrink-0" />
+                  <span>{job.duration || job.job_type}</span>
                 </span>
+                {job.start_date && (
+                  <span className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
+                    <span>Starts: {new Date(job.start_date).toLocaleDateString()}</span>
+                  </span>
+                )}
+              </div>
+
+              {/* Stipend Display */}
+              <div className="flex items-center text-green-600 font-semibold mb-2">
+                <IndianRupee className="w-4 h-4 mr-1 flex-shrink-0" />
                 {displayCompensation()}
               </div>
             </div>
           </div>
-          <div className="text-right">
-            <div className="flex items-center text-green-600 font-semibold mb-2">
-              {isInternship && job.stipend ? (
-                <span>{formatStipend(job.stipend)}</span>
-              ) : (
-                <span>{formatStipend(job.salary_min, job.salary_max)}</span>
-              )}
-            </div>
-            <div className="flex items-center text-gray-500 text-sm">
-              <Clock className="w-4 h-4 mr-1" />
+
+          {/* Right side - Status and Actions */}
+          <div className="flex flex-col items-end gap-2 lg:gap-3">
+            {/* Status Badge */}
+            {isMyJob && (
+              <div className="flex items-center gap-1">
+                {(job.approval_status === "pending" || job.status === "pending") && <AlertCircle className="w-3 h-3" />}
+                {(job.approval_status === "approved" || job.status === "approved") && (
+                  <CheckCircle className="w-3 h-3" />
+                )}
+                {(job.approval_status === "rejected" || job.status === "rejected") && <XCircle className="w-3 h-3" />}
+                {getApprovalStatusBadge(job.approval_status || job.status)}
+              </div>
+            )}
+
+            {/* Posted Info */}
+            <div className="flex items-center text-gray-500 text-xs">
+              <Clock className="w-3 h-3 mr-1" />
               <span>Posted recently</span>
             </div>
           </div>
@@ -139,63 +198,110 @@ export default function JobCard({ job, isInternship = false }) {
       </CardHeader>
 
       <CardContent className="pt-0">
+        {/* Badges Section */}
         <div className="flex flex-wrap gap-2 mb-4">
-          <Badge className={getExperienceBadgeColor(job.experience_level)}>{job.experience_level}</Badge>
-          <Badge variant="secondary">{job.job_type}</Badge>
-          {isMyJob && (
-            <div className="flex items-center gap-1">
-              {(job.approval_status === "pending" || job.status === "pending") && <AlertCircle className="w-3 h-3" />}
-              {(job.approval_status === "approved" || job.status === "approved") && <CheckCircle className="w-3 h-3" />}
-              {(job.approval_status === "rejected" || job.status === "rejected") && <XCircle className="w-3 h-3" />}
-              {getApprovalStatusBadge(job.approval_status || job.status)}
+          {job.experience_level && (
+            <Badge className={`text-xs ${getExperienceBadgeColor(job.experience_level)}`}>{job.experience_level}</Badge>
+          )}
+          {job.education_level && job.education_level !== "Any" && (
+            <Badge variant="outline" className="text-xs text-purple-600 border-purple-600">
+              <GraduationCap className="w-3 h-3 mr-1" />
+              {job.education_level}
+            </Badge>
+          )}
+          {job.remote_option && (
+            <Badge variant="outline" className="text-xs text-green-600 border-green-600">
+              Remote Available
+            </Badge>
+          )}
+          {job.work_from_home && (
+            <Badge variant="outline" className="text-xs text-blue-600 border-blue-600">
+              Work from Office
+            </Badge>
+          )}
+          {/* {getSkillsText().trim() !== "" && (
+            <Badge variant="outline" className="text-xs text-blue-600 border-blue-600">
+              <BookOpen className="w-3 h-3 mr-1" />
+              Skills Required
+            </Badge>
+          )} */}
+        </div>
+
+        {/* Description */}
+        {job.description && (
+          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{truncateText(job.description, 150)}</p>
+        )}
+
+        {/* Key Information Preview */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4 text-sm">
+          {job.responsibilities && (
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h4 className="font-semibold text-gray-700 mb-1 flex items-center">
+                <CheckCircle className="w-4 h-4 mr-1" />
+                Key Responsibilities
+              </h4>
+              <p className="text-gray-600 line-clamp-2">{truncateText(job.responsibilities, 80)}</p>
             </div>
           )}
-          {job.skills &&
-            job.skills.slice(0, 3).map((skill, index) => (
-              <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">
-                {skill}
-              </Badge>
-            ))}
-          {job.skills && job.skills.length > 3 && (
-            <Badge variant="outline" className="text-gray-500">
-              +{job.skills.length - 3} more
-            </Badge>
+
+          {job.requirements && (
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h4 className="font-semibold text-gray-700 mb-1 flex items-center">
+                <GraduationCap className="w-4 h-4 mr-1" />
+                Requirements
+              </h4>
+              <p className="text-gray-600 line-clamp-2">{truncateText(job.requirements, 80)}</p>
+            </div>
+          )}
+
+          {getSkillsText().trim() !== "" && (
+            <div className="bg-gray-50 p-3 rounded-lg">
+              <h4 className="font-semibold text-gray-700 mb-1 flex items-center">
+                <BookOpen className="w-4 h-4 mr-1" />
+                Skills Required
+              </h4>
+              <p className="text-gray-600 line-clamp-2">{truncateText(getSkillsText(), 80)}</p>
+            </div>
           )}
         </div>
 
-        {job.description && (
-          <p className="text-gray-600 text-sm mb-4 line-clamp-2">{job.description.substring(0, 150)}...</p>
-        )}
-
-        <div className="flex items-center justify-between">
+        {/* Bottom Section */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-center space-x-4 text-sm text-gray-500">
-            {job.benefits && job.benefits.length > 0 && (
+            {job.perks && (
               <span className="flex items-center">
                 <Users className="w-4 h-4 mr-1" />
-                {job.benefits.length} benefits
+                Perks Available
+              </span>
+            )}
+            {job.number_of_openings && job.number_of_openings > 1 && (
+              <span className="flex items-center">
+                <User className="w-4 h-4 mr-1" />
+                {job.number_of_openings} openings
               </span>
             )}
           </div>
-          <div className="flex space-x-2">
-            <Link to={`/p/internship-details/${job._id}`}>
-              <Button variant="outline" size="sm">
+
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+            <Link to={`/p/internship-details/${job._id}`} className="w-full sm:w-auto">
+              <Button variant="outline" size="sm" className="w-full sm:w-auto">
                 View Details
               </Button>
             </Link>
             {(job.approval_status === "approved" || job.status === "approved") && (
-              <Link to={`/p/internship-details/${job._id}?apply=true`}>
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+              <Link to={`/p/internship-details/${job._id}?apply=true`} className="w-full sm:w-auto">
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
                   {isInternship ? "Apply for Internship" : "Apply Now"}
                 </Button>
               </Link>
             )}
             {(job.approval_status === "pending" || job.status === "pending") && (
-              <Button size="sm" variant="outline" disabled className="text-yellow-600">
+              <Button size="sm" variant="outline" disabled className="text-yellow-600 w-full sm:w-auto">
                 Pending Approval
               </Button>
             )}
             {(job.approval_status === "rejected" || job.status === "rejected") && (
-              <Button size="sm" variant="outline" disabled className="text-red-600">
+              <Button size="sm" variant="outline" disabled className="text-red-600 w-full sm:w-auto">
                 Rejected
               </Button>
             )}

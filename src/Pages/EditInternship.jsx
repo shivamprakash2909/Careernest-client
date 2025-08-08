@@ -8,16 +8,8 @@ import { axiosInstance } from "@/lib/axios";
 
 const locations = ["Noida", "Delhi", "Pune", "Mumbai", "Bangalore", "Hyderabad", "Remote", "Work from Home"];
 const durations = ["1 month", "2 months", "3 months", "6 months", "1 year"];
-const internshipTypes = [
-  "Summer Internship",
-  "Winter Internship",
-  "Semester Internship",
-  "Project Internship",
-  "Research Internship",
-];
-const stipendTypes = ["Fixed", "Performance Based", "Unpaid", "Stipend + Performance Bonus"];
+const stipendTypes = ["Fixed", "Unpaid"];
 const educationLevels = ["High School", "Diploma", "Bachelor's Degree", "Master's Degree", "PhD", "Any"];
-const academicYears = ["1st Year", "2nd Year", "3rd Year", "4th Year", "Final Year", "Any"];
 
 export default function EditInternship() {
   const [form, setForm] = useState(null);
@@ -135,46 +127,26 @@ export default function EditInternship() {
             />
           </div>
         </div>
-        {/* Internship Type and Duration */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label htmlFor="internship_type" className="block mb-1 font-medium">
-              Internship Type
-            </label>
-            <select
-              id="internship_type"
-              name="internship_type"
-              value={form.internship_type || "Summer Internship"}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-            >
-              {internshipTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div>
-            <label htmlFor="duration" className="block mb-1 font-medium">
-              Duration
-            </label>
-            <select
-              id="duration"
-              name="duration"
-              value={form.duration}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-              required
-            >
-              <option value="">Select duration</option>
-              {durations.map((duration) => (
-                <option key={duration} value={duration}>
-                  {duration}
-                </option>
-              ))}
-            </select>
-          </div>
+        {/* Duration */}
+        <div>
+          <label htmlFor="duration" className="block mb-1 font-medium">
+            Duration
+          </label>
+          <select
+            id="duration"
+            name="duration"
+            value={form.duration}
+            onChange={handleChange}
+            className="w-full border rounded px-3 py-2"
+            required
+          >
+            <option value="">Select duration</option>
+            {durations.map((duration) => (
+              <option key={duration} value={duration}>
+                {duration}
+              </option>
+            ))}
+          </select>
         </div>
         {/* Timeline */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -294,24 +266,7 @@ export default function EditInternship() {
               ))}
             </select>
           </div>
-          <div>
-            <label htmlFor="academic_year" className="block mb-1 font-medium">
-              Academic Year
-            </label>
-            <select
-              id="academic_year"
-              name="academic_year"
-              value={form.academic_year || "Any"}
-              onChange={handleChange}
-              className="w-full border rounded px-3 py-2"
-            >
-              {academicYears.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
+
         </div>
 
         <div>
@@ -336,9 +291,9 @@ export default function EditInternship() {
           <Textarea
             id="responsibilities"
             name="responsibilities"
-            value={form.responsibilities ? form.responsibilities.join(", ") : ""}
-            onChange={(e) => handleArrayChange(e, "responsibilities")}
-            placeholder="Enter key responsibilities, separated by commas..."
+            value={form.responsibilities || ""}
+            onChange={handleChange}
+            placeholder="Describe the key responsibilities and tasks the intern will be expected to perform..."
             rows={4}
             className="w-full"
           />
@@ -352,9 +307,9 @@ export default function EditInternship() {
           <Textarea
             id="requirements"
             name="requirements"
-            value={form.requirements ? form.requirements.join(", ") : ""}
-            onChange={(e) => handleArrayChange(e, "requirements")}
-            placeholder="Enter requirements, separated by commas..."
+            value={form.requirements || ""}
+            onChange={handleChange}
+            placeholder="Describe the requirements and qualifications needed for this internship..."
             rows={4}
             className="w-full"
           />
@@ -368,9 +323,9 @@ export default function EditInternship() {
           <Textarea
             id="skills"
             name="skills"
-            value={form.skills ? form.skills.join(", ") : ""}
-            onChange={(e) => handleArrayChange(e, "skills")}
-            placeholder="Enter required skills, separated by commas..."
+            value={form.skills || ""}
+            onChange={handleChange}
+            placeholder="Describe the skills, technologies, and competencies required for this internship..."
             rows={4}
             className="w-full"
           />
@@ -384,9 +339,9 @@ export default function EditInternship() {
           <Textarea
             id="perks"
             name="perks"
-            value={form.perks ? form.perks.join(", ") : ""}
-            onChange={(e) => handleArrayChange(e, "perks")}
-            placeholder="Enter perks and benefits, separated by commas..."
+            value={form.perks || ""}
+            onChange={handleChange}
+            placeholder="Describe the perks, benefits, and additional advantages of this internship..."
             rows={4}
             className="w-full"
           />
