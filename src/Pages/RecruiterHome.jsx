@@ -245,7 +245,7 @@ export default function Home() {
                       className="w-16 h-16 object-contain"
                       style={{ background: "#fff" }}
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/64?text=Logo";
+                        e.target.src = "/jobImage.jpg";
                       }}
                     />
                   </div>

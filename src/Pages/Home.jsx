@@ -229,7 +229,7 @@ export default function Home() {
                         alt={job.company_name || job.company}
                         className="w-12 h-12 rounded-lg object-cover"
                         onError={(e) => {
-                          e.target.src = "https://via.placeholder.com/48?text=Logo";
+                          e.target.src = "/jobImage.jpg";
                         }}
                       />
                       <div className="flex-1">
@@ -300,7 +300,7 @@ export default function Home() {
                       className="w-16 h-16 object-contain"
                       style={{ background: "#fff" }}
                       onError={(e) => {
-                        e.target.src = "https://via.placeholder.com/64?text=Logo";
+                        e.target.src = "/jobImage.jpg";
                       }}
                     />
                   </div>
