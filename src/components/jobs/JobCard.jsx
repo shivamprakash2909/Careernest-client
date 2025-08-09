@@ -234,3 +234,4 @@ export default function JobCard({ job, isInternship = false }) {
     </Card>
   );
 }
+

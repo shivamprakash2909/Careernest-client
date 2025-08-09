@@ -111,26 +111,26 @@ export default function Internships() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header Section */}
-      <section className="bg-gradient-to-r from-green-600 to-teal-700 text-white py-8 sm:py-12 lg:py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-r from-green-600 to-teal-700 text-white py-6 sm:py-10 md:py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
           <div className="text-center">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 px-2">
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold mb-2 sm:mb-3 md:mb-4 px-2 leading-tight">
               Start Your Career Journey
             </h1>
-            <p className="text-lg sm:text-xl text-green-100 mb-6 sm:mb-8 px-2">
+            <p className="text-base sm:text-lg md:text-xl text-green-100 mb-4 sm:mb-6 md:mb-8 px-2 max-w-3xl mx-auto">
               Currently {internships.length}+ internship opportunities available
             </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center space-y-3 sm:space-y-0 sm:space-x-4 lg:space-x-6 text-green-100 px-4">
-              <div className="flex items-center space-x-2">
-                <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-sm sm:text-base">Student Friendly</span>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 lg:gap-6 text-green-100 px-2">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-base font-medium">Student Friendly</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <Calendar className="w-4 h-4 sm:w-5 sm:h-5" />
-                <span className="text-sm sm:text-base">Flexible Duration</span>
+              <div className="flex items-center gap-2">
+                <Calendar className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                <span className="text-sm sm:text-base font-medium">Flexible Duration</span>
               </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-sm sm:text-base">Paid Opportunities</span>
+              <div className="flex items-center gap-2">
+                <span className="text-sm sm:text-base font-medium">💰 Paid Opportunities</span>
               </div>
             </div>
           </div>

@@ -43,7 +43,7 @@ export default function JobCard({ job, isInternship = false }) {
       approved: "bg-green-100 text-green-800",
       rejected: "bg-red-100 text-red-800",
     };
-    return <Badge className={variants[status]}>{status}</Badge>;
+    return <Badge className={`text-xs ${variants[status]}`}>{status}</Badge>;
   };
 
   // Helper to format stipend with new structure
@@ -114,7 +114,7 @@ export default function JobCard({ job, isInternship = false }) {
     };
 
     return (
-      <span className="flex items-center text-green-600 font-semibold text-sm sm:text-base">
+      <span className="flex items-center text-green-600 font-semibold text-xs sm:text-sm">
         {formatStipendRange(job.stipend_amount_min, job.stipend_amount_max, job.stipend_type)}
       </span>
     );
@@ -128,55 +128,53 @@ export default function JobCard({ job, isInternship = false }) {
   };
 
   return (
-    <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500">
-      <CardHeader className="pb-3">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 sm:gap-4">
-          <div className="flex items-start space-x-3 sm:space-x-4 flex-1">
+    <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500 w-full max-w-full overflow-hidden">
+      <CardHeader className="pb-2 sm:pb-3">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-2 sm:gap-3 lg:gap-4">
+          <div className="flex items-start space-x-2 sm:space-x-3 lg:space-x-4 flex-1 min-w-0">
             {job.company_logo && (
               <img
                 src={job.company_logo}
                 alt={job.company}
-                className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg object-cover flex-shrink-0"
+                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg object-cover flex-shrink-0"
               />
             )}
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+              <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2 leading-tight break-words">
                 {job.title}
               </CardTitle>
-              <div className="flex items-center space-x-2 text-gray-600 mb-2">
+              <div className="flex items-center space-x-2 text-gray-600 mb-1 sm:mb-2">
                 <Building className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
-                <span className="font-medium text-sm sm:text-base truncate">{job.company}</span>
+                <span className="font-medium text-xs sm:text-sm lg:text-base truncate break-words max-w-full">{job.company}</span>
               </div>
 
               {/* Location and Duration */}
-              <div className="flex flex-wrap gap-2 sm:gap-3 text-xs sm:text-sm text-gray-600 mb-3">
-                <span className="flex items-center">
+              <div className="flex flex-wrap gap-1 sm:gap-2 lg:gap-4 text-gray-600 text-xs sm:text-sm">
+                <span className="flex items-center min-w-0">
                   <MapPin className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                   <span className="truncate">{job.location}</span>
                 </span>
-                <span className="flex items-center">
+                <span className="flex items-center min-w-0">
                   <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
-                  <span>{job.duration || job.job_type}</span>
+                  <span className="truncate">{job.duration || job.job_type}</span>
                 </span>
                 {job.start_date && (
                   <span className="flex items-center">
                     <Calendar className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                     <span className="hidden sm:inline">Starts: {new Date(job.start_date).toLocaleDateString()}</span>
-                    <span className="sm:hidden">Starts: {new Date(job.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                    <span className="sm:hidden">Start: {new Date(job.start_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
                   </span>
                 )}
-              </div>
-
-              {/* Stipend Display */}
-              <div className="flex items-center text-green-600 font-semibold mb-2 text-sm sm:text-base">
-                <IndianRupee className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                 {displayCompensation()}
               </div>
             </div>
           </div>
 
           {/* Right side - Status and Actions */}
-          <div className="flex flex-col items-end gap-2 lg:gap-3">
+          <div className="text-right flex flex-col items-end gap-1 sm:gap-2 w-full lg:w-auto min-w-0">
+            <div className="flex items-center text-green-600 font-semibold mb-1 sm:mb-2 text-xs sm:text-sm lg:text-base truncate min-w-0 w-full max-w-full">
+              {displayCompensation()}
+            </div>
             {/* Status Badge */}
             {isMyJob && (
               <div className="flex items-center gap-1">
@@ -191,8 +189,9 @@ export default function JobCard({ job, isInternship = false }) {
 
             {/* Posted Info */}
             <div className="flex items-center text-gray-500 text-xs">
-              <Clock className="w-3 h-3 mr-1" />
-              <span>Posted recently</span>
+              <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
+              <span className="hidden sm:inline">Posted recently</span>
+              <span className="sm:hidden">Recent</span>
             </div>
           </div>
         </div>
@@ -227,7 +226,7 @@ export default function JobCard({ job, isInternship = false }) {
 
         {/* Description */}
         {job.description && (
-          <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2">{truncateText(job.description, 150)}</p>
+          <p className="text-gray-600 text-xs sm:text-sm mb-3 sm:mb-4 line-clamp-2 break-words">{truncateText(job.description, 150)}</p>
         )}
 
         {/* Key Information Preview */}
@@ -239,7 +238,7 @@ export default function JobCard({ job, isInternship = false }) {
                 <span className="hidden sm:inline">Key Responsibilities</span>
                 <span className="sm:hidden">Responsibilities</span>
               </h4>
-              <p className="text-gray-600 line-clamp-2">{truncateText(job.responsibilities, 80)}</p>
+              <p className="text-gray-600 line-clamp-2 break-words">{truncateText(job.responsibilities, 80)}</p>
             </div>
           )}
 
@@ -250,7 +249,7 @@ export default function JobCard({ job, isInternship = false }) {
                 <span className="hidden sm:inline">Requirements</span>
                 <span className="sm:hidden">Reqs</span>
               </h4>
-              <p className="text-gray-600 line-clamp-2">{truncateText(job.requirements, 80)}</p>
+              <p className="text-gray-600 line-clamp-2 break-words">{truncateText(job.requirements, 80)}</p>
             </div>
           )}
 
@@ -261,7 +260,7 @@ export default function JobCard({ job, isInternship = false }) {
                 <span className="hidden sm:inline">Skills Required</span>
                 <span className="sm:hidden">Skills</span>
               </h4>
-              <p className="text-gray-600 line-clamp-2">{truncateText(getSkillsText(), 80)}</p>
+              <p className="text-gray-600 line-clamp-2 break-words">{truncateText(getSkillsText(), 80)}</p>
             </div>
           )}
         </div>
@@ -287,25 +286,29 @@ export default function JobCard({ job, isInternship = false }) {
 
           <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
             <Link to={`/p/internship-details/${job._id}`} className="w-full sm:w-auto">
-              <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm">
-                View Details
+              <Button variant="outline" size="sm" className="w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                <span className="hidden sm:inline">View Details</span>
+                <span className="sm:hidden">Details</span>
               </Button>
             </Link>
             {(job.approval_status === "approved" || job.status === "approved") && (
               <Link to={`/p/internship-details/${job._id}?apply=true`} className="w-full sm:w-auto">
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm">
-                  {isInternship ? "Apply for Internship" : "Apply Now"}
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                  <span className="hidden sm:inline">{isInternship ? "Apply for Internship" : "Apply Now"}</span>
+                  <span className="sm:hidden">Apply</span>
                 </Button>
               </Link>
             )}
             {(job.approval_status === "pending" || job.status === "pending") && (
-              <Button size="sm" variant="outline" disabled className="text-yellow-600 w-full sm:w-auto text-xs sm:text-sm">
-                Pending Approval
+              <Button size="sm" variant="outline" disabled className="text-yellow-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                <span className="hidden sm:inline">Pending Approval</span>
+                <span className="sm:hidden">Pending</span>
               </Button>
             )}
             {(job.approval_status === "rejected" || job.status === "rejected") && (
-              <Button size="sm" variant="outline" disabled className="text-red-600 w-full sm:w-auto text-xs sm:text-sm">
-                Rejected
+              <Button size="sm" variant="outline" disabled className="text-red-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                <span className="hidden sm:inline">Rejected</span>
+                <span className="sm:hidden">Rejected</span>
               </Button>
             )}
           </div>
