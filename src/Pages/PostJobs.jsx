@@ -128,7 +128,7 @@ export default function PostJob() {
       showError(`Job Description must have at least 50 characters. Current: ${descriptionChars} characters.`);
       return false;
     }
-    if (descriptionChars > 500) {
+    if (descriptionChars > 2500) {
       showError(`Job Description must have no more than 500 characters. Current: ${descriptionChars} characters.`);
       return false;
     }
@@ -448,7 +448,9 @@ export default function PostJob() {
             required
             className="text-sm sm:text-base"
           />
-          <p className="text-xs sm:text-sm text-gray-600 mt-1">{getCharacterCountMessage(form.description, 50, 500)}</p>
+          <p className="text-xs sm:text-sm text-gray-600 mt-1">
+            {getCharacterCountMessage(form.description, 50, 2500)}
+          </p>
         </div>
 
         {/* Responsibilities */}
