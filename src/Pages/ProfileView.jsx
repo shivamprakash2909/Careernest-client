@@ -117,7 +117,11 @@ export default function ProfileView() {
           <div className="lg:col-span-2 space-y-6">
             {/* About Section */}
             <div className="bg-white rounded-xl p-6 shadow-md border border-gray-100">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">About me</h2>
+              {userRole === "recruiter" ? (
+                <h2 className="text-xl font-bold text-gray-900 mb-4">About Company</h2>
+              ) : (
+                <h2 className="text-xl font-bold text-gray-900 mb-4">About me</h2>
+              )}
               <p className="text-gray-600 leading-relaxed">{profile.about}</p>
             </div>
 

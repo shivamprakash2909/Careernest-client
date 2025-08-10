@@ -72,6 +72,13 @@ export default function RecruiterAuth() {
       } else {
         setPasswordStrength("Medium");
       }
+    } else if (name === "company_website") {
+      // Validate website URL format
+      setFormData({ ...formData, [name]: value });
+    } else if (name === "company_description") {
+      // Limit company description to 2000 characters
+      const limitedValue = value.slice(0, 2000);
+      setFormData({ ...formData, [name]: limitedValue });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -84,6 +91,40 @@ export default function RecruiterAuth() {
       ...formData,
       [name]: value,
     });
+  };
+
+  // Validate website URL format
+  const validateWebsiteUrl = (url) => {
+    if (!url) return true; // Allow empty URL
+    // Accept either https:// OR www. but not both
+    const httpsPattern =
+      /^https:\/\/[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const wwwPattern =
+      /^www\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    return httpsPattern.test(url) || wwwPattern.test(url);
+  };
+
+  // New improved validation function
+  const validateWebsiteUrlNew = (url) => {
+    if (!url) return true; // Allow empty URL
+    // Accept either https:// OR www. but not both
+    const httpsPattern =
+      /^https:\/\/[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    const wwwPattern =
+      /^www\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+
+    return httpsPattern.test(url) || wwwPattern.test(url);
+  };
+
+  // Simple validation function for www URLs
+  const validateWebsiteUrlSimple = (url) => {
+    if (!url) return true; // Allow empty URL
+    // Simple patterns for https:// or www.
+    const httpsPattern = /^https:\/\/.+/;
+    const wwwPattern = /^www\..+/;
+
+    return httpsPattern.test(url) || wwwPattern.test(url);
   };
   const backendURL = import.meta.env.VITE_BASE_URL || "";
   const handleGoogleLoginSuccess = async (credentialResponse) => {
@@ -213,6 +254,18 @@ export default function RecruiterAuth() {
       // Password regex: at least 8 chars, 1 letter, 1 number, 1 special char
       if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/.test(formData.password)) {
         setError("Password must include a letter, a number, and a special character.");
+        return;
+      }
+
+      // Validate website URL if provided
+      if (formData.company_website && !validateWebsiteUrlSimple(formData.company_website)) {
+        setError("Company website must be a valid URL starting with 'https://' or 'www.'");
+        return;
+      }
+
+      // Validate company description length
+      if (formData.company_description && formData.company_description.length < 50) {
+        setError("Company description must be at least 50 characters long.");
         return;
       }
 
@@ -479,10 +532,21 @@ export default function RecruiterAuth() {
                     <label className="block text-sm font-medium text-gray-700 mb-2">Company Website</label>
                     <Input
                       name="company_website"
+                      type="text"
                       value={formData.company_website}
                       onChange={handleInputChange}
-                      placeholder="Enter your company's website,LinkedIn or any other social media link"
+                      placeholder="https://yourcompany.com or www.yourcompany.com"
+                      className={
+                        formData.company_website && !validateWebsiteUrlSimple(formData.company_website)
+                          ? "border-red-500"
+                          : ""
+                      }
                     />
+                    {formData.company_website && !validateWebsiteUrlSimple(formData.company_website) && (
+                      <p className="mt-1 text-sm text-red-600">
+                        Please enter a valid URL starting with 'https://' or 'www.'
+                      </p>
+                    )}
                   </div>
 
                   <div className="mt-4">
@@ -493,7 +557,33 @@ export default function RecruiterAuth() {
                       onChange={handleInputChange}
                       placeholder="Brief description of your company and what you do..."
                       rows={5}
+                      className={
+                        formData.company_description && formData.company_description.length < 50 ? "border-red-500" : ""
+                      }
                     />
+                    <div className="mt-1 flex justify-between text-sm">
+                      <span
+                        className={
+                          formData.company_description && formData.company_description.length < 50
+                            ? "text-red-600"
+                            : "text-gray-500"
+                        }
+                      >
+                        {formData.company_description
+                          ? `${formData.company_description.length} characters`
+                          : "0 characters"}
+                      </span>
+                      <span className="text-gray-500">
+                        {formData.company_description
+                          ? `${2000 - formData.company_description.length} remaining`
+                          : "2000 remaining"}
+                      </span>
+                    </div>
+                    {formData.company_description && formData.company_description.length < 50 && (
+                      <p className="mt-1 text-sm text-red-600">
+                        Company description must be at least 50 characters long.
+                      </p>
+                    )}
                   </div>
                 </div>
 

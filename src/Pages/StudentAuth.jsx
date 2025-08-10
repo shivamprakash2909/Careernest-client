@@ -88,6 +88,10 @@ export default function StudentAuth() {
       } else {
         setPasswordStrength("Medium");
       }
+    } else if (name === "bio") {
+      // Limit bio to 2000 characters
+      const limitedValue = value.slice(0, 2000);
+      setFormData({ ...formData, [name]: limitedValue });
     } else {
       setFormData({ ...formData, [name]: value });
     }
@@ -247,6 +251,12 @@ export default function StudentAuth() {
       }
       if (!/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/.test(formData.password)) {
         setError("Password must include a letter, a number, and a special character.");
+        return;
+      }
+
+      // Validate bio length
+      if (formData.bio && formData.bio.length < 50) {
+        setError("Summary must be at least 50 characters long.");
         return;
       }
 
@@ -546,7 +556,19 @@ export default function StudentAuth() {
                         onChange={handleInputChange}
                         placeholder="Tell us about yourself, your interests, and career goals..."
                         rows={4}
+                        className={formData.bio && formData.bio.length < 50 ? "border-red-500" : ""}
                       />
+                      <div className="mt-1 flex justify-between text-sm">
+                        <span className={formData.bio && formData.bio.length < 50 ? "text-red-600" : "text-gray-500"}>
+                          {formData.bio ? `${formData.bio.length} characters` : "0 characters"}
+                        </span>
+                        <span className="text-gray-500">
+                          {formData.bio ? `${2000 - formData.bio.length} remaining` : "2000 remaining"}
+                        </span>
+                      </div>
+                      {formData.bio && formData.bio.length < 50 && (
+                        <p className="mt-1 text-sm text-red-600">Summary must be at least 50 characters long.</p>
+                      )}
                     </div>
                   </div>
                 </div>
