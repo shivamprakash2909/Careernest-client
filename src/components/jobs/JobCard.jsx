@@ -93,7 +93,7 @@ export default function JobCard({ job, isInternship = false }) {
     }
     return (
       <span className="flex items-center text-green-600 font-semibold text-xs sm:text-sm">
-        {formatSalary(job.salary_min, job.salary_max, job.salary_type)}
+        {/* {formatSalary(job.salary_min, job.salary_max, job.salary_type)} */}
       </span>
     );
   };
