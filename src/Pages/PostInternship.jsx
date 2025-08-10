@@ -135,7 +135,7 @@ export default function PostInternship() {
       showError(`Internship Description must have at least 50 characters. Current: ${descriptionChars} characters.`);
       return false;
     }
-    if (descriptionChars > 500) {
+    if (descriptionChars > 2500) {
       showError(
         `Internship Description must have no more than 500 characters. Current: ${descriptionChars} characters.`
       );
@@ -296,22 +296,39 @@ export default function PostInternship() {
             <label htmlFor="duration" className="block mb-1 font-medium">
               Internship Duration *
             </label>
-            <Input
-              type="text"
+            <select
               id="duration"
               name="duration"
               value={form.duration}
               onChange={handleChange}
-              placeholder="e.g., 2 months"
               required
-            />
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="" disabled>
+                Select duration
+              </option>
+              <option value="1 week">1 week</option>
+              <option value="2 weeks">2 weeks</option>
+              <option value="3 weeks">3 weeks</option>
+              <option value="1 month">1 month</option>
+              <option value="2 months">2 months</option>
+              <option value="3 months">3 months</option>
+              <option value="6 months">6 months</option>
+            </select>
           </div>
 
           <div>
             <label htmlFor="start_date" className="block mb-1 font-medium">
               Start Date
             </label>
-            <Input type="date" id="start_date" name="start_date" value={form.start_date} onChange={handleChange} />
+            <Input
+              type="date"
+              id="start_date"
+              name="start_date"
+              value={form.start_date}
+              onChange={handleChange}
+              min={new Date().toISOString().split("T")[0]} // prevents selecting past dates
+            />
           </div>
         </div>
 
@@ -329,6 +346,7 @@ export default function PostInternship() {
               onChange={handleChange}
               placeholder="e.g., 5000"
               min="0"
+              required
             />
           </div>
 
@@ -409,7 +427,7 @@ export default function PostInternship() {
                   name="education_level_manual"
                   value={form.education_level_manual}
                   onChange={handleChange}
-                  placeholder="Enter education level manually..."
+                  placeholder="Enter the required education of student"
                 />
               )}
             </div>
@@ -430,7 +448,7 @@ export default function PostInternship() {
             rows={6}
             required
           />
-          <p className="text-sm text-gray-600 mt-1">{getCharacterCountMessage(form.description, 50, 500)}</p>
+          <p className="text-sm text-gray-600 mt-1">{getCharacterCountMessage(form.description, 50, 2500)}</p>
         </div>
 
         {/* Responsibilities */}
@@ -461,7 +479,7 @@ export default function PostInternship() {
             value={form.requirements}
             onChange={handleChange}
             placeholder="Describe the requirements and qualifications needed for this internship..."
-            rows={4}
+            rows={10}
             required
           />
           <p className="text-sm text-gray-600 mt-1">{getCharacterCountMessage(form.requirements, 50, 500)}</p>

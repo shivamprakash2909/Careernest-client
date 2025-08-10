@@ -665,7 +665,7 @@ export default function RecruiterAuth() {
           <p className="text-gray-600">
             Don't have an account?{" "}
             <button onClick={() => setIsLogin(false)} className="font-semibold text-gray-900 hover:text-blue-600">
-              Sign up for free
+              Sign up
             </button>
           </p>
         </div>

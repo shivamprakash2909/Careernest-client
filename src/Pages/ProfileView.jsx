@@ -70,8 +70,20 @@ export default function ProfileView() {
             </div>
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">{profile.name}</h1>
-          <div className="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg mb-4">
-            {userRole === "recruiter" ? "Recruiter" : "Student"}
+
+          <div className="flex justify-center items-center gap-4 mb-2">
+            {/* Role Tag */}
+            <div className="inline-block px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg">
+              {userRole === "recruiter" ? "Recruiter" : "Student"}
+            </div>
+
+            {/* Edit Profile Button */}
+            <Button
+              onClick={() => navigate(userRole === "student" ? "/p/editprofile" : "/p/updateprofile")}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Edit Profile
+            </Button>
           </div>
 
           {/* Contact Information */}
@@ -340,14 +352,6 @@ export default function ProfileView() {
         </div>
 
         {/* Edit Profile Button */}
-        <div className="flex justify-center mt-8">
-          <Button
-            onClick={() => navigate(userRole === "student" ? "/p/editprofile" : "/p/updateprofile")}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
-          >
-            Edit Profile
-          </Button>
-        </div>
       </div>
     </div>
   );
