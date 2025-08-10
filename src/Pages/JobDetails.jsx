@@ -253,12 +253,19 @@ export default function JobDetails() {
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2 mb-6">
-                <Badge className="bg-blue-100 text-blue-800">{job.experience_level}</Badge>
-                {job.remote_option && <Badge className="bg-green-100 text-green-800">Remote Available</Badge>}
+              <div className="flex flex-wrap gap-2 mb-6 overflow-hidden">
+                <Badge className="bg-blue-100 text-blue-800 flex-shrink-0">{job.experience_level}</Badge>
+                {job.remote_option && (
+                  <Badge className="bg-green-100 text-green-800 flex-shrink-0">Remote Available</Badge>
+                )}
                 {job.skills?.slice(0, 5).map((skill, index) => (
-                  <Badge key={index} variant="outline" className="text-blue-600 border-blue-600">
-                    {skill}
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="text-blue-600 border-blue-600 max-w-full break-words flex-shrink-0"
+                    title={skill}
+                  >
+                    <span className="truncate block max-w-[150px] sm:max-w-[120px] lg:max-w-[100px]">{skill}</span>
                   </Badge>
                 ))}
               </div>
@@ -447,10 +454,15 @@ export default function JobDetails() {
                 <CardTitle>Skills Required</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-2 overflow-hidden">
                   {job.skills.map((skill, i) => (
-                    <Badge key={i} variant="outline" className="text-blue-600 border-blue-600">
-                      {skill}
+                    <Badge
+                      key={i}
+                      variant="outline"
+                      className="text-blue-600 border-blue-600 max-w-full break-words"
+                      title={skill}
+                    >
+                      <span className="truncate block max-w-[200px] sm:max-w-[150px] lg:max-w-[120px]">{skill}</span>
                     </Badge>
                   ))}
                 </div>
