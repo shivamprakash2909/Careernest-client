@@ -40,18 +40,6 @@ export default function RecruiterAuth() {
     company_website: "",
     company_description: "",
   });
-  // Remove passwordLength state and generatePassword function
-
-  //password generation
-  const generatePassword = () => {
-    const length = 12;
-    const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+{}[]<>?,.";
-    let result = "";
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    setFormData({ ...formData, password: result, confirm_password: result });
-  };
 
   const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 
@@ -428,13 +416,6 @@ export default function RecruiterAuth() {
                           {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                         </button>
                       </div>
-                      <button
-                        type="button"
-                        onClick={generatePassword}
-                        className="mt-2 px-3 py-1 bg-gray-200 rounded text-sm hover:bg-gray-300"
-                      >
-                        Auto Generate Password
-                      </button>
                     </div>
                   </div>
                 </div>
