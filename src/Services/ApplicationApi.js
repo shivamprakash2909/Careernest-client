@@ -29,16 +29,16 @@ const ApplicationApi = {
       if (applicant_email) params.applicant_email = applicant_email;
       if (recruiter_email) params.recruiter_email = recruiter_email;
 
-      console.log("Making request to:", API_URL);
-      console.log("Headers:", requestHeaders);
-      console.log("Query Params:", params);
+      // console.log("Making request to:", API_URL);
+      // console.log("Headers:", requestHeaders);
+      // console.log("Query Params:", params);
 
       const response = await axiosInstance.get(API_URL, {
         headers: requestHeaders,
         params,
       });
 
-      console.log("Response status:", response.status);
+      // console.log("Response status:", response.status);
 
       if (!(response.status === 200 || response.status === 201)) {
         const errorText = await response.text();
@@ -47,7 +47,7 @@ const ApplicationApi = {
       }
 
       const json = response.data;
-      console.log("API Response:", json);
+      // console.log("API Response:", json);
       return json || [];
     } catch (error) {
       console.error("ApplicationApi.list error:", error);

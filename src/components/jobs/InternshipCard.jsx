@@ -25,10 +25,6 @@ export default function JobCard({ job, isInternship = false }) {
   const isRecruiter = user.role === "recruiter";
   const isMyJob = isRecruiter && job.posted_by === user.email;
 
-  // Debug logging
-  console.log("InternshipCard received job data:", job);
-  console.log("Skills data:", job.skills);
-
   // Helper to get skills text (handle both string and array formats)
   const getSkillsText = () => {
     if (!job.skills) return "";

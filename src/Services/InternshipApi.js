@@ -3,7 +3,7 @@ import { axiosInstance } from "@/lib/axios";
 export async function fetchInternshipsFromAPI() {
   try {
     const adminToken = localStorage.getItem("admin-token");
-    console.log("Fetching internships with admin token:", adminToken);
+    // console.log("Fetching internships with admin token:", adminToken);
 
     const response = await axiosInstance.get("/api/jobs/internships", {
       headers: {
@@ -13,7 +13,7 @@ export async function fetchInternshipsFromAPI() {
       },
     });
 
-    console.log("Internship API response status:", response.status);
+    // console.log("Internship API response status:", response.status);
 
     if (!(response.status === 200 || response.status === 201)) {
       const errorText = await response.text();
@@ -22,7 +22,7 @@ export async function fetchInternshipsFromAPI() {
     }
 
     const data = response.data;
-    console.log("Internship API response:", data);
+    // console.log("Internship API response:", data);
     return data;
   } catch (error) {
     console.error("Error in fetchInternshipsFromAPI:", error);

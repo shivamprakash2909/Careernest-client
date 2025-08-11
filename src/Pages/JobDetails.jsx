@@ -52,7 +52,7 @@ export default function JobDetails() {
         data.description = data.job_description;
       }
       // Add more mappings here if your backend uses different field names
-      console.log("Loaded job:", data);
+      // console.log("Loaded job:", data);
       setJob(data);
     } catch (error) {
       console.error("Error loading job:", error);

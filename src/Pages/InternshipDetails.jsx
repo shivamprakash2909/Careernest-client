@@ -53,7 +53,7 @@ export default function InternshipDetails() {
         },
       });
       const data = response.data;
-      console.log("Loaded internship:", data);
+
       setInternship(data);
     } catch (error) {
       console.error("Error loading internship:", error);

@@ -24,8 +24,8 @@ export default function StudentDashboard() {
         const fullName = user.full_name || user.name || "Student";
         setStudentName(fullName);
         setFirstName(fullName.split(" ")[0]);
-        console.log("studentName:", fullName);
-        console.log("firstname:", fullName.split(" ")[0]);
+        // console.log("studentName:", fullName);
+        // console.log("firstname:", fullName.split(" ")[0]);
       } catch (e) {
         setStudentName("Student");
         setFirstName("Student");
