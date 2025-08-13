@@ -246,7 +246,7 @@ export default function Home() {
                           <span className="text-green-600 font-semibold flex items-center">
                             {job.salary_range || job.salary || "Not specified"}
                           </span>
-                          <Link to={`/job-details/${job._id}`}>
+                          <Link to={`/p/job-details/${job._id}?apply=true`}>
                             <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
                               Apply Now
                             </Button>
