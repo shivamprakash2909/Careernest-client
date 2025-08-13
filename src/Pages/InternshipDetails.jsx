@@ -18,17 +18,21 @@ import { createPageUrl } from "../components/utils";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import InternshipApplicationForm from "../components/jobs/InternshipApplicationForm";
 import { axiosInstance } from "@/lib/axios";
+import { useToast } from "../components/common/ToastContext";
+import ApplicationApi from "../Services/ApplicationApi";
 
 export default function InternshipDetails() {
   const { internshipId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { showInfo } = useToast();
 
   const [internship, setInternship] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [applicationMessage, setApplicationMessage] = useState("");
   const [applicationStatus, setApplicationStatus] = useState(""); // "success", "error", or ""
+  const [hasApplied, setHasApplied] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -36,6 +40,7 @@ export default function InternshipDetails() {
 
     if (internshipId) {
       loadInternship(internshipId);
+      checkIfAlreadyApplied(internshipId);
       if (shouldShowForm) {
         setShowApplicationForm(true);
       }
@@ -69,6 +74,29 @@ export default function InternshipDetails() {
       return user && jwt && user.role === "student";
     } catch {
       return false;
+    }
+  };
+
+  const checkIfAlreadyApplied = async (id) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const jwt = localStorage.getItem("jwt");
+
+      if (!user || !jwt || user.role !== "student") {
+        setHasApplied(false);
+        return;
+      }
+
+      const response = await ApplicationApi.list(); // Assuming list() without params gets student's applications
+      const studentApplications = response; // ApplicationApi.list() returns the data directly
+
+      const alreadyApplied = studentApplications.some(
+        (app) => app.internship_id === id // Assuming internship_id is the field
+      );
+      setHasApplied(alreadyApplied);
+    } catch (error) {
+      console.error("Error checking application status:", error);
+      setHasApplied(false); // Assume not applied on error
     }
   };
 
@@ -176,8 +204,21 @@ export default function InternshipDetails() {
           </Link>
 
           {isStudent() && internship.status === "approved" && (
-            <Link to={`/p/internship-details/${internship._id}?apply=true`}>
-              <Button className="bg-blue-600 hover:bg-blue-700">Apply for Internship</Button>
+            <Link
+              to={hasApplied ? "#" : `/p/internship-details/${internship._id}?apply=true`}
+              onClick={(e) => {
+                if (hasApplied) {
+                  e.preventDefault();
+                  showInfo("You have already applied for this internship.");
+                }
+              }}
+            >
+              <Button
+                className="bg-blue-600 hover:bg-blue-700"
+                disabled={hasApplied}
+              >
+                {hasApplied ? "Already Applied" : "Apply for Internship"}
+              </Button>
             </Link>
           )}
         </div>
@@ -288,8 +329,21 @@ export default function InternshipDetails() {
                   <p className="text-gray-600 mb-4">
                     Take the first step towards your dream internship. Submit your application now!
                   </p>
-                  <Link to={`/p/internship-details/${internship._id}?apply=true`}>
-                    <Button className="w-full bg-blue-600 hover:bg-blue-700">Apply for Internship</Button>
+                  <Link
+                    to={hasApplied ? "#" : `/p/internship-details/${internship._id}?apply=true`}
+                    onClick={(e) => {
+                      if (hasApplied) {
+                        e.preventDefault();
+                        showInfo("You have already applied for this internship.");
+                      }
+                    }}
+                  >
+                    <Button
+                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      disabled={hasApplied}
+                    >
+                      {hasApplied ? "Already Applied" : "Apply for Internship"}
+                    </Button>
                   </Link>
                 </CardContent>
               </Card>

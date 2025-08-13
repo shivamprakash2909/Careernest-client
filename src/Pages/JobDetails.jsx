@@ -8,17 +8,21 @@ import { createPageUrl } from "../components/utils";
 import LoadingSpinner from "../components/common/LoadingSpinner";
 import ApplicationForm from "../components/jobs/ApplicationForm";
 import { axiosInstance } from "@/lib/axios";
+import { useToast } from "../components/common/ToastContext";
+import ApplicationApi from "../Services/ApplicationApi";
 
 export default function JobDetails() {
   const { jobId } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { showInfo } = useToast();
 
   const [job, setJob] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [applicationMessage, setApplicationMessage] = useState("");
   const [applicationStatus, setApplicationStatus] = useState(""); // "success", "error", or ""
+  const [hasApplied, setHasApplied] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -26,6 +30,7 @@ export default function JobDetails() {
 
     if (jobId) {
       loadJob(jobId);
+      checkIfAlreadyApplied(jobId);
       if (shouldShowForm) {
         setShowApplicationForm(true);
       }
@@ -68,6 +73,29 @@ export default function JobDetails() {
       return user && jwt && user.role === "student";
     } catch {
       return false;
+    }
+  };
+
+  const checkIfAlreadyApplied = async (id) => {
+    try {
+      const user = JSON.parse(localStorage.getItem("user"));
+      const jwt = localStorage.getItem("jwt");
+
+      if (!user || !jwt || user.role !== "student") {
+        setHasApplied(false);
+        return;
+      }
+
+      const response = await ApplicationApi.list(); // Assuming list() without params gets student's applications
+      const studentApplications = response; // ApplicationApi.list() returns the data directly
+
+      const alreadyApplied = studentApplications.some(
+        (app) => app.job_id === id // Assuming job_id is the field
+      );
+      setHasApplied(alreadyApplied);
+    } catch (error) {
+      console.error("Error checking application status:", error);
+      setHasApplied(false); // Assume not applied on error
     }
   };
 
@@ -211,12 +239,20 @@ export default function JobDetails() {
           </Link>
           <Button
             onClick={() => {
-              if (isStudent()) setShowApplicationForm(true);
-              else navigate("/p/studentauth");
+              if (isStudent()) {
+                if (hasApplied) {
+                  showInfo("You have already applied for this job.");
+                } else {
+                  setShowApplicationForm(true);
+                }
+              } else {
+                navigate("/p/studentauth");
+              }
             }}
             className="bg-blue-600 hover:bg-blue-700 px-8 py-3"
+            disabled={hasApplied}
           >
-            Apply Now
+            {hasApplied ? "Already Applied" : "Apply Now"}
           </Button>
         </div>
       </div>
@@ -270,14 +306,22 @@ export default function JobDetails() {
                 ))}
               </div>
 
-              <Button
+               <Button
                 onClick={() => {
-                  if (isStudent()) setShowApplicationForm(true);
-                  else navigate("/p/studentauth");
+                  if (isStudent()) {
+                    if (hasApplied) {
+                      showInfo("You have already applied for this job.");
+                    } else {
+                      setShowApplicationForm(true);
+                    }
+                  } else {
+                    navigate("/p/studentauth");
+                  }
                 }}
-                className="w-full bg-blue-600 hover:bg-blue-700 py-3 text-lg"
+                className="w-full bg-blue-600 hover:bg-blue-700 mb-4"
+                disabled={hasApplied}
               >
-                Apply for this Position
+                {hasApplied ? "Already Applied" : "Apply Now"}
               </Button>
             </CardContent>
           </Card>
@@ -379,12 +423,20 @@ export default function JobDetails() {
             <CardContent>
               <Button
                 onClick={() => {
-                  if (isStudent()) setShowApplicationForm(true);
-                  else navigate("/p/studentauth");
+                  if (isStudent()) {
+                    if (hasApplied) {
+                      showInfo("You have already applied for this job.");
+                    } else {
+                      setShowApplicationForm(true);
+                    }
+                  } else {
+                    navigate("/p/studentauth");
+                  }
                 }}
                 className="w-full bg-blue-600 hover:bg-blue-700 mb-4"
+                disabled={hasApplied}
               >
-                Apply Now
+                {hasApplied ? "Already Applied" : "Apply Now"}
               </Button>
               <p className="text-sm text-gray-600 text-center">Join hundreds of candidates who have already applied</p>
             </CardContent>

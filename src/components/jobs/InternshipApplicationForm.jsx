@@ -10,7 +10,7 @@ import { Upload, FileText, CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function InternshipApplicationForm({ internship, onClose, onSuccess }) {
-  console.log("InternshipApplicationForm received internship:", internship);
+  // console.log("InternshipApplicationForm received internship:", internship);
 
   // Get internship ID from URL params as fallback
   const urlParams = new URLSearchParams(window.location.search);
@@ -47,11 +47,11 @@ export default function InternshipApplicationForm({ internship, onClose, onSucce
       try {
         if (!user?.email) return;
 
-        console.log("Checking internship application status for:", {
-          applicant_email: user.email,
-          internship_id: internship.id || internship._id || internshipIdFromUrl,
-          application_type: "internship",
-        });
+        // console.log("Checking internship application status for:", {
+        //   applicant_email: user.email,
+        //   internship_id: internship.id || internship._id || internshipIdFromUrl,
+        //   application_type: "internship",
+        // });
 
         const applications = await ApplicationApi.list({
           applicant_email: user.email,
@@ -59,7 +59,7 @@ export default function InternshipApplicationForm({ internship, onClose, onSucce
           application_type: "internship",
         });
 
-        console.log("Found internship applications:", applications);
+        // console.log("Found internship applications:", applications);
         setHasApplied(applications.length > 0);
       } catch (error) {
         console.error("Error checking internship application status:", error);
