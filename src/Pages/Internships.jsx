@@ -44,16 +44,19 @@ export default function Internships() {
       const user = JSON.parse(localStorage.getItem("user") || "{}");
       const isRecruiter = user.role === "recruiter";
 
+      let internshipsList = [];
       if (isRecruiter) {
-        // For recruiters, show all their internships (approved, pending, rejected)
-        const recruiterInternships = (Array.isArray(data) ? data : []).filter(
+        internshipsList = (Array.isArray(data) ? data : []).filter(
           (internship) => internship.posted_by === user.email
         );
-        setInternships(recruiterInternships);
       } else {
-        // For students, only show approved internships
-        setInternships((Array.isArray(data) ? data : []).filter((internship) => internship.status === "approved"));
+        internshipsList = (Array.isArray(data) ? data : []).filter((internship) => internship.status === "approved");
       }
+
+      // Sort by createdAt descending (newest first)
+      internshipsList.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+      setInternships(internshipsList);
     } catch (error) {
       console.error("Error loading internships:", error);
     } finally {
