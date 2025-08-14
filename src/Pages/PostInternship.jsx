@@ -525,7 +525,13 @@ export default function PostInternship() {
             <Checkbox
               id="remote_option"
               checked={form.remote_option}
-              onCheckedChange={(checked) => setForm((prev) => ({ ...prev, remote_option: checked }))}
+              onCheckedChange={(checked) =>
+                setForm((prev) => ({
+                  ...prev,
+                  remote_option: checked,
+                  work_from_home: checked ? false : prev.work_from_home,
+                }))
+              }
             />
             <label htmlFor="remote_option" className="font-medium">
               Remote Work Option
@@ -536,7 +542,13 @@ export default function PostInternship() {
             <Checkbox
               id="work_from_home"
               checked={form.work_from_home}
-              onCheckedChange={(checked) => setForm((prev) => ({ ...prev, work_from_home: checked }))}
+              onCheckedChange={(checked) =>
+                setForm((prev) => ({
+                  ...prev,
+                  work_from_home: checked,
+                  remote_option: checked ? false : prev.remote_option,
+                }))
+              }
             />
             <label htmlFor="work_from_home" className="font-medium">
               Work from Office

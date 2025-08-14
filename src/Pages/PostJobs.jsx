@@ -105,10 +105,31 @@ export default function PostJob() {
     return true;
   };
 
+  const validateExperience = (min, max) => {
+    if (min && max && Number(min) > Number(max)) {
+      return false;
+    }
+    if (min && Number(min) < 0) {
+      return false;
+    }
+    if (max && Number(max) < 0) {
+      return false;
+    }
+    return true;
+  };
+
   const validateForm = () => {
     // Validate salary values
     if (!validateSalary(form.salary_min, form.salary_max)) {
       showError("Invalid salary values. Min salary cannot be greater than max salary, and values cannot be negative.");
+      return false;
+    }
+
+    // Validate experience range
+    if (!validateExperience(form.experience_years_min, form.experience_years_max)) {
+      showError(
+        "Invalid experience range. Minimum experience cannot be greater than maximum experience, and values cannot be negative."
+      );
       return false;
     }
 
@@ -544,7 +565,13 @@ export default function PostJob() {
             <Checkbox
               id="remote_option"
               checked={form.remote_option}
-              onCheckedChange={(checked) => setForm((prev) => ({ ...prev, remote_option: checked }))}
+              onCheckedChange={(checked) =>
+                setForm((prev) => ({
+                  ...prev,
+                  remote_option: checked,
+                  work_from_home: checked ? false : prev.work_from_home,
+                }))
+              }
             />
             <label htmlFor="remote_option" className="font-medium text-sm sm:text-base">
               Remote Work Option
@@ -555,7 +582,13 @@ export default function PostJob() {
             <Checkbox
               id="work_from_home"
               checked={form.work_from_home}
-              onCheckedChange={(checked) => setForm((prev) => ({ ...prev, work_from_home: checked }))}
+              onCheckedChange={(checked) =>
+                setForm((prev) => ({
+                  ...prev,
+                  work_from_home: checked,
+                  remote_option: checked ? false : prev.remote_option,
+                }))
+              }
             />
             <label htmlFor="work_from_home" className="font-medium text-sm sm:text-base">
               Work from Office
