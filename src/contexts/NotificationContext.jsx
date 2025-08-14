@@ -200,7 +200,7 @@ export const NotificationProvider = ({ children }) => {
 
     // Set up polling for real-time updates (every 30 seconds)
     const interval = setInterval(() => {
-      fetchNotifications();
+      // fetchNotifications();
     }, 30000);
 
     // Simulate incoming notifications for demo

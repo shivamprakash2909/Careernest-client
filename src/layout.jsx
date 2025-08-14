@@ -126,16 +126,18 @@ export default function Layout({ children, currentPageName }) {
             </nav>
 
             {/* Auth Buttons and Profile */}
-            <div className="hidden lg:flex items-center space-x-2">
+            <div className="flex items-center justify-end flex-1 lg:flex-none lg:space-x-2">
               {isLoading ? (
                 <div className="w-48 h-8 bg-gray-200 rounded animate-pulse"></div>
               ) : user ? (
                 <>
+                  <div className="hidden lg:block">
+                    <UserProfileDropdown user={user} onLogout={handleLogout} />
+                  </div>
                   <NotificationIcon />
-                  <UserProfileDropdown user={user} onLogout={handleLogout} />
                 </>
               ) : (
-                <>
+                <div className="hidden lg:flex items-center space-x-2">
                   <Link to={createPageUrl("StudentAuth")}>
                     <Button variant="outline" className="text-blue-600 border-blue-600 hover:bg-blue-50">
                       Student
@@ -144,7 +146,7 @@ export default function Layout({ children, currentPageName }) {
                   <Link to={createPageUrl("RecruiterAuth")}>
                     <Button className="bg-blue-600 hover:bg-blue-700">Recruiter</Button>
                   </Link>
-                </>
+                </div>
               )}
             </div>
 
@@ -187,17 +189,14 @@ export default function Layout({ children, currentPageName }) {
                         <p className="text-xs text-gray-500">{user.email}</p>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <NotificationIcon />
-                      <button
-                        onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
-                        className="p-1 hover:bg-gray-100 rounded"
-                      >
-                        <ChevronDown
-                          className={`w-4 h-4 text-gray-500 transition-transform ${moreDropdownOpen ? "rotate-180" : ""}`}
-                        />
-                      </button>
-                    </div>
+                    <button
+                      onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                      className="p-1 hover:bg-gray-100 rounded"
+                    >
+                      <ChevronDown
+                        className={`w-4 h-4 text-gray-500 transition-transform ${moreDropdownOpen ? "rotate-180" : ""}`}
+                      />
+                    </button>
                   </div>
 
                   {/* More Dropdown */}
@@ -367,17 +366,14 @@ export default function Layout({ children, currentPageName }) {
                       <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <NotificationIcon />
-                    <button
-                      onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
-                      className="p-1 hover:bg-gray-100 rounded"
-                    >
-                      <ChevronDown
-                        className={`w-4 h-4 text-gray-500 transition-transform ${moreDropdownOpen ? "rotate-180" : ""}`}
-                      />
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => setMoreDropdownOpen(!moreDropdownOpen)}
+                    className="p-1 hover:bg-gray-100 rounded"
+                  >
+                    <ChevronDown
+                      className={`w-4 h-4 text-gray-500 transition-transform ${moreDropdownOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
                 </div>
 
                 {/* More Dropdown */}
