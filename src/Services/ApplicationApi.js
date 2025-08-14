@@ -55,6 +55,26 @@ const ApplicationApi = {
     }
   },
 
+  async check(params) {
+    try {
+      const jwt = localStorage.getItem("jwt");
+      if (!jwt) return false;
+
+      const response = await axiosInstance.get(`${API_URL}/check`, {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${jwt}`,
+        },
+        params,
+      });
+
+      return response.data.hasApplied;
+    } catch (error) {
+      console.error("ApplicationApi.check error:", error);
+      return false;
+    }
+  },
+
   async create(applicationData) {
     try {
       const jwt = localStorage.getItem("jwt");
