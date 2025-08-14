@@ -2,6 +2,7 @@ import React from "react";
 import Layout, { AdminLayout } from "./layout";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastProvider } from "./components/common/ToastContext";
+import { NotificationProvider } from "./contexts/NotificationContext";
 import ScrollToTop from "./components/common/ScrollToTop";
 import Home from "./Pages/Home";
 import About from "./Pages/About";
@@ -44,10 +45,11 @@ import RecruiterHome from "./Pages/RecruiterHome";
 
 export default function App() {
   return (
-    <ToastProvider>
-      <Router>
-        <ScrollToTop />
-        <Routes>
+    <NotificationProvider>
+      <ToastProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
           <Route
             path="/"
             element={
@@ -456,5 +458,6 @@ export default function App() {
         </Routes>
       </Router>
     </ToastProvider>
+    </NotificationProvider>
   );
 }
