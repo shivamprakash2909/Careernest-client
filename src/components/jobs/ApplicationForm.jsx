@@ -44,6 +44,15 @@ export default function ApplicationForm({ job, onClose, onSuccess }) {
     async function initializeForm() {
       try {
         if (!user?.email) return;
+
+        const checkParams = {
+          applicant_email: user.email,
+          application_type: isInternship ? "internship" : "job",
+          [isInternship ? "internship_id" : "job_id"]: job.id || job._id,
+        };
+
+        const alreadyApplied = await ApplicationApi.check(checkParams);
+        setHasApplied(alreadyApplied);
         setIsChecking(false);
       } catch (error) {
         console.error('Error initializing form:', error);
@@ -52,7 +61,7 @@ export default function ApplicationForm({ job, onClose, onSuccess }) {
     }
 
     initializeForm();
-  }, [user?.email]);
+  }, [user?.email, job.id, job._id, isInternship]);
 
   if (!isStudent) {
     return (
@@ -147,8 +156,10 @@ export default function ApplicationForm({ job, onClose, onSuccess }) {
       }
     } catch (error) {
       console.error("Error submitting application:", error);
-      // If user not logged in, redirect to login
-      if (error.message?.includes("not authenticated")) {
+      if (error.response && error.response.status === 409) {
+        setHasApplied(true);
+        onSuccess(error.response.data.error, "error");
+      } else if (error.message?.includes("not authenticated")) {
         await User.loginWithRedirect(window.location.href);
       } else {
         onSuccess("Failed to submit application. Please try again.", "error");
@@ -157,6 +168,25 @@ export default function ApplicationForm({ job, onClose, onSuccess }) {
       setIsSubmitting(false);
     }
   };
+
+  if (isChecking) {
+    return <div>Loading...</div>;
+  }
+
+  if (hasApplied) {
+    return (
+      <Card className="max-w-2xl mx-auto">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">Apply for {job.title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="text-center text-green-600 mb-4 font-semibold">
+            You have already applied for this {isInternship ? 'internship' : 'job'}.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="max-w-2xl mx-auto">

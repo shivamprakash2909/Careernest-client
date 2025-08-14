@@ -316,6 +316,7 @@ export default function PostJob() {
               onChange={handleChange}
               placeholder="e.g., 300000"
               min="0"
+              required
             />
           </div>
 
@@ -331,6 +332,7 @@ export default function PostJob() {
               onChange={handleChange}
               placeholder="e.g., 600000"
               min="0"
+              required
             />
           </div>
 
@@ -344,6 +346,7 @@ export default function PostJob() {
               value={form.salary_type}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2 text-sm sm:text-base"
+              required
             >
               <option value="Per Annum">Per Annum</option>
               <option value="Per Month">Per Month</option>
@@ -377,6 +380,7 @@ export default function PostJob() {
               value={form.experience_level}
               onChange={handleChange}
               className="w-full border rounded px-3 py-2 text-sm sm:text-base"
+              required
             >
               <option value="Fresher">Fresher</option>
               <option value="Entry Level">Entry Level</option>
@@ -398,6 +402,7 @@ export default function PostJob() {
               onChange={handleChange}
               placeholder="0"
               min="0"
+              required
             />
           </div>
 
@@ -413,6 +418,7 @@ export default function PostJob() {
               onChange={handleChange}
               placeholder="5"
               min="0"
+              required
             />
           </div>
         </div>
@@ -429,6 +435,7 @@ export default function PostJob() {
               value={form.education_level}
               onChange={handleChange}
               placeholder="e.g., Bachelor's Degree, Master's Degree, Any..."
+              required
             />
           </div>
         </div>
