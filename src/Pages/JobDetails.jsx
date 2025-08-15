@@ -86,13 +86,11 @@ export default function JobDetails() {
         return;
       }
 
-      const response = await ApplicationApi.list(); // Assuming list() without params gets student's applications
-      const studentApplications = response; // ApplicationApi.list() returns the data directly
-
-      const alreadyApplied = studentApplications.some(
-        (app) => app.job_id === id // Assuming job_id is the field
-      );
-      setHasApplied(alreadyApplied);
+      const hasApplied = await ApplicationApi.check({
+        job_id: id,
+        student_id: user._id,
+      });
+      setHasApplied(hasApplied);
     } catch (error) {
       console.error("Error checking application status:", error);
       setHasApplied(false); // Assume not applied on error

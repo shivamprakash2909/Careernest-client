@@ -87,13 +87,11 @@ export default function InternshipDetails() {
         return;
       }
 
-      const response = await ApplicationApi.list(); // Assuming list() without params gets student's applications
-      const studentApplications = response; // ApplicationApi.list() returns the data directly
-
-      const alreadyApplied = studentApplications.some(
-        (app) => app.internship_id === id // Assuming internship_id is the field
-      );
-      setHasApplied(alreadyApplied);
+      const hasApplied = await ApplicationApi.check({
+        internship_id: id,
+        student_id: user._id,
+      });
+      setHasApplied(hasApplied);
     } catch (error) {
       console.error("Error checking application status:", error);
       setHasApplied(false); // Assume not applied on error
