@@ -12,22 +12,50 @@ export default function About() {
 
   const team = [
     {
-      name: "Priya Sharma",
-      role: "CEO & Founder",
+      name: "Gaurav Patel",
+      role: "Team Leader",
       location: "Mumbai",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
       bio: "Former HR Director at TCS with 15+ years in talent acquisition",
     },
     {
-      name: "Rahul Gupta",
-      role: "CTO",
+      name: "Biplav kumar Singh",
+      role: "Backend Developer",
       location: "Bangalore",
       image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face",
       bio: "Ex-Infosys engineer, passionate about connecting talent with opportunities",
     },
     {
-      name: "Anita Patel",
-      role: "Head of Operations",
+      name: "Shivam Prakash",
+      role: "Frontend Developer",
+      location: "Pune",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      bio: "Operations expert ensuring smooth platform experience for all users",
+    },
+    {
+      name: "Ashish kumar",
+      role: "Frontend Developer",
+      location: "Pune",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      bio: "Operations expert ensuring smooth platform experience for all users",
+    },
+    {
+      name: "Pankaj Sarwa",
+      role: "Backend Developer",
+      location: "Pune",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      bio: "Operations expert ensuring smooth platform experience for all users",
+    },
+    {
+      name: "Indrajit Shewale",
+      role: "Backend Developer",
+      location: "Pune",
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
+      bio: "Operations expert ensuring smooth platform experience for all users",
+    },
+    {
+      name: "Prashansha Kabra",
+      role: "Chatbot integration",
       location: "Pune",
       image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face",
       bio: "Operations expert ensuring smooth platform experience for all users",
@@ -160,25 +188,45 @@ export default function About() {
             <p className="text-xl text-gray-600">The passionate professionals behind CareerNest</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <Card key={index} className="text-center hover:shadow-lg transition-shadow duration-200">
-                <CardContent className="p-6">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
-                  />
-                  <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
-                  <p className="text-blue-600 font-medium mb-2">{member.role}</p>
-                  <div className="flex items-center justify-center mb-3">
-                    <MapPin className="w-4 h-4 text-gray-400 mr-1" />
-                    <span className="text-gray-500 text-sm">{member.location}</span>
-                  </div>
-                  <p className="text-gray-600 text-sm">{member.bio}</p>
-                </CardContent>
-              </Card>
-            ))}
+          <div className="overflow-hidden">
+            <div className="flex gap-8 animate-marquee min-w-max">
+              {team.map((member, index) => (
+                <Card key={`team-primary-${index}`} className="text-center hover:shadow-lg transition-shadow duration-200 shrink-0 w-72">
+                  <CardContent className="p-6">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                    />
+                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
+                    <p className="text-blue-600 font-medium mb-2">{member.role}</p>
+                    <div className="flex items-center justify-center mb-3">
+                      <MapPin className="w-4 h-4 text-gray-400 mr-1" />
+                      <span className="text-gray-500 text-sm">{member.location}</span>
+                    </div>
+                    <p className="text-gray-600 text-sm">{member.bio}</p>
+                  </CardContent>
+                </Card>
+              ))}
+              {team.map((member, index) => (
+                <Card aria-hidden="true" key={`team-duplicate-${index}`} className="text-center hover:shadow-lg transition-shadow duration-200 shrink-0 w-72">
+                  <CardContent className="p-6">
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                    />
+                    <h3 className="text-xl font-semibold text-gray-900 mb-1">{member.name}</h3>
+                    <p className="text-blue-600 font-medium mb-2">{member.role}</p>
+                    <div className="flex items-center justify-center mb-3">
+                      <MapPin className="w-4 h-4 text-gray-400 mr-1" />
+                      <span className="text-gray-500 text-sm">{member.location}</span>
+                    </div>
+                    <p className="text-gray-600 text-sm">{member.bio}</p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
