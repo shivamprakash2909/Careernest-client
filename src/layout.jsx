@@ -604,7 +604,7 @@ export default function Layout({ children, currentPageName }) {
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li className="flex items-center space-x-2">
                   <Mail className="w-4 h-4" />
-                  <span>support@careernest.org</span>
+                  <span>info@careernest.org</span>
                 </li>
                 <li className="flex items-center space-x-2">
                   <Phone className="w-4 h-4" />
