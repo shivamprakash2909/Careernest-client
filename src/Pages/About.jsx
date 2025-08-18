@@ -8,7 +8,6 @@ export default function About() {
     { number: "1M+", label: "Job Seekers", icon: Users },
     { number: "50K+", label: "Active Jobs", icon: Target },
     { number: "10K+", label: "Companies", icon: Award },
-    { number: "95%", label: "Success Rate", icon: Heart },
   ];
 
   const team = [
@@ -75,7 +74,7 @@ export default function About() {
       {/* Stats Section */}
       <section className="bg-white py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {stats.map((stat, index) => {
               const IconComponent = stat.icon;
               return (
