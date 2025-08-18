@@ -295,7 +295,7 @@ export default function FAQ() {
           <p className="text-blue-100 mb-6">Our support team is here to help you succeed in your career journey</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="mailto:support@careernest.in"
+              href="mailto:support@careernest.org"
               className="bg-white text-blue-600 hover:bg-gray-100 px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               Email Support
