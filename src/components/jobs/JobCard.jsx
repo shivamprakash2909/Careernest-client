@@ -89,7 +89,11 @@ export default function JobCard({ job, isInternship = false }) {
   // Display stipend if present, otherwise salary
   const displayCompensation = () => {
     if (isInternship && job.stipend) {
-      return <span className="flex items-center text-green-600 font-semibold text-xs sm:text-sm">{formatStipend(job.stipend)}</span>;
+      return (
+        <span className="flex items-center text-green-600 font-semibold text-xs sm:text-sm">
+          {formatStipend(job.stipend)}
+        </span>
+      );
     }
     return (
       <span className="flex items-center text-green-600 font-semibold text-xs sm:text-sm">
@@ -98,16 +102,24 @@ export default function JobCard({ job, isInternship = false }) {
     );
   };
 
+  const postedDate = job.postedAt || job.createdAt || null;
+
   return (
     <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500">
       <CardHeader className="pb-2 sm:pb-3">
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-2 sm:gap-3 lg:gap-4">
           <div className="flex items-start space-x-2 sm:space-x-3 lg:space-x-4 flex-1">
             {job.company_logo && (
-              <img src={job.company_logo} alt={job.company} className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg object-cover flex-shrink-0" />
+              <img
+                src={job.company_logo}
+                alt={job.company}
+                className="w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 rounded-lg object-cover flex-shrink-0"
+              />
             )}
             <div className="flex-1 min-w-0">
-              <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2 leading-tight">{job.title}</CardTitle>
+              <CardTitle className="text-base sm:text-lg lg:text-xl font-bold text-gray-900 mb-1 sm:mb-2 line-clamp-2 leading-tight">
+                {job.title}
+              </CardTitle>
               <div className="flex items-center space-x-2 text-gray-600 mb-1 sm:mb-2">
                 <Building className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" />
                 <span className="font-medium text-xs sm:text-sm lg:text-base truncate">{job.company}</span>
@@ -120,7 +132,9 @@ export default function JobCard({ job, isInternship = false }) {
                 <span className="flex items-center">
                   <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1 flex-shrink-0" />
                   <span className="hidden sm:inline">{job.job_type}</span>
-                  <span className="sm:hidden">{job.job_type === "Full-time" ? "FT" : job.job_type === "Part-time" ? "PT" : job.job_type}</span>
+                  <span className="sm:hidden">
+                    {job.job_type === "Full-time" ? "FT" : job.job_type === "Part-time" ? "PT" : job.job_type}
+                  </span>
                 </span>
                 {displayCompensation()}
               </div>
@@ -136,8 +150,14 @@ export default function JobCard({ job, isInternship = false }) {
             </div>
             <div className="flex items-center text-gray-500 text-xs">
               <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-              <span className="hidden sm:inline">Posted recently</span>
-              <span className="sm:hidden">Recent</span>
+              {postedDate && (
+                <>
+                  <span className="hidden sm:inline">Posted on {new Date(postedDate).toLocaleDateString()}</span>
+                  <span className="sm:hidden">
+                    {new Date(postedDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -148,15 +168,22 @@ export default function JobCard({ job, isInternship = false }) {
           <Badge className={`text-xs ${getExperienceBadgeColor(job.experience_level)}`}>
             <span className="hidden sm:inline">{job.experience_level}</span>
             <span className="sm:hidden">
-              {job.experience_level === "Entry Level" ? "Entry" : 
-               job.experience_level === "Mid Level" ? "Mid" : 
-               job.experience_level === "Senior Level" ? "Senior" : 
-               job.experience_level === "Executive" ? "Exec" : job.experience_level}
+              {job.experience_level === "Entry Level"
+                ? "Entry"
+                : job.experience_level === "Mid Level"
+                ? "Mid"
+                : job.experience_level === "Senior Level"
+                ? "Senior"
+                : job.experience_level === "Executive"
+                ? "Exec"
+                : job.experience_level}
             </span>
           </Badge>
           <Badge variant="secondary" className="text-xs">
             <span className="hidden sm:inline">{job.job_type}</span>
-            <span className="sm:hidden">{job.job_type === "Full-time" ? "FT" : job.job_type === "Part-time" ? "PT" : job.job_type}</span>
+            <span className="sm:hidden">
+              {job.job_type === "Full-time" ? "FT" : job.job_type === "Part-time" ? "PT" : job.job_type}
+            </span>
           </Badge>
           {isMyJob && (
             <div className="flex items-center gap-1">
@@ -206,7 +233,10 @@ export default function JobCard({ job, isInternship = false }) {
             </Link>
             {(job.approval_status === "approved" || job.status === "approved") && (
               <Link to={`/p/job-details/${job._id}?apply=true`} className="w-full sm:w-auto">
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+                <Button
+                  size="sm"
+                  className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9"
+                >
                   {isInternship ? (
                     <span className="hidden sm:inline">Apply for Job</span>
                   ) : (
@@ -217,13 +247,23 @@ export default function JobCard({ job, isInternship = false }) {
               </Link>
             )}
             {(job.approval_status === "pending" || job.status === "pending") && (
-              <Button size="sm" variant="outline" disabled className="text-yellow-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled
+                className="text-yellow-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9"
+              >
                 <span className="hidden sm:inline">Pending Approval</span>
                 <span className="sm:hidden">Pending</span>
               </Button>
             )}
             {(job.approval_status === "rejected" || job.status === "rejected") && (
-              <Button size="sm" variant="outline" disabled className="text-red-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9">
+              <Button
+                size="sm"
+                variant="outline"
+                disabled
+                className="text-red-600 w-full sm:w-auto text-xs sm:text-sm h-8 sm:h-9"
+              >
                 <span className="hidden sm:inline">Rejected</span>
                 <span className="sm:hidden">Rejected</span>
               </Button>
@@ -234,4 +274,3 @@ export default function JobCard({ job, isInternship = false }) {
     </Card>
   );
 }
-

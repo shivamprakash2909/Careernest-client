@@ -123,6 +123,8 @@ export default function JobCard({ job, isInternship = false }) {
     return text.substring(0, maxLength) + "...";
   };
 
+  const postedDate = job.postedAt || job.createdAt || null;
+
   return (
     <Card className="hover:shadow-lg transition-all duration-200 border-l-4 border-l-blue-500 w-full max-w-full overflow-hidden">
       <CardHeader className="pb-2 sm:pb-3">
@@ -189,8 +191,14 @@ export default function JobCard({ job, isInternship = false }) {
             {/* Posted Info */}
             <div className="flex items-center text-gray-500 text-xs">
               <Clock className="w-3 h-3 sm:w-4 sm:h-4 mr-1" />
-              <span className="hidden sm:inline">Posted recently</span>
-              <span className="sm:hidden">Recent</span>
+              {postedDate && (
+                <>
+                  <span className="hidden sm:inline">Posted on {new Date(postedDate).toLocaleDateString()}</span>
+                  <span className="sm:hidden">
+                    {new Date(postedDate).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                  </span>
+                </>
+              )}
             </div>
           </div>
         </div>

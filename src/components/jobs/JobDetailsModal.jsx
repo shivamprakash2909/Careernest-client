@@ -24,6 +24,8 @@ export default function JobDetailsModal({ job, onClose }) {
     return min ? `₹${min.toLocaleString()}+ per annum` : `Up to ₹${max.toLocaleString()} per annum`;
   };
 
+  const postedDate = job.postedAt || job.createdAt || null;
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-opacity-60 px-2 sm:px-0">
       <div className="bg-white rounded-lg shadow-2xl max-w-2xl w-full relative mx-2 sm:mx-0">
@@ -56,7 +58,7 @@ export default function JobDetailsModal({ job, onClose }) {
             </div>
             <div className="flex items-center text-gray-500 text-sm mb-2 justify-center sm:justify-start">
               <Clock className="w-4 h-4 mr-1" />
-              <span>Posted recently</span>
+              {postedDate && <span>Posted on {new Date(postedDate).toLocaleDateString()}</span>}
             </div>
           </CardHeader>
           <CardContent>
